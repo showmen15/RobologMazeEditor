@@ -3488,7 +3488,7 @@ namespace MazeEditor
             {
                 robotName = string.Format("robot{0}", i.ToString());
 
-                RobotsPF[i] = new MazeRobot("Robot", robotName, new Point2D(i * 100, 10), (float)(1.0 * 100));
+                RobotsPF[i] = new MazeRobot("Robot", robotName, new Point2D(i * 100, i * 100), (float)(1.0 * 100));
                 RobotsPF[i].ID = robotName;
 
                 mazeRobots.Add(RobotsPF[i]);
@@ -3527,9 +3527,9 @@ namespace MazeEditor
 
                     if ((tmp.Length == 5) && (indexTable < maxRobots)) //zmienic gdy ilosc danych do przeslania sie zmienia;
                     {
-                        x = double.Parse(tmp[1]);
-                        y = double.Parse(tmp[2]);
-                        //alfa = double.Parse(tmp[3]);
+                        x = double.Parse(tmp[1].Replace(".", ","));
+                        y = double.Parse(tmp[2].Replace(".", ","));
+                        //alfa = double.Parse(tmp[3].Replace(".", ","));
                         //probability = double.Parse(tmp[4].Replace(".", ","));
 
                         RobotsPF[indexTable].position = new Point2D(x * 100, y * 100);
