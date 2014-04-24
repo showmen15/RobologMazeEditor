@@ -29,6 +29,9 @@ using Geometry;
 using RoomsGraph;
 using EMK.Cartography;
 using EMK.LightGeometry;
+using System.Net.Sockets;
+using System.Net;
+using System.Threading;
 
 
 namespace MazeEditor
@@ -279,6 +282,17 @@ namespace MazeEditor
         private CheckBox createDoorWallCheckBox;
         private Button FlopAllWallButton;
         private Button translateWallsToZeroZeoButton;
+        private TabPage PFTabPage;
+        private Button butPause;
+        private Button butStop;
+        private NumericUpDown dNumberRobots;
+        private Label label7;
+        private Button butStart;
+        private GroupBox groupBox1;
+        private TextBox txtPort;
+        private TextBox txtIP;
+        private Label label9;
+        private Label label8;
         private MazeSpace previousSelectedRoom;
 
 		public MazeEditorForm()
@@ -328,7 +342,7 @@ namespace MazeEditor
 
 
 		protected override void Dispose( bool disposing )
-		{
+        {
 			if( disposing )
 			{
 				if (components != null) 
@@ -346,6 +360,7 @@ namespace MazeEditor
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -370,6 +385,7 @@ namespace MazeEditor
             this.coordXLabel = new System.Windows.Forms.Label();
             this.coordYLabel = new System.Windows.Forms.Label();
             this.snapToAngleLabel = new System.Windows.Forms.Label();
+            this.snapToWallLabel = new System.Windows.Forms.Label();
             this.snapToGridLabel = new System.Windows.Forms.Label();
             this.objectSelectorTabControl = new System.Windows.Forms.TabControl();
             this.mazeTabPage = new System.Windows.Forms.TabPage();
@@ -382,6 +398,9 @@ namespace MazeEditor
             this.heightNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.worldNameTextBox = new System.Windows.Forms.TextBox();
             this.wallsTabPage = new System.Windows.Forms.TabPage();
+            this.translateWallsToZeroZeoButton = new System.Windows.Forms.Button();
+            this.FlopAllWallButton = new System.Windows.Forms.Button();
+            this.createDoorWallCheckBox = new System.Windows.Forms.CheckBox();
             this.wallWidthLabel = new System.Windows.Forms.Label();
             this.wallHeightLabel = new System.Windows.Forms.Label();
             this.wallAngleLabel = new System.Windows.Forms.Label();
@@ -425,11 +444,17 @@ namespace MazeEditor
             this.graphTreeView = new System.Windows.Forms.TreeView();
             this.sizeTrackBar = new System.Windows.Forms.TrackBar();
             this.removeDoorDoorEdgesButton = new System.Windows.Forms.Button();
-            this.snapToWallLabel = new System.Windows.Forms.Label();
-            this.createDoorWallCheckBox = new System.Windows.Forms.CheckBox();
-            this.FlopAllWallButton = new System.Windows.Forms.Button();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
-            this.translateWallsToZeroZeoButton = new System.Windows.Forms.Button();
+            this.PFTabPage = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.txtIP = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.butPause = new System.Windows.Forms.Button();
+            this.butStop = new System.Windows.Forms.Button();
+            this.dNumberRobots = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.butStart = new System.Windows.Forms.Button();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
@@ -449,6 +474,9 @@ namespace MazeEditor
             ((System.ComponentModel.ISupportInitialize)(this.gateBlockedNumericUpDown)).BeginInit();
             this.graphTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeTrackBar)).BeginInit();
+            this.PFTabPage.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots)).BeginInit();
             this.SuspendLayout();
             // 
             // viewPanel
@@ -461,6 +489,17 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
+            // 
+            // mazePanel
+            // 
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -663,6 +702,19 @@ namespace MazeEditor
             this.snapToAngleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.snapToAngleLabel.Click += new System.EventHandler(this.snapToAngleLabel_Click);
             // 
+            // snapToWallLabel
+            // 
+            this.snapToWallLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.snapToWallLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.snapToWallLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.snapToWallLabel.Location = new System.Drawing.Point(98, 552);
+            this.snapToWallLabel.Name = "snapToWallLabel";
+            this.snapToWallLabel.Size = new System.Drawing.Size(80, 20);
+            this.snapToWallLabel.TabIndex = 16;
+            this.snapToWallLabel.Text = "snap to wall";
+            this.snapToWallLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.snapToWallLabel.Click += new System.EventHandler(this.snapToWallLabel_Click);
+            // 
             // snapToGridLabel
             // 
             this.snapToGridLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -685,6 +737,7 @@ namespace MazeEditor
             this.objectSelectorTabControl.Controls.Add(this.victimsTabPage);
             this.objectSelectorTabControl.Controls.Add(this.roomsTabPage);
             this.objectSelectorTabControl.Controls.Add(this.graphTabPage);
+            this.objectSelectorTabControl.Controls.Add(this.PFTabPage);
             this.objectSelectorTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectSelectorTabControl.ImageList = this.mainMenuImageList;
             this.objectSelectorTabControl.ItemSize = new System.Drawing.Size(42, 30);
@@ -707,10 +760,10 @@ namespace MazeEditor
             this.mazeTabPage.Controls.Add(this.gravityLabel);
             this.mazeTabPage.Controls.Add(this.heightNumericUpDown);
             this.mazeTabPage.Controls.Add(this.worldNameTextBox);
-            this.mazeTabPage.Location = new System.Drawing.Point(4, 34);
+            this.mazeTabPage.Location = new System.Drawing.Point(4, 67);
             this.mazeTabPage.Name = "mazeTabPage";
             this.mazeTabPage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mazeTabPage.Size = new System.Drawing.Size(363, 511);
+            this.mazeTabPage.Size = new System.Drawing.Size(363, 478);
             this.mazeTabPage.TabIndex = 3;
             this.mazeTabPage.Text = "maze";
             // 
@@ -856,16 +909,46 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
+            // 
+            // translateWallsToZeroZeoButton
+            // 
+            this.translateWallsToZeroZeoButton.Location = new System.Drawing.Point(228, 33);
+            this.translateWallsToZeroZeoButton.Name = "translateWallsToZeroZeoButton";
+            this.translateWallsToZeroZeoButton.Size = new System.Drawing.Size(52, 23);
+            this.translateWallsToZeroZeoButton.TabIndex = 26;
+            this.translateWallsToZeroZeoButton.Text = "0, 0";
+            this.translateWallsToZeroZeoButton.UseVisualStyleBackColor = true;
+            this.translateWallsToZeroZeoButton.Click += new System.EventHandler(this.translateWallsToZeroZeoButton_Click);
+            // 
+            // FlopAllWallButton
+            // 
+            this.FlopAllWallButton.Location = new System.Drawing.Point(228, 9);
+            this.FlopAllWallButton.Name = "FlopAllWallButton";
+            this.FlopAllWallButton.Size = new System.Drawing.Size(52, 23);
+            this.FlopAllWallButton.TabIndex = 26;
+            this.FlopAllWallButton.Text = "flip";
+            this.FlopAllWallButton.UseVisualStyleBackColor = true;
+            this.FlopAllWallButton.Click += new System.EventHandler(this.FlopAllWallButton_Click);
+            // 
+            // createDoorWallCheckBox
+            // 
+            this.createDoorWallCheckBox.AutoSize = true;
+            this.createDoorWallCheckBox.Location = new System.Drawing.Point(88, 87);
+            this.createDoorWallCheckBox.Name = "createDoorWallCheckBox";
+            this.createDoorWallCheckBox.Size = new System.Drawing.Size(47, 17);
+            this.createDoorWallCheckBox.TabIndex = 25;
+            this.createDoorWallCheckBox.Text = "door";
+            this.createDoorWallCheckBox.UseVisualStyleBackColor = true;
             // 
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -875,7 +958,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -885,7 +968,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -895,7 +978,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -910,7 +993,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 316);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 277);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1006,9 +1089,9 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
             // 
@@ -1082,9 +1165,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1099,9 +1182,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1141,7 +1224,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1249,7 +1332,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1281,7 +1364,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1296,7 +1379,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1317,9 +1400,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1332,7 +1415,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -1359,59 +1442,135 @@ namespace MazeEditor
             this.removeDoorDoorEdgesButton.UseVisualStyleBackColor = true;
             this.removeDoorDoorEdgesButton.Click += new System.EventHandler(this.removeDoorDoorEdgesButton_Click);
             // 
-            // snapToWallLabel
+            // PFTabPage
             // 
-            this.snapToWallLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.snapToWallLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.snapToWallLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.snapToWallLabel.Location = new System.Drawing.Point(98, 552);
-            this.snapToWallLabel.Name = "snapToWallLabel";
-            this.snapToWallLabel.Size = new System.Drawing.Size(80, 20);
-            this.snapToWallLabel.TabIndex = 16;
-            this.snapToWallLabel.Text = "snap to wall";
-            this.snapToWallLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.snapToWallLabel.Click += new System.EventHandler(this.snapToWallLabel_Click);
+            this.PFTabPage.Controls.Add(this.groupBox1);
+            this.PFTabPage.Controls.Add(this.butPause);
+            this.PFTabPage.Controls.Add(this.butStop);
+            this.PFTabPage.Controls.Add(this.dNumberRobots);
+            this.PFTabPage.Controls.Add(this.label7);
+            this.PFTabPage.Controls.Add(this.butStart);
+            this.PFTabPage.Location = new System.Drawing.Point(4, 67);
+            this.PFTabPage.Name = "PFTabPage";
+            this.PFTabPage.Size = new System.Drawing.Size(363, 478);
+            this.PFTabPage.TabIndex = 6;
+            this.PFTabPage.Text = "PF";
+            this.PFTabPage.UseVisualStyleBackColor = true;
             // 
-            // createDoorWallCheckBox
+            // groupBox1
             // 
-            this.createDoorWallCheckBox.AutoSize = true;
-            this.createDoorWallCheckBox.Location = new System.Drawing.Point(88, 87);
-            this.createDoorWallCheckBox.Name = "createDoorWallCheckBox";
-            this.createDoorWallCheckBox.Size = new System.Drawing.Size(47, 17);
-            this.createDoorWallCheckBox.TabIndex = 25;
-            this.createDoorWallCheckBox.Text = "door";
-            this.createDoorWallCheckBox.UseVisualStyleBackColor = true;
+            this.groupBox1.Controls.Add(this.txtPort);
+            this.groupBox1.Controls.Add(this.txtIP);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Location = new System.Drawing.Point(11, 29);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(339, 73);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "UDP";
             // 
-            // FlopAllWallButton
+            // txtPort
             // 
-            this.FlopAllWallButton.Location = new System.Drawing.Point(228, 9);
-            this.FlopAllWallButton.Name = "FlopAllWallButton";
-            this.FlopAllWallButton.Size = new System.Drawing.Size(52, 23);
-            this.FlopAllWallButton.TabIndex = 26;
-            this.FlopAllWallButton.Text = "flip";
-            this.FlopAllWallButton.UseVisualStyleBackColor = true;
-            this.FlopAllWallButton.Click += new System.EventHandler(this.FlopAllWallButton_Click);
+            this.txtPort.Location = new System.Drawing.Point(63, 40);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(100, 20);
+            this.txtPort.TabIndex = 3;
+            this.txtPort.Text = "1234";
             // 
-            // mazePanel
+            // txtIP
             // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
+            this.txtIP.Location = new System.Drawing.Point(63, 12);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(100, 20);
+            this.txtIP.TabIndex = 2;
+            this.txtIP.Text = "127.0.0.1";
             // 
-            // translateWallsToZeroZeoButton
+            // label9
             // 
-            this.translateWallsToZeroZeoButton.Location = new System.Drawing.Point(228, 33);
-            this.translateWallsToZeroZeoButton.Name = "translateWallsToZeroZeoButton";
-            this.translateWallsToZeroZeoButton.Size = new System.Drawing.Size(52, 23);
-            this.translateWallsToZeroZeoButton.TabIndex = 26;
-            this.translateWallsToZeroZeoButton.Text = "0, 0";
-            this.translateWallsToZeroZeoButton.UseVisualStyleBackColor = true;
-            this.translateWallsToZeroZeoButton.Click += new System.EventHandler(this.translateWallsToZeroZeoButton_Click);
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(22, 45);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Port:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(24, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(20, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "IP:";
+            // 
+            // butPause
+            // 
+            this.butPause.Enabled = false;
+            this.butPause.Location = new System.Drawing.Point(145, 108);
+            this.butPause.Name = "butPause";
+            this.butPause.Size = new System.Drawing.Size(75, 23);
+            this.butPause.TabIndex = 4;
+            this.butPause.Text = "Pause";
+            this.butPause.UseVisualStyleBackColor = true;
+            this.butPause.Visible = false;
+            this.butPause.Click += new System.EventHandler(this.butPause_Click);
+            // 
+            // butStop
+            // 
+            this.butStop.Location = new System.Drawing.Point(238, 108);
+            this.butStop.Name = "butStop";
+            this.butStop.Size = new System.Drawing.Size(75, 23);
+            this.butStop.TabIndex = 3;
+            this.butStop.Text = "Stop";
+            this.butStop.UseVisualStyleBackColor = true;
+            this.butStop.Click += new System.EventHandler(this.butStop_Click);
+            // 
+            // dNumberRobots
+            // 
+            this.dNumberRobots.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.dNumberRobots.Location = new System.Drawing.Point(105, 7);
+            this.dNumberRobots.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.dNumberRobots.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dNumberRobots.Name = "dNumberRobots";
+            this.dNumberRobots.Size = new System.Drawing.Size(93, 20);
+            this.dNumberRobots.TabIndex = 2;
+            this.dNumberRobots.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 11);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(91, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Number of robots:";
+            // 
+            // butStart
+            // 
+            this.butStart.Location = new System.Drawing.Point(52, 108);
+            this.butStart.Name = "butStart";
+            this.butStart.Size = new System.Drawing.Size(75, 23);
+            this.butStart.TabIndex = 0;
+            this.butStart.Text = "Start";
+            this.butStart.UseVisualStyleBackColor = true;
+            this.butStart.Click += new System.EventHandler(this.butStart_Click);
             // 
             // MazeEditorForm
             // 
@@ -1452,6 +1611,11 @@ namespace MazeEditor
             this.graphTabPage.ResumeLayout(false);
             this.graphTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeTrackBar)).EndInit();
+            this.PFTabPage.ResumeLayout(false);
+            this.PFTabPage.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3292,8 +3456,117 @@ namespace MazeEditor
             mazePanel_Paint(this, null);
         }
 
+        #region :: PF implementation ::
 
+        private void butStart_Click(object sender, EventArgs e)
+        {
+            initUDPandStart(txtIP.Text, int.Parse(txtPort.Text),Convert.ToInt32(dNumberRobots.Value));
+        }
 
+        UdpClient udp;
 
-	}
+        bool endTransmision = false;
+
+        IPEndPoint endPoint;
+
+        Thread reciveThread;
+
+        MazeRobot[] RobotsPF = null;
+
+        int maxRobots;
+
+        private void initUDPandStart(string sIP, int port,int iRobotNumber)
+        {
+            mazeRobots.Clear();
+            MazeIdentifiable.ClearBusyIdsCache(); 
+            
+            RobotsPF = new MazeRobot[iRobotNumber];
+            maxRobots = iRobotNumber;
+            string robotName;
+
+            for (int i = 0; i < maxRobots; i++)
+            {
+                robotName = string.Format("robot{0}", i.ToString());
+
+                RobotsPF[i] = new MazeRobot("Robot", robotName, new Point2D(i * 100, 10), (float)(1.0 * 100));
+                RobotsPF[i].ID = robotName;
+
+                mazeRobots.Add(RobotsPF[i]);
+            }
+
+            udp = new UdpClient(port);
+            endPoint = new IPEndPoint(IPAddress.Parse(sIP), port);
+
+            endTransmision = false;
+
+            reciveThread = new Thread(new ThreadStart(getParticlePossition));
+            reciveThread.Start();
+        }
+
+        private void getParticlePossition()
+        {
+            byte[] tablica;
+            string temp;
+            string[] tmp;
+            int indexTable;
+            double x;
+            double y;
+            double alfa;
+            double probability;
+
+            while (!endTransmision)
+            {
+                tablica = udp.Receive(ref endPoint);
+                temp = System.Text.Encoding.Default.GetString(tablica);
+
+                foreach (var item in temp.Split(new string[] { "#" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    tmp = item.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    indexTable = int.Parse(tmp[0]); //aktaualny index;
+
+                    if ((tmp.Length == 5) && (indexTable < maxRobots)) //zmienic gdy ilosc danych do przeslania sie zmienia;
+                    {
+                        x = double.Parse(tmp[1]);
+                        y = double.Parse(tmp[2]);
+                        //alfa = double.Parse(tmp[3]);
+                        //probability = double.Parse(tmp[4].Replace(".", ","));
+
+                        RobotsPF[indexTable].position = new Point2D(x * 100, y * 100);
+                    }
+                }
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    mazePanel_Paint(this, null);
+                });
+            }
+        }
+
+        private void threadStop()
+        {
+            endTransmision = true;
+            udp.Close();
+
+            reciveThread.Abort();
+
+            reciveThread = null;           
+        }
+
+        private void threadPause()
+        {
+            reciveThread.Suspend();
+        }
+
+        private void butStop_Click(object sender, EventArgs e)
+        {
+            threadStop();
+        }
+
+        private void butPause_Click(object sender, EventArgs e)
+        {
+            threadPause();
+        }
+
+        #endregion
+    }
 }
