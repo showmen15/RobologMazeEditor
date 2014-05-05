@@ -36,11 +36,11 @@ using System.Threading;
 
 namespace MazeEditor
 {
-	/// <summary>
-	/// Summary description for Form1.
-	/// </summary>
-	public class MazeEditorForm : System.Windows.Forms.Form
-	{
+    /// <summary>
+    /// Summary description for Form1.
+    /// </summary>
+    public class MazeEditorForm : System.Windows.Forms.Form
+    {
 
 
         private enum EditMode
@@ -60,85 +60,85 @@ namespace MazeEditor
             SelectRoom
         };
 
-		private const float zoomStep = 2.0f;
+        private const float zoomStep = 2.0f;
 
-		private DoubleBufferedPanel mazePanel;
-		private System.Windows.Forms.Panel viewPanel;
-		private System.Windows.Forms.Splitter topHorizontalSplitter;
-		private System.Windows.Forms.ToolBarButton newToolBarButton;
-		private System.Windows.Forms.ToolBarButton loadToolBarButton;
-		private System.Windows.Forms.ToolBarButton saveToolBarButton;
-		private System.ComponentModel.IContainer components;
-		private System.Windows.Forms.ToolBar mainToolBar;
-		private System.Windows.Forms.ToolBarButton zoomPlusToolBarButton;
-		private System.Windows.Forms.ToolBarButton deleteToolBarButton;
-		private System.Windows.Forms.ToolBarButton zoomMinusToolBarButton;
-		private System.Windows.Forms.ToolBarButton widthPlusToolBarButton;
-		private System.Windows.Forms.ToolBarButton heightPlusToolBarButton;
-		private System.Windows.Forms.ColorDialog wallColorDialog;
-		private System.Windows.Forms.Label wallColorLabel;
-		private System.Windows.Forms.Panel wallColorPanel;
-		private System.Windows.Forms.Label label123;
-		private System.Windows.Forms.Label label423423;
-		private System.Windows.Forms.Label robotHeightLabel;
-		private System.Windows.Forms.Label robotTypeLabel;
-		private System.Windows.Forms.TextBox robotTypeTextBox;
-		private System.Windows.Forms.Label robotNameLabel;
-		private System.Windows.Forms.TextBox robotNameTextBox;
-		private System.Windows.Forms.ImageList mainMenuImageList;
-		private System.Windows.Forms.Label mazeNameLabel;
-		private System.Windows.Forms.Label gravityLabel;
-		private System.Windows.Forms.TextBox worldNameTextBox;
-		private System.Windows.Forms.Label snapToGridLabel;
-		private System.Windows.Forms.Label snapToAngleLabel;
+        private DoubleBufferedPanel mazePanel;
+        private System.Windows.Forms.Panel viewPanel;
+        private System.Windows.Forms.Splitter topHorizontalSplitter;
+        private System.Windows.Forms.ToolBarButton newToolBarButton;
+        private System.Windows.Forms.ToolBarButton loadToolBarButton;
+        private System.Windows.Forms.ToolBarButton saveToolBarButton;
+        private System.ComponentModel.IContainer components;
+        private System.Windows.Forms.ToolBar mainToolBar;
+        private System.Windows.Forms.ToolBarButton zoomPlusToolBarButton;
+        private System.Windows.Forms.ToolBarButton deleteToolBarButton;
+        private System.Windows.Forms.ToolBarButton zoomMinusToolBarButton;
+        private System.Windows.Forms.ToolBarButton widthPlusToolBarButton;
+        private System.Windows.Forms.ToolBarButton heightPlusToolBarButton;
+        private System.Windows.Forms.ColorDialog wallColorDialog;
+        private System.Windows.Forms.Label wallColorLabel;
+        private System.Windows.Forms.Panel wallColorPanel;
+        private System.Windows.Forms.Label label123;
+        private System.Windows.Forms.Label label423423;
+        private System.Windows.Forms.Label robotHeightLabel;
+        private System.Windows.Forms.Label robotTypeLabel;
+        private System.Windows.Forms.TextBox robotTypeTextBox;
+        private System.Windows.Forms.Label robotNameLabel;
+        private System.Windows.Forms.TextBox robotNameTextBox;
+        private System.Windows.Forms.ImageList mainMenuImageList;
+        private System.Windows.Forms.Label mazeNameLabel;
+        private System.Windows.Forms.Label gravityLabel;
+        private System.Windows.Forms.TextBox worldNameTextBox;
+        private System.Windows.Forms.Label snapToGridLabel;
+        private System.Windows.Forms.Label snapToAngleLabel;
 
 
-		private ArrayList mazeWalls = null;
+        private ArrayList mazeWalls = null;
         private ArrayList mazeRobots = null;
         private ArrayList mazeVictims = null;
 
         private ArrayList mazeRooms = null;
         private MazeGraph mazeGraph = null;
 
-		private Graphics mazeBitmapGraphics = null;
-		private float zoom = 1.0f;
-		private Matrix invertedMazeMatrix = null;
+        private Graphics mazeBitmapGraphics = null;
+        private float zoom = 1.0f;
+        private Matrix invertedMazeMatrix = null;
 
-		private Graphics mazeBitmapStaticGraphics = null;
+        private Graphics mazeBitmapStaticGraphics = null;
 
-		private Bitmap mazePanelBitmap = null;
-		private Graphics mazeGraphics = null;
+        private Bitmap mazePanelBitmap = null;
+        private Graphics mazeGraphics = null;
 
-		private Pen mazeStaticPen;
-		private Brush mazeStaticGridBrush;
-		private Brush scaleBrush;
-		private Font scaleFont;
+        private Pen mazeStaticPen;
+        private Brush mazeStaticGridBrush;
+        private Brush scaleBrush;
+        private Font scaleFont;
 
-		private Color mazeBackColor = Color.DimGray;
+        private Color mazeBackColor = Color.DimGray;
 
-		private EditMode editMode;
-		private bool createWallInProgress;
-		private PointF [] tempPoints;
-		private PointF firstPoint;
+        private EditMode editMode;
+        private bool createWallInProgress;
+        private PointF[] tempPoints;
+        private PointF firstPoint;
 
-		private PointF [] coordPoints;
+        private PointF[] coordPoints;
 
-		private bool moveInProgress;
-		private MazeWall  selectedWall = null;
-		private MazeRobot selectedRobot = null;
+        private bool moveInProgress;
+        private MazeWall selectedWall = null;
+        private MazeRobot selectedRobot = null;
         private MazeVictim selectedVictim = null;
-        
-		private int movedWallPointIndex;
 
-		private Pen notCreatedWallPen;
+        private int movedWallPointIndex;
 
-		private MazeNode selectedNode = null;
-//		private RoomsGraphBuilder roomsGraphBuilder;
+        private Pen notCreatedWallPen;
+
+        private MazeNode selectedNode = null;
+        //		private RoomsGraphBuilder roomsGraphBuilder;
         private Pen graphPen;
         private Pen selectedGraphPen;
         private Brush graphBrush;
 
-		private Pen roomPen;
+        private Pen roomPen;
         private Pen doorPen;
         private Pen doorPenWithArrow;
         private Pen passagePenWithArrow;
@@ -173,77 +173,77 @@ namespace MazeEditor
         }
 
 
-		private bool snapToAngle;
-		private bool SnapToAngle
-		{
-			get 
-			{
-				return snapToAngle;
-			}
-			set 
-			{
-				snapToAngle = value;
-				if (snapToAngle)
-				{
-					snapToAngleLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+        private bool snapToAngle;
+        private bool SnapToAngle
+        {
+            get
+            {
+                return snapToAngle;
+            }
+            set
+            {
+                snapToAngle = value;
+                if (snapToAngle)
+                {
+                    snapToAngleLabel.ForeColor = System.Drawing.SystemColors.ControlText;
                     SnapToWall = false;
-				}
-				else
-				{
-					snapToAngleLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-				}
-				mazePanel_Paint(this,null);
-			}
-		}
+                }
+                else
+                {
+                    snapToAngleLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+                }
+                mazePanel_Paint(this, null);
+            }
+        }
 
-		private bool snapToGrid;
-		private bool SnapToGrid
-		{
-			get 
-			{
-				return snapToGrid;
-			}
-			set 
-			{
-				snapToGrid = value;
-				if (snapToGrid)
-				{
-					snapToGridLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+        private bool snapToGrid;
+        private bool SnapToGrid
+        {
+            get
+            {
+                return snapToGrid;
+            }
+            set
+            {
+                snapToGrid = value;
+                if (snapToGrid)
+                {
+                    snapToGridLabel.ForeColor = System.Drawing.SystemColors.ControlText;
                     SnapToWall = false;
-				}
-				else
-				{
-					snapToGridLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
-				}
-				mazePanel_Paint(this,null);
-			}
-		}
+                }
+                else
+                {
+                    snapToGridLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+                }
+                mazePanel_Paint(this, null);
+            }
+        }
 
-		private Color wallColor;
+        private Color wallColor;
 
-		private int robotNameIndex;
-		private System.Windows.Forms.Label coordXLabel;
-		private System.Windows.Forms.Label coordYLabel;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.NumericUpDown heightNumericUpDown;
-		private System.Windows.Forms.NumericUpDown widthNumericUpDown;
-		private System.Windows.Forms.NumericUpDown gravityNumericUpDown;
-		private System.Windows.Forms.NumericUpDown wallWidthNumericUpDown;
-		private System.Windows.Forms.NumericUpDown wallHeightNumericUpDown;
-		private System.Windows.Forms.NumericUpDown robotHeightNumericUpDown;
-		private System.Windows.Forms.TabPage wallsTabPage;
-		private System.Windows.Forms.TabPage robotsTabPage;
+        private int robotNameIndex;
+        private System.Windows.Forms.Label coordXLabel;
+        private System.Windows.Forms.Label coordYLabel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown heightNumericUpDown;
+        private System.Windows.Forms.NumericUpDown widthNumericUpDown;
+        private System.Windows.Forms.NumericUpDown gravityNumericUpDown;
+        private System.Windows.Forms.NumericUpDown wallWidthNumericUpDown;
+        private System.Windows.Forms.NumericUpDown wallHeightNumericUpDown;
+        private System.Windows.Forms.NumericUpDown robotHeightNumericUpDown;
+        private System.Windows.Forms.TabPage wallsTabPage;
+        private System.Windows.Forms.TabPage robotsTabPage;
         private System.Windows.Forms.TabPage mazeTabPage;
-		private System.Windows.Forms.ToolBarButton createToolBarButton;
-		private System.Windows.Forms.ToolBarButton moveToolBarButton;
-		private System.Windows.Forms.TabControl objectSelectorTabControl;
-		private System.Windows.Forms.TabPage graphTabPage;
-		private System.Windows.Forms.Button recreateRoomsButton;
-		private System.Windows.Forms.ComboBox typeSelectComboBox;
-		private System.Windows.Forms.TreeView roomsTreeView;
-		private System.Windows.Forms.Panel leftMenuPanel;
-		private System.Windows.Forms.Splitter verticalSplitter;
+        private System.Windows.Forms.ToolBarButton createToolBarButton;
+        private System.Windows.Forms.ToolBarButton moveToolBarButton;
+        private System.Windows.Forms.TabControl objectSelectorTabControl;
+        private System.Windows.Forms.TabPage graphTabPage;
+        private System.Windows.Forms.Button recreateRoomsButton;
+        private System.Windows.Forms.ComboBox typeSelectComboBox;
+        private System.Windows.Forms.TreeView roomsTreeView;
+        private System.Windows.Forms.Panel leftMenuPanel;
+        private System.Windows.Forms.Splitter verticalSplitter;
         private TabPage roomsTabPage;
         private ToolBarButton separator4;
         private ToolBarButton exportRoBossToolBarButton;
@@ -254,7 +254,7 @@ namespace MazeEditor
         private TreeView graphTreeView;
 
 
-		public static System.Globalization.NumberFormatInfo numberFormatInfo;
+        public static System.Globalization.NumberFormatInfo numberFormatInfo;
         private CheckBox joinWithRadioButton;
         private Button removeRoomButton;
         private Panel roomPropertiesPanel;
@@ -295,33 +295,33 @@ namespace MazeEditor
         private Label label8;
         private MazeSpace previousSelectedRoom;
 
-		public MazeEditorForm()
-		{
-			InitializeComponent();
+        public MazeEditorForm()
+        {
+            InitializeComponent();
 
-			mazeStaticPen = new Pen(Color.Coral,1);
-			notCreatedWallPen = new Pen(Color.FromArgb(128,64,255,64),1);
-			scaleFont = new Font("sans",8);
-			scaleBrush = mazeStaticPen.Brush;
-			mazeStaticGridBrush = (new Pen(Color.FromArgb(192,100,240,100),1)).Brush;
+            mazeStaticPen = new Pen(Color.Coral, 1);
+            notCreatedWallPen = new Pen(Color.FromArgb(128, 64, 255, 64), 1);
+            scaleFont = new Font("sans", 8);
+            scaleBrush = mazeStaticPen.Brush;
+            mazeStaticGridBrush = (new Pen(Color.FromArgb(192, 100, 240, 100), 1)).Brush;
 
-			SetEditMode(EditMode.MoveWall);
-			tempPoints = new PointF[2];
-			coordPoints = new PointF[1];
+            SetEditMode(EditMode.MoveWall);
+            tempPoints = new PointF[2];
+            coordPoints = new PointF[1];
 
             robotBrush = (new Pen(Color.White, 1)).Brush;
             victimBrush = (new Pen(Color.Orange, 1)).Brush;
-			
 
 
 
 
-			graphPen = new Pen(Color.FromArgb(255, 200, 44, 44), 1);
+
+            graphPen = new Pen(Color.FromArgb(255, 200, 44, 44), 1);
             selectedGraphPen = new Pen(Color.FromArgb(192, 255, 255, 55), 2);
-			graphBrush = new Pen(Color.FromArgb(128, 200, 200, 44), 1).Brush;
+            graphBrush = new Pen(Color.FromArgb(128, 200, 200, 44), 1).Brush;
 
-			roomPen = new Pen(Color.FromArgb(32, 0, 222, 0), 2);
-			doorPen = new Pen(Color.FromArgb(64, 55, 255, 55), 3);
+            roomPen = new Pen(Color.FromArgb(32, 0, 222, 0), 2);
+            doorPen = new Pen(Color.FromArgb(64, 55, 255, 55), 3);
             selectedDoorPen = new Pen(Color.FromArgb(192, 55, 255, 55), 4);
 
             selectedWallPen = new Pen(Color.FromArgb(192, 55, 55, 255), 4);
@@ -334,29 +334,29 @@ namespace MazeEditor
             passagePenWithArrow.CustomEndCap = new AdjustableArrowCap(3, 3);
 
 
-			CreateNewMaze();
+            CreateNewMaze();
 
-			wallColor = wallColorPanel.BackColor;
+            wallColor = wallColorPanel.BackColor;
 
-		}
+        }
 
 
-		protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-			if( disposing )
-			{
-				if (components != null) 
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		private void InitializeComponent()
-		{
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
@@ -987,8 +987,8 @@ namespace MazeEditor
             // 
             // mazeWallsListBox
             // 
-            this.mazeWallsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.mazeWallsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
@@ -1232,7 +1232,7 @@ namespace MazeEditor
             // 
             // spaceNameTextBox
             // 
-            this.spaceNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.spaceNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.spaceNameTextBox.Location = new System.Drawing.Point(142, 39);
             this.spaceNameTextBox.Name = "spaceNameTextBox";
@@ -1259,7 +1259,7 @@ namespace MazeEditor
             // 
             // roomFunctionTextBox
             // 
-            this.roomFunctionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.roomFunctionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.roomFunctionTextBox.Location = new System.Drawing.Point(142, 60);
             this.roomFunctionTextBox.Name = "roomFunctionTextBox";
@@ -1362,7 +1362,7 @@ namespace MazeEditor
             // 
             // typeSelectComboBox
             // 
-            this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
@@ -1372,8 +1372,8 @@ namespace MazeEditor
             // 
             // roomsTreeView
             // 
-            this.roomsTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.roomsTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.roomsTreeView.FullRowSelect = true;
             this.roomsTreeView.HideSelection = false;
@@ -1385,7 +1385,7 @@ namespace MazeEditor
             // 
             // recreateRoomsButton
             // 
-            this.recreateRoomsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.recreateRoomsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recreateRoomsButton.Location = new System.Drawing.Point(15, 17);
             this.recreateRoomsButton.Name = "recreateRoomsButton";
@@ -1408,8 +1408,8 @@ namespace MazeEditor
             // 
             // graphTreeView
             // 
-            this.graphTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.graphTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.graphTreeView.FullRowSelect = true;
             this.graphTreeView.HideSelection = false;
@@ -1619,63 +1619,63 @@ namespace MazeEditor
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main() 
-		{ 
-			MazeEditorForm.numberFormatInfo = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.CurrentCulture.NumberFormat.Clone();
-			MazeEditorForm.numberFormatInfo.NumberDecimalSeparator = ".";
-			Application.Run(new MazeEditorForm());
-		}
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            MazeEditorForm.numberFormatInfo = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.CurrentCulture.NumberFormat.Clone();
+            MazeEditorForm.numberFormatInfo.NumberDecimalSeparator = ".";
+            Application.Run(new MazeEditorForm());
+        }
 
-		private void CreateMazeGraphics()
-		{
-			if (mazePanelBitmap != null)
-			{
-				mazePanelBitmap.Dispose();
-			}
-			mazePanelBitmap = new Bitmap(mazePanel.Width,mazePanel.Height);
-			if (mazeBitmapGraphics != null)
-			{
-				mazeBitmapGraphics.Dispose();
-			}
-			mazeBitmapGraphics = Graphics.FromImage(mazePanelBitmap);
-			//mazeBitmapGraphics.TranslateTransform((float)mazePanel.Width / 2, (float)mazePanel.Height / 2);
-			mazeBitmapGraphics.ScaleTransform(zoom,zoom);  
-   
-			invertedMazeMatrix = mazeBitmapGraphics.Transform;
-			invertedMazeMatrix.Invert();
-            
-			if (mazeBitmapStaticGraphics != null)
-			{
-				mazeBitmapStaticGraphics.Dispose();
-			}
-			mazeBitmapStaticGraphics = Graphics.FromImage(mazePanelBitmap);
+        private void CreateMazeGraphics()
+        {
+            if (mazePanelBitmap != null)
+            {
+                mazePanelBitmap.Dispose();
+            }
+            mazePanelBitmap = new Bitmap(mazePanel.Width, mazePanel.Height);
+            if (mazeBitmapGraphics != null)
+            {
+                mazeBitmapGraphics.Dispose();
+            }
+            mazeBitmapGraphics = Graphics.FromImage(mazePanelBitmap);
+            //mazeBitmapGraphics.TranslateTransform((float)mazePanel.Width / 2, (float)mazePanel.Height / 2);
+            mazeBitmapGraphics.ScaleTransform(zoom, zoom);
 
-			if (mazeGraphics != null)
-			{
-				mazeGraphics.Dispose();
-			}
-			mazeGraphics = mazePanel.CreateGraphics();
-		}
+            invertedMazeMatrix = mazeBitmapGraphics.Transform;
+            invertedMazeMatrix.Invert();
 
-		private void CreateNewMaze()
-		{
-			if (mazeWalls != null || mazeRobots != null)
-			{
-				if (MessageBox.Show("Current Maze will be lost. Do you want to proceed?","Create new Maze",MessageBoxButtons.YesNo,MessageBoxIcon.Question) 
-					!= DialogResult.Yes)
-				{
-					return;
-				}
-			}
-			mazeWalls = new ArrayList();
-			mazeRobots = new ArrayList();
+            if (mazeBitmapStaticGraphics != null)
+            {
+                mazeBitmapStaticGraphics.Dispose();
+            }
+            mazeBitmapStaticGraphics = Graphics.FromImage(mazePanelBitmap);
+
+            if (mazeGraphics != null)
+            {
+                mazeGraphics.Dispose();
+            }
+            mazeGraphics = mazePanel.CreateGraphics();
+        }
+
+        private void CreateNewMaze()
+        {
+            if (mazeWalls != null || mazeRobots != null)
+            {
+                if (MessageBox.Show("Current Maze will be lost. Do you want to proceed?", "Create new Maze", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                    != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            mazeWalls = new ArrayList();
+            mazeRobots = new ArrayList();
             mazeVictims = new ArrayList();
             mazeRooms = new ArrayList();
             mazeGraph = new MazeGraph();
@@ -1686,18 +1686,18 @@ namespace MazeEditor
             RefreshMazeWallsTreeView();
 
 
-			mazePanel.Size = new Size((int)((float)widthNumericUpDown.Value * 100 * zoom),(int)((float)heightNumericUpDown.Value * 100 * zoom));
-			CreateMazeGraphics();
+            mazePanel.Size = new Size((int)((float)widthNumericUpDown.Value * 100 * zoom), (int)((float)heightNumericUpDown.Value * 100 * zoom));
+            CreateMazeGraphics();
 
-			createWallInProgress = false;
-			moveInProgress = false;
-			snapToAngle = false;
-			snapToGrid = false;
+            createWallInProgress = false;
+            moveInProgress = false;
+            snapToAngle = false;
+            snapToGrid = false;
 
-			robotNameIndex = 0;
+            robotNameIndex = 0;
 
-			viewPanel.AutoScrollPosition = new Point(mazePanel.Width / -2, mazePanel.Width / -2);
-		}
+            viewPanel.AutoScrollPosition = new Point(mazePanel.Width / -2, mazePanel.Width / -2);
+        }
 
 
         private void LoadMaze()
@@ -1707,8 +1707,8 @@ namespace MazeEditor
             if (fileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            MazeIdentifiable.ClearBusyIdsCache(); 
-            
+            MazeIdentifiable.ClearBusyIdsCache();
+
             JsonHelper jsonHelper = new JsonHelper();
             jsonHelper.LoadAll(fileDialog.FileName);
 
@@ -1748,7 +1748,7 @@ namespace MazeEditor
 
             JsonHelper.SaveAll(fileDialog.FileName, mazeWalls, mazeRobots, mazeVictims, mazeRooms, mazeGraph);
 
-        
+
 
 
         }
@@ -1757,23 +1757,23 @@ namespace MazeEditor
 
 
         private void LoadMazeFromRoBoss()
-		{
-			if (mazeWalls != null || mazeRobots != null)
-			{
-				if (MessageBox.Show("Current Maze will be lost. Do you want to proceed?","Load Maze",MessageBoxButtons.YesNo,MessageBoxIcon.Question) 
-					!= DialogResult.Yes)
-				{
-					return;
-				}
-			}
+        {
+            if (mazeWalls != null || mazeRobots != null)
+            {
+                if (MessageBox.Show("Current Maze will be lost. Do you want to proceed?", "Load Maze", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                    != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
 
-			OpenFileDialog fileDialog = new OpenFileDialog();
-			fileDialog.Filter = "XML file (*.xml)|*.xml";
-			if (fileDialog.ShowDialog() != DialogResult.OK)
-				return;
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "XML file (*.xml)|*.xml";
+            if (fileDialog.ShowDialog() != DialogResult.OK)
+                return;
 
-			mazeWalls = new ArrayList();
-			mazeRobots = new ArrayList();
+            mazeWalls = new ArrayList();
+            mazeRobots = new ArrayList();
             mazeVictims = new ArrayList();
             mazeRooms = new ArrayList();
             mazeGraph = new MazeGraph();
@@ -1783,29 +1783,29 @@ namespace MazeEditor
             recreateGraphTreeView();
             RefreshMazeWallsTreeView();
 
-			try
-			{
+            try
+            {
 
-				XmlTextReader  reader = new XmlTextReader(fileDialog.FileName);
-				reader.WhitespaceHandling = WhitespaceHandling.None;
+                XmlTextReader reader = new XmlTextReader(fileDialog.FileName);
+                reader.WhitespaceHandling = WhitespaceHandling.None;
 
-				XmlDocument worldDocumnet = new XmlDocument();
-				worldDocumnet.Load(reader);
-				reader.Close();
-				reader = null;
+                XmlDocument worldDocumnet = new XmlDocument();
+                worldDocumnet.Load(reader);
+                reader.Close();
+                reader = null;
 
-				XmlNode worldNode = worldDocumnet.SelectSingleNode("/World");		//whole settings document
-				if (worldNode == null)
-				{
-					MessageBox.Show("World node missing - probaly not a World Definition file.", "", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-					return;
-				}
-				worldNameTextBox.Text = XmlHelper.GetStringAttributeFromNode(worldNode,"name","");
+                XmlNode worldNode = worldDocumnet.SelectSingleNode("/World");		//whole settings document
+                if (worldNode == null)
+                {
+                    MessageBox.Show("World node missing - probaly not a World Definition file.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                worldNameTextBox.Text = XmlHelper.GetStringAttributeFromNode(worldNode, "name", "");
 
-				XmlNodeList robotsNodeList = worldDocumnet.SelectNodes("/World/Robots/Robot");
-				XmlNodeList environmentNodeList = worldDocumnet.SelectNodes("/World/Environment/Geoms/Geom");
+                XmlNodeList robotsNodeList = worldDocumnet.SelectNodes("/World/Robots/Robot");
+                XmlNodeList environmentNodeList = worldDocumnet.SelectNodes("/World/Environment/Geoms/Geom");
 
-				XmlNode floorNode = environmentNodeList.Item(0);
+                XmlNode floorNode = environmentNodeList.Item(0);
                 widthNumericUpDown.Value = (decimal)XmlHelper.GetDoubleAttributeFromNode(floorNode, "size_x");
                 heightNumericUpDown.Value = (decimal)XmlHelper.GetDoubleAttributeFromNode(floorNode, "size_y");
                 //mazePanel.Size = new Size(
@@ -1815,99 +1815,99 @@ namespace MazeEditor
                 //widthNumericUpDown.Value = (decimal)mazePanel.Size.Width / 100;
                 //heightNumericUpDown.Value = (decimal)mazePanel.Size.Height / 100;
 
-				for (int i = 1; i < environmentNodeList.Count ; i++)
-				{
-					mazeWalls.Add(MazeWall.BuildFromXmlNode(environmentNodeList.Item(i)));
-				}
+                for (int i = 1; i < environmentNodeList.Count; i++)
+                {
+                    mazeWalls.Add(MazeWall.BuildFromXmlNode(environmentNodeList.Item(i)));
+                }
 
-				for (int i = 0; i < robotsNodeList.Count ; i++)
-				{
-					mazeRobots.Add(MazeRobot.BuildFromXmlNode(robotsNodeList.Item(i)));
-				}
-
-
-
-
-			
-				worldDocumnet = null;
-			
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message, "", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-				return;
-			}
+                for (int i = 0; i < robotsNodeList.Count; i++)
+                {
+                    mazeRobots.Add(MazeRobot.BuildFromXmlNode(robotsNodeList.Item(i)));
+                }
 
 
 
 
-			
-			createWallInProgress = false;
-			moveInProgress = false;
-			snapToAngle = false;
-			snapToGrid = false;
+
+                worldDocumnet = null;
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
 
 
-			robotNameIndex = 0;
 
-			viewPanel.AutoScrollPosition = new Point(0,0);
-			mazePanel_Paint(this,null);
-		}
 
-		private void mainToolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
-		{
-			if (e.Button == newToolBarButton)
-			{
-				CreateNewMaze();
-			}
-			else if (e.Button == loadToolBarButton)
-			{
-				LoadMaze();
-			}
-			else if (e.Button == saveToolBarButton)
-			{
-				SaveMaze();
-			}
 
-			else if (e.Button == createToolBarButton) 
-			{
-				moveToolBarButton.Pushed = false;
-				deleteToolBarButton.Pushed = false;
-				selectEditMode();
-			}
-			else if (e.Button == moveToolBarButton)
-			{
-				createToolBarButton.Pushed = false;
-				deleteToolBarButton.Pushed = false;
-				selectEditMode();
-			}
-			else if (e.Button == deleteToolBarButton)
-			{
-				moveToolBarButton.Pushed = false;
-				createToolBarButton.Pushed = false;
-				selectEditMode();
-			}
+            createWallInProgress = false;
+            moveInProgress = false;
+            snapToAngle = false;
+            snapToGrid = false;
 
-			else if (e.Button == zoomPlusToolBarButton)
-			{
-				changeZoom(1);
-			}
-			else if (e.Button == zoomMinusToolBarButton)
-			{
-				changeZoom(-1);
-			}
-			else if (e.Button == widthPlusToolBarButton)
-			{
-				mazePanel.Width += mazePanel.Width / 5;
-				CreateMazeGraphics();
-				mazePanel_Paint(this,null);
-			}
-			else if (e.Button == heightPlusToolBarButton)
-			{
-				mazePanel.Height += mazePanel.Height / 5;
-				CreateMazeGraphics();
-				mazePanel_Paint(this,null);
-			}
+
+            robotNameIndex = 0;
+
+            viewPanel.AutoScrollPosition = new Point(0, 0);
+            mazePanel_Paint(this, null);
+        }
+
+        private void mainToolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+        {
+            if (e.Button == newToolBarButton)
+            {
+                CreateNewMaze();
+            }
+            else if (e.Button == loadToolBarButton)
+            {
+                LoadMaze();
+            }
+            else if (e.Button == saveToolBarButton)
+            {
+                SaveMaze();
+            }
+
+            else if (e.Button == createToolBarButton)
+            {
+                moveToolBarButton.Pushed = false;
+                deleteToolBarButton.Pushed = false;
+                selectEditMode();
+            }
+            else if (e.Button == moveToolBarButton)
+            {
+                createToolBarButton.Pushed = false;
+                deleteToolBarButton.Pushed = false;
+                selectEditMode();
+            }
+            else if (e.Button == deleteToolBarButton)
+            {
+                moveToolBarButton.Pushed = false;
+                createToolBarButton.Pushed = false;
+                selectEditMode();
+            }
+
+            else if (e.Button == zoomPlusToolBarButton)
+            {
+                changeZoom(1);
+            }
+            else if (e.Button == zoomMinusToolBarButton)
+            {
+                changeZoom(-1);
+            }
+            else if (e.Button == widthPlusToolBarButton)
+            {
+                mazePanel.Width += mazePanel.Width / 5;
+                CreateMazeGraphics();
+                mazePanel_Paint(this, null);
+            }
+            else if (e.Button == heightPlusToolBarButton)
+            {
+                mazePanel.Height += mazePanel.Height / 5;
+                CreateMazeGraphics();
+                mazePanel_Paint(this, null);
+            }
             else if (e.Button == importRoBossToolBarButton)
             {
                 LoadMazeFromRoBoss();
@@ -1918,85 +1918,85 @@ namespace MazeEditor
             }
 
 
-		}
+        }
 
-		private void changeZoom(int zoomDirection)
-		{
-			float oldZoom = zoom; 
+        private void changeZoom(int zoomDirection)
+        {
+            float oldZoom = zoom;
 
-			if (zoomDirection > 0)
-				zoom *= zoomStep;
-			else if (zoomDirection < 0)
-				zoom /= zoomStep;
+            if (zoomDirection > 0)
+                zoom *= zoomStep;
+            else if (zoomDirection < 0)
+                zoom /= zoomStep;
 
-			float maxZoom = 20000 / (float)(Math.Max(widthNumericUpDown.Value, heightNumericUpDown.Value) * 100);
-			float minZoom =  1/zoomStep * (float)Math.Min((decimal)viewPanel.Width / (widthNumericUpDown.Value * 100), (decimal)viewPanel.Height / (heightNumericUpDown.Value * 100));
-            
-			if ((zoom > maxZoom && oldZoom < zoom) || (zoom < minZoom && oldZoom > zoom))
-				zoom = oldZoom;
+            float maxZoom = 20000 / (float)(Math.Max(widthNumericUpDown.Value, heightNumericUpDown.Value) * 100);
+            float minZoom = 1 / zoomStep * (float)Math.Min((decimal)viewPanel.Width / (widthNumericUpDown.Value * 100), (decimal)viewPanel.Height / (heightNumericUpDown.Value * 100));
+
+            if ((zoom > maxZoom && oldZoom < zoom) || (zoom < minZoom && oldZoom > zoom))
+                zoom = oldZoom;
 
 
-			mazePanel.Size = new Size((int)((float)widthNumericUpDown.Value * 100 * zoom),(int)((float)heightNumericUpDown.Value * 100 * zoom));
-			CreateMazeGraphics();
-			mazePanel_Paint(this,null);
+            mazePanel.Size = new Size((int)((float)widthNumericUpDown.Value * 100 * zoom), (int)((float)heightNumericUpDown.Value * 100 * zoom));
+            CreateMazeGraphics();
+            mazePanel_Paint(this, null);
 
-		}
+        }
 
-		private void selectEditMode()
-		{
-			if (createToolBarButton.Pushed)
-			{
-				if (objectSelectorTabControl.SelectedTab == wallsTabPage)
-					SetEditMode(EditMode.CreateWall);
-				else if (objectSelectorTabControl.SelectedTab == robotsTabPage)
-					SetEditMode(EditMode.CreateRobot);
-				else if (objectSelectorTabControl.SelectedTab == victimsTabPage)
-					SetEditMode(EditMode.CreateVictim);
-				else if (objectSelectorTabControl.SelectedTab == graphTabPage)
-					SetEditMode(EditMode.CreateNode);
-				else 
-					SetEditMode(EditMode.Idle);
-			}
-			else if (moveToolBarButton.Pushed)
-			{
-				if (objectSelectorTabControl.SelectedTab == wallsTabPage)
-					SetEditMode(EditMode.MoveWall);
+        private void selectEditMode()
+        {
+            if (createToolBarButton.Pushed)
+            {
+                if (objectSelectorTabControl.SelectedTab == wallsTabPage)
+                    SetEditMode(EditMode.CreateWall);
+                else if (objectSelectorTabControl.SelectedTab == robotsTabPage)
+                    SetEditMode(EditMode.CreateRobot);
+                else if (objectSelectorTabControl.SelectedTab == victimsTabPage)
+                    SetEditMode(EditMode.CreateVictim);
+                else if (objectSelectorTabControl.SelectedTab == graphTabPage)
+                    SetEditMode(EditMode.CreateNode);
+                else
+                    SetEditMode(EditMode.Idle);
+            }
+            else if (moveToolBarButton.Pushed)
+            {
+                if (objectSelectorTabControl.SelectedTab == wallsTabPage)
+                    SetEditMode(EditMode.MoveWall);
                 else if (objectSelectorTabControl.SelectedTab == robotsTabPage)
                     SetEditMode(EditMode.MoveRobot);
                 else if (objectSelectorTabControl.SelectedTab == victimsTabPage)
                     SetEditMode(EditMode.MoveVictim);
                 else if (objectSelectorTabControl.SelectedTab == graphTabPage)
-					SetEditMode(EditMode.MoveNode);
-				else 
-					SetEditMode(EditMode.Idle);
-			}
-			else if (deleteToolBarButton.Pushed)
-			{
-				if (objectSelectorTabControl.SelectedTab == wallsTabPage)
-					SetEditMode(EditMode.DeleteWall);
+                    SetEditMode(EditMode.MoveNode);
+                else
+                    SetEditMode(EditMode.Idle);
+            }
+            else if (deleteToolBarButton.Pushed)
+            {
+                if (objectSelectorTabControl.SelectedTab == wallsTabPage)
+                    SetEditMode(EditMode.DeleteWall);
                 else if (objectSelectorTabControl.SelectedTab == robotsTabPage)
                     SetEditMode(EditMode.DeleteRobot);
                 else if (objectSelectorTabControl.SelectedTab == victimsTabPage)
                     SetEditMode(EditMode.DeleteVictim);
-                else 
-					SetEditMode(EditMode.Idle);
-			}
+                else
+                    SetEditMode(EditMode.Idle);
+            }
 
             if (objectSelectorTabControl.SelectedTab == roomsTabPage)
                 SetEditMode(EditMode.SelectRoom);
 
-		}
-		
-		
-		private void mazePanel_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
-		{
-			mazeBitmapStaticGraphics.Clear(mazeBackColor);
-			foreach (MazeWall wall in mazeWalls)
-			{
-                Pen wallPen = new Pen(wall.Color,wall.Width);
+        }
+
+
+        private void mazePanel_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            mazeBitmapStaticGraphics.Clear(mazeBackColor);
+            foreach (MazeWall wall in mazeWalls)
+            {
+                Pen wallPen = new Pen(wall.Color, wall.Width);
                 mazeBitmapGraphics.DrawLine(wallPen, wall.points[0], wall.points[1]);
                 wallPen.Dispose();
-			}
+            }
             if (selectedWall != null)
             {
                 mazeBitmapGraphics.DrawLine(selectedWallPen, selectedWall.points[0], selectedWall.points[1]);
@@ -2004,7 +2004,7 @@ namespace MazeEditor
 
             int size = sizeTrackBar.Value;
             int sizeOffset = sizeTrackBar.Value / 2;
-            
+
             foreach (MazeRobot robot in mazeRobots)
             {
                 mazeBitmapGraphics.FillEllipse(robotBrush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
@@ -2014,7 +2014,7 @@ namespace MazeEditor
                 mazeBitmapGraphics.FillEllipse(victimBrush, victim.position.X - sizeOffset / 2, victim.position.Y - sizeOffset, size / 2, size);
             }
             if (objectSelectorTabControl.SelectedTab == graphTabPage && mazeRooms != null)
-			{
+            {
                 foreach (MazeSpace room in mazeRooms)
                     DrawRoom(room, false);
                 foreach (MazeNode node in mazeGraph.MazeGraphNodes)
@@ -2022,7 +2022,7 @@ namespace MazeEditor
                     if (node.Door != null)
                         mazeBitmapGraphics.FillEllipse(graphBrush, (float)node.position.x - sizeOffset, (float)node.position.y - sizeOffset, size, size);
                     else
-                        mazeBitmapGraphics.FillEllipse(graphBrush, (float)node.position.x - sizeOffset * 2, (float)node.position.y - sizeOffset*2, size * 2, size * 2);                    
+                        mazeBitmapGraphics.FillEllipse(graphBrush, (float)node.position.x - sizeOffset * 2, (float)node.position.y - sizeOffset * 2, size * 2, size * 2);
                 }
                 if (graphTreeView.SelectedNode != null && graphTreeView.SelectedNode.Tag as MazeArc != null)
                 {
@@ -2038,19 +2038,19 @@ namespace MazeEditor
                 }
 
                 foreach (MazeArc arc in mazeGraph.MazeGraphArcs)
-				{
+                {
                     graphPen.CustomEndCap = new AdjustableArrowCap(size / 2, size / 2);
                     graphPen.CustomStartCap = new AdjustableArrowCap(1, size / 2);
                     Vector2D arcDir = new Vector2D(arc.from.position, arc.to.position);
                     arcDir.Normalize();
-                    Point2D from = arc.from.position.GetTranslatedPoint(arcDir * (arc.from.Door == null ? size : size/2));
+                    Point2D from = arc.from.position.GetTranslatedPoint(arcDir * (arc.from.Door == null ? size : size / 2));
                     arcDir.Inverse();
-                    Point2D to = arc.to.position.GetTranslatedPoint(arcDir * (arc.to.Door == null ? size  : size/2));
+                    Point2D to = arc.to.position.GetTranslatedPoint(arcDir * (arc.to.Door == null ? size : size / 2));
 
                     mazeBitmapGraphics.DrawLine(graphPen, from, to);
                 }
             }
-            if  (objectSelectorTabControl.SelectedTab == roomsTabPage && mazeRooms != null)
+            if (objectSelectorTabControl.SelectedTab == roomsTabPage && mazeRooms != null)
             {
                 foreach (MazeSpace room in mazeRooms)
                 {
@@ -2091,7 +2091,7 @@ namespace MazeEditor
                         }
                         else if (door.MazeDoorType == MazeGateType.doorOneWayFromTo || door.MazeDoorType == MazeGateType.doorOneWayToFrom)      //draw direction
                         {
-                            bool pointsIn = Math.Abs(v.AngleBetween(new Vector2D(door.Center, door.RoomFrom.CenterPoint ))) < Math.PI / 2;
+                            bool pointsIn = Math.Abs(v.AngleBetween(new Vector2D(door.Center, door.RoomFrom.CenterPoint))) < Math.PI / 2;
                             if ((!pointsIn && door.MazeDoorType == MazeGateType.doorOneWayToFrom) ||
                                 (pointsIn && door.MazeDoorType == MazeGateType.doorOneWayFromTo))
                                 v.Inverse();
@@ -2100,16 +2100,16 @@ namespace MazeEditor
                     }
                 }
 
-			}
-		
-			DrawStatic();
+            }
 
-			mazeGraphics.DrawImage(mazePanelBitmap,0,0);
-		}
+            DrawStatic();
 
-		private void DrawRoom(MazeSpace room, bool fill)
-		{
-			PointF [] points = new PointF [room.Walls.Count];
+            mazeGraphics.DrawImage(mazePanelBitmap, 0, 0);
+        }
+
+        private void DrawRoom(MazeSpace room, bool fill)
+        {
+            PointF[] points = new PointF[room.Walls.Count];
             for (int i = 0; i < room.Points.Length; i++)
                 points[i] = room.Points[i];
 
@@ -2129,97 +2129,97 @@ namespace MazeEditor
                 mazeBitmapGraphics.FillPolygon(roomPen.Brush, points, System.Drawing.Drawing2D.FillMode.Winding);
             }
 
-		}
+        }
 
 
-		private void DrawStatic()
-		{
-			int deltaX = -viewPanel.AutoScrollPosition.X;
-			int deltaY = -viewPanel.AutoScrollPosition.Y;
+        private void DrawStatic()
+        {
+            int deltaX = -viewPanel.AutoScrollPosition.X;
+            int deltaY = -viewPanel.AutoScrollPosition.Y;
 
-			if (snapToGrid)
-			{
-				for (int x = 10 ; x < mazePanelBitmap.Width ; x += 10)
-				{
-					for (int y = 10 ; y < mazePanelBitmap.Height ; y += 10)
-					{
-						mazeBitmapStaticGraphics.FillRectangle(mazeStaticGridBrush,x,y,1,1);                    
-					}
-				}
-			}
-			mazeBitmapStaticGraphics.DrawLine(mazeStaticPen,10 + deltaX,10 + deltaY,10 + deltaX,13 + deltaY);
-			mazeBitmapStaticGraphics.DrawLine(mazeStaticPen,10 + deltaX,13 + deltaY,110 + deltaX,13 + deltaY);
-			mazeBitmapStaticGraphics.DrawLine(mazeStaticPen,110 + deltaX,13 + deltaY,110 + deltaX,10 + deltaY);
-			mazeBitmapStaticGraphics.DrawString((1/zoom).ToString("f2")+"m",scaleFont,scaleBrush,40+deltaX,20+deltaY);
-		}
+            if (snapToGrid)
+            {
+                for (int x = 10; x < mazePanelBitmap.Width; x += 10)
+                {
+                    for (int y = 10; y < mazePanelBitmap.Height; y += 10)
+                    {
+                        mazeBitmapStaticGraphics.FillRectangle(mazeStaticGridBrush, x, y, 1, 1);
+                    }
+                }
+            }
+            mazeBitmapStaticGraphics.DrawLine(mazeStaticPen, 10 + deltaX, 10 + deltaY, 10 + deltaX, 13 + deltaY);
+            mazeBitmapStaticGraphics.DrawLine(mazeStaticPen, 10 + deltaX, 13 + deltaY, 110 + deltaX, 13 + deltaY);
+            mazeBitmapStaticGraphics.DrawLine(mazeStaticPen, 110 + deltaX, 13 + deltaY, 110 + deltaX, 10 + deltaY);
+            mazeBitmapStaticGraphics.DrawString((1 / zoom).ToString("f2") + "m", scaleFont, scaleBrush, 40 + deltaX, 20 + deltaY);
+        }
 
-		private void SetEditMode(EditMode newEditMode)
-		{
+        private void SetEditMode(EditMode newEditMode)
+        {
 
-			editMode = newEditMode;
-			createWallInProgress = false;
-			moveInProgress = false;
-		}
+            editMode = newEditMode;
+            createWallInProgress = false;
+            moveInProgress = false;
+        }
 
-		protected override bool ProcessDialogKey(Keys keyData)
-		{
-			if (keyData == Keys.Escape)
-			{
-				CancelAction();
-			}
-			
-			if ((keyData & Keys.Control) != 0)
-			{
-				SnapToAngle = !SnapToAngle;
-			}
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                CancelAction();
+            }
 
-			if ((keyData & Keys.Shift) != 0)
-			{
-				SnapToGrid = !SnapToGrid;
-			}
-			return false;
-		}
+            if ((keyData & Keys.Control) != 0)
+            {
+                SnapToAngle = !SnapToAngle;
+            }
 
-		private void CancelAction()
-		{
-			if (moveInProgress)
-			{
+            if ((keyData & Keys.Shift) != 0)
+            {
+                SnapToGrid = !SnapToGrid;
+            }
+            return false;
+        }
+
+        private void CancelAction()
+        {
+            if (moveInProgress)
+            {
                 tempPoints[0] = firstPoint;
                 invertedMazeMatrix.TransformPoints(tempPoints);
 
-				if (editMode == EditMode.MoveWall)
-				{
+                if (editMode == EditMode.MoveWall)
+                {
                     selectedWall.points[movedWallPointIndex].X = tempPoints[0].X;
                     selectedWall.points[movedWallPointIndex].Y = tempPoints[0].Y;
                     updateWallDisplayedInfo();
-				}
-				else if (editMode == EditMode.MoveRobot)
-				{
+                }
+                else if (editMode == EditMode.MoveRobot)
+                {
                     selectedRobot.position = tempPoints[0];
-				}
-				else if (editMode == EditMode.MoveNode)
-				{
+                }
+                else if (editMode == EditMode.MoveNode)
+                {
                     selectedNode.position.x = tempPoints[0].X;
                     selectedNode.position.y = tempPoints[0].Y;
-				}
-			}
+                }
+            }
 
-			selectEditMode();
-			mazePanel_Paint(this, null);
-		}
+            selectEditMode();
+            mazePanel_Paint(this, null);
+        }
 
 
 
-		private void mazePanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				CancelAction();
-			}
-			else if (editMode == EditMode.CreateWall)
-			{
-				AddWallPoint(e.X, e.Y);
-			}
+        private void mazePanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                CancelAction();
+            }
+            else if (editMode == EditMode.CreateWall)
+            {
+                AddWallPoint(e.X, e.Y);
+            }
             else if (editMode == EditMode.CreateRobot)
             {
                 CreateRobot(e.X, e.Y);
@@ -2229,13 +2229,13 @@ namespace MazeEditor
                 CreateVictim(e.X, e.Y);
             }
             else if (editMode == EditMode.CreateNode)
-			{
-				//CreateNode(e.X, e.Y);
-			}
-			else if (editMode == EditMode.MoveWall)
-			{
-				MoveWallPoint(e.X, e.Y);
-			}
+            {
+                //CreateNode(e.X, e.Y);
+            }
+            else if (editMode == EditMode.MoveWall)
+            {
+                MoveWallPoint(e.X, e.Y);
+            }
             else if (editMode == EditMode.MoveRobot)
             {
                 MoveRobot(e.X, e.Y);
@@ -2245,13 +2245,13 @@ namespace MazeEditor
                 MoveVictim(e.X, e.Y);
             }
             else if (editMode == EditMode.MoveNode)
-			{
-				MoveNode(e.X, e.Y);
-			}
-			else if (editMode == EditMode.DeleteWall)
-			{
-				DeletWall(e.X, e.Y);
-			}
+            {
+                MoveNode(e.X, e.Y);
+            }
+            else if (editMode == EditMode.DeleteWall)
+            {
+                DeletWall(e.X, e.Y);
+            }
             else if (editMode == EditMode.DeleteRobot)
             {
                 DeleteRobot(e.X, e.Y);
@@ -2275,7 +2275,7 @@ namespace MazeEditor
             invertedMazeMatrix.TransformPoints(tempPoints);
 
             foreach (MazeSpace room in mazeRooms)
-                if ( room.ContainsPoint( tempPoints[0])) 
+                if (room.ContainsPoint(tempPoints[0]))
                     foreach (TreeNode roomNode in roomsTreeView.Nodes)
                         if (roomNode.Tag == room)
                         {
@@ -2284,54 +2284,54 @@ namespace MazeEditor
                         }
         }
 
-		private void mazePanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			coordPoints[0].X = e.X;
-			coordPoints[0].Y = e.Y;
-			ProcessSnaps(ref coordPoints[0], coordPoints[0]);
-			invertedMazeMatrix.TransformPoints(coordPoints);
-			coordXLabel.Text=(coordPoints[0].X / 100).ToString("f3");
-			coordYLabel.Text=(coordPoints[0].Y / 100).ToString("f3");
+        private void mazePanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            coordPoints[0].X = e.X;
+            coordPoints[0].Y = e.Y;
+            ProcessSnaps(ref coordPoints[0], coordPoints[0]);
+            invertedMazeMatrix.TransformPoints(coordPoints);
+            coordXLabel.Text = (coordPoints[0].X / 100).ToString("f3");
+            coordYLabel.Text = (coordPoints[0].Y / 100).ToString("f3");
 
 
-			if (editMode == EditMode.CreateWall)
-			{
-				if (createWallInProgress)
-				{
-					tempPoints[1].X = e.X;
-					tempPoints[1].Y = e.Y;
-					ProcessSnaps(ref tempPoints[1],firstPoint);
-					mazePanel_Paint(this,null);
-					mazeGraphics.DrawLine(notCreatedWallPen,firstPoint, tempPoints[1]);
-				}
-			}
-			else if (editMode == EditMode.MoveWall)
-			{
-				if (moveInProgress)
-				{
-					tempPoints[1].X = e.X;
-					tempPoints[1].Y = e.Y;
-					ProcessSnaps(ref tempPoints[1], firstPoint);
-					invertedMazeMatrix.TransformPoints(tempPoints);
-					selectedWall.points[movedWallPointIndex].X = tempPoints[1].X;
-					selectedWall.points[movedWallPointIndex].Y = tempPoints[1].Y;
+            if (editMode == EditMode.CreateWall)
+            {
+                if (createWallInProgress)
+                {
+                    tempPoints[1].X = e.X;
+                    tempPoints[1].Y = e.Y;
+                    ProcessSnaps(ref tempPoints[1], firstPoint);
+                    mazePanel_Paint(this, null);
+                    mazeGraphics.DrawLine(notCreatedWallPen, firstPoint, tempPoints[1]);
+                }
+            }
+            else if (editMode == EditMode.MoveWall)
+            {
+                if (moveInProgress)
+                {
+                    tempPoints[1].X = e.X;
+                    tempPoints[1].Y = e.Y;
+                    ProcessSnaps(ref tempPoints[1], firstPoint);
+                    invertedMazeMatrix.TransformPoints(tempPoints);
+                    selectedWall.points[movedWallPointIndex].X = tempPoints[1].X;
+                    selectedWall.points[movedWallPointIndex].Y = tempPoints[1].Y;
                     updateWallDisplayedInfo();
-					mazePanel_Paint(this, null);
-				}
-			}
-			else if (editMode == EditMode.MoveRobot)
-			{
-				if (moveInProgress)
-				{
-					tempPoints[1].X = e.X;
-					tempPoints[1].Y = e.Y;
-					ProcessSnaps(ref tempPoints[1], firstPoint);
-					invertedMazeMatrix.TransformPoints(tempPoints);
-					selectedRobot.position.X = tempPoints[1].X;
-					selectedRobot.position.Y = tempPoints[1].Y;
-					mazePanel_Paint(this, null);
-				}
-			}
+                    mazePanel_Paint(this, null);
+                }
+            }
+            else if (editMode == EditMode.MoveRobot)
+            {
+                if (moveInProgress)
+                {
+                    tempPoints[1].X = e.X;
+                    tempPoints[1].Y = e.Y;
+                    ProcessSnaps(ref tempPoints[1], firstPoint);
+                    invertedMazeMatrix.TransformPoints(tempPoints);
+                    selectedRobot.position.X = tempPoints[1].X;
+                    selectedRobot.position.Y = tempPoints[1].Y;
+                    mazePanel_Paint(this, null);
+                }
+            }
             else if (editMode == EditMode.MoveVictim)
             {
                 if (moveInProgress)
@@ -2346,55 +2346,55 @@ namespace MazeEditor
                 }
             }
             else if (editMode == EditMode.MoveNode)
-			{
-				if (moveInProgress)
-				{
-					tempPoints[1].X = e.X;
-					tempPoints[1].Y = e.Y;
+            {
+                if (moveInProgress)
+                {
+                    tempPoints[1].X = e.X;
+                    tempPoints[1].Y = e.Y;
                     ProcessSnaps(ref tempPoints[1], firstPoint);
-					invertedMazeMatrix.TransformPoints(tempPoints);
-                    if ( selectedNode.Room.ContainsPoint( tempPoints[1]))  /// czy punkt w pokoju...
+                    invertedMazeMatrix.TransformPoints(tempPoints);
+                    if (selectedNode.Room.ContainsPoint(tempPoints[1]))  /// czy punkt w pokoju...
                     {
-					    selectedNode.position.x = tempPoints[1].X;
-					    selectedNode.position.y = tempPoints[1].Y;
-					    mazePanel_Paint(this, null);
+                        selectedNode.position.x = tempPoints[1].X;
+                        selectedNode.position.y = tempPoints[1].Y;
+                        mazePanel_Paint(this, null);
                     }
-				}
-			}
+                }
+            }
 
 
-		}
+        }
 
 
 
-		private void mazePanel_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if (e.Delta > 0)
-				changeZoom(1);
-			else if (e.Delta < 0)
-				changeZoom(-1);
+        private void mazePanel_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                changeZoom(1);
+            else if (e.Delta < 0)
+                changeZoom(-1);
 
-		
-		}
 
-		private void ProcessSnaps(ref PointF snappedPoint, PointF referencePoint)
-		{
-			if (snapToAngle)
-			{
-				if (Math.Abs(snappedPoint.X - referencePoint.X) < Math.Abs(snappedPoint.Y - referencePoint.Y))
-				{
-					snappedPoint.X = referencePoint.X;
-				}
-				else
-				{
-					snappedPoint.Y = referencePoint.Y;
-				}
-			}
-			if (snapToGrid)
-			{
-				snappedPoint.X = (float)Math.Round(snappedPoint.X / 10) * 10;
-				snappedPoint.Y = (float)Math.Round(snappedPoint.Y / 10) * 10;
-			}
+        }
+
+        private void ProcessSnaps(ref PointF snappedPoint, PointF referencePoint)
+        {
+            if (snapToAngle)
+            {
+                if (Math.Abs(snappedPoint.X - referencePoint.X) < Math.Abs(snappedPoint.Y - referencePoint.Y))
+                {
+                    snappedPoint.X = referencePoint.X;
+                }
+                else
+                {
+                    snappedPoint.Y = referencePoint.Y;
+                }
+            }
+            if (snapToGrid)
+            {
+                snappedPoint.X = (float)Math.Round(snappedPoint.X / 10) * 10;
+                snappedPoint.Y = (float)Math.Round(snappedPoint.Y / 10) * 10;
+            }
             if (snapToWall)
             {
                 tempPoints[0] = snappedPoint;
@@ -2402,7 +2402,7 @@ namespace MazeEditor
                 if (mazeWalls == null || mazeWalls.Count == 0)
                     return;
                 double distance, minDistance = double.MaxValue;
-                Point2D mindistancePoint = new Point2D(0,0);
+                Point2D mindistancePoint = new Point2D(0, 0);
                 foreach (MazeWall wall in mazeWalls)
                 {
                     if (wall != selectedWall)
@@ -2419,71 +2419,72 @@ namespace MazeEditor
                 mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
                 snappedPoint = tempPoints[0];
             }
-		}
+        }
 
-		private void CreateRobot(int x, int y)
-		{
-			tempPoints[0].X = x;
-			tempPoints[0].Y = y;
-			invertedMazeMatrix.TransformPoints(tempPoints);
-			mazeRobots.Add(new MazeRobot(robotTypeTextBox.Text,robotNameTextBox.Text+robotNameIndex.ToString(),tempPoints[0],(float)robotHeightNumericUpDown.Value*100));
-			robotNameIndex++;
-			mazePanel_Paint(this,null);
-		}
+        private void CreateRobot(int x, int y)
+        {
+            tempPoints[0].X = x;
+            tempPoints[0].Y = y;
+            invertedMazeMatrix.TransformPoints(tempPoints);
+            mazeRobots.Add(new MazeRobot(robotTypeTextBox.Text, robotNameTextBox.Text + robotNameIndex.ToString(), tempPoints[0], (float)robotHeightNumericUpDown.Value * 100));
+            robotNameIndex++;
+            mazePanel_Paint(this, null);
+        }
 
-		private void CreateVictim(int x, int y)
-		{
-			tempPoints[0].X = x;
-			tempPoints[0].Y = y;
-			invertedMazeMatrix.TransformPoints(tempPoints);
+        private void CreateVictim(int x, int y)
+        {
+            tempPoints[0].X = x;
+            tempPoints[0].Y = y;
+            invertedMazeMatrix.TransformPoints(tempPoints);
             mazeVictims.Add(new MazeVictim(tempPoints[0]));
-			mazePanel_Paint(this,null);
-		}
+            mazePanel_Paint(this, null);
+        }
 
-		private void CreateNode(int x, int y)
-		{
+        private void CreateNode(int x, int y)
+        {
             throw new NotImplementedException();
- /*           if (mazeGraph == null)
-                return;
-			tempPoints[0].X = x;
-			tempPoints[0].Y = y;
-			invertedMazeMatrix.TransformPoints(tempPoints);
-            MazeGraphNode newNode = new MazeGraphNode(new Point2D(tempPoints[0].X, tempPoints[0].Y), MazeGraphNodeType.SpaceNode);
-            mazeGraph.AddNode(newNode);
+            /*           if (mazeGraph == null)
+                           return;
+                       tempPoints[0].X = x;
+                       tempPoints[0].Y = y;
+                       invertedMazeMatrix.TransformPoints(tempPoints);
+                       MazeGraphNode newNode = new MazeGraphNode(new Point2D(tempPoints[0].X, tempPoints[0].Y), MazeGraphNodeType.SpaceNode);
+                       mazeGraph.AddNode(newNode);
 
-            foreach (MazeGraphNode oldNode in mazeGraph.MazeGraphNodes)
-			{
-				if (oldNode == newNode)
-					continue;
-				Segment2D edgeSegment = new Segment2D(oldNode.position.x, oldNode.position.y, newNode.position.x, newNode.position.y);
-				foreach (MazeWall wall in mazeWalls)
-				{
-					Segment2D wallSegment = new Segment2D(wall.points[0], wall.points[1]);
-					if (!double.IsNaN(wallSegment.GetIntersectionPoint(edgeSegment).x))
-					{
-						edgeSegment = null;
-						break;
-					}
-				}
-				if (edgeSegment != null)
-				{
-                    mazeGraph.AddArc(oldNode, newNode);
-                    mazeGraph.AddArc(newNode, oldNode);
-                }
-			}
-			mazePanel_Paint(this,null);
-*/		}
+                       foreach (MazeGraphNode oldNode in mazeGraph.MazeGraphNodes)
+                       {
+                           if (oldNode == newNode)
+                               continue;
+                           Segment2D edgeSegment = new Segment2D(oldNode.position.x, oldNode.position.y, newNode.position.x, newNode.position.y);
+                           foreach (MazeWall wall in mazeWalls)
+                           {
+                               Segment2D wallSegment = new Segment2D(wall.points[0], wall.points[1]);
+                               if (!double.IsNaN(wallSegment.GetIntersectionPoint(edgeSegment).x))
+                               {
+                                   edgeSegment = null;
+                                   break;
+                               }
+                           }
+                           if (edgeSegment != null)
+                           {
+                               mazeGraph.AddArc(oldNode, newNode);
+                               mazeGraph.AddArc(newNode, oldNode);
+                           }
+                       }
+                       mazePanel_Paint(this,null);
+           */
+        }
 
-		private void AddWallPoint(int x, int y)
-		{
+        private void AddWallPoint(int x, int y)
+        {
 
-			if (createWallInProgress)		
-			{
-				//				wallPoints[1].X = x;
-				//				wallPoints[1].Y = y;
-				tempPoints[0] = firstPoint;
-				firstPoint = tempPoints[1];				
-				invertedMazeMatrix.TransformPoints(tempPoints);
+            if (createWallInProgress)
+            {
+                //				wallPoints[1].X = x;
+                //				wallPoints[1].Y = y;
+                tempPoints[0] = firstPoint;
+                firstPoint = tempPoints[1];
+                invertedMazeMatrix.TransformPoints(tempPoints);
                 MazeWall newWall = new MazeWall(tempPoints[0], tempPoints[1], (float)wallWidthNumericUpDown.Value * 100, (float)wallHeightNumericUpDown.Value * 100, wallColor);
                 if (createDoorWallCheckBox.Checked)
                 {
@@ -2495,94 +2496,94 @@ namespace MazeEditor
                 mazeWalls.Add(newWall);
                 RefreshMazeWallsTreeView();
                 mazeWallsListBox.SelectedItem = newWall;
-			}
-			else
-			{
-				createWallInProgress = true;
-				firstPoint.X = x;
-				firstPoint.Y = y;
-				if (snapToGrid)
-				{
-					firstPoint.X = (float)Math.Round(firstPoint.X / 10) * 10;
-					firstPoint.Y = (float)Math.Round(firstPoint.Y / 10) * 10;
-				}
+            }
+            else
+            {
+                createWallInProgress = true;
+                firstPoint.X = x;
+                firstPoint.Y = y;
+                if (snapToGrid)
+                {
+                    firstPoint.X = (float)Math.Round(firstPoint.X / 10) * 10;
+                    firstPoint.Y = (float)Math.Round(firstPoint.Y / 10) * 10;
+                }
 
-			}
-			mazePanel_Paint(this,null);
-		}
+            }
+            mazePanel_Paint(this, null);
+        }
 
-		private void MoveWallPoint(int x, int y)
-		{
+        private void MoveWallPoint(int x, int y)
+        {
 
-			if (moveInProgress)
-			{
-				moveInProgress = false;
-			}
-			else
-			{
-				tempPoints[0].X = x;
-				tempPoints[0].Y = y;
-				invertedMazeMatrix.TransformPoints(tempPoints);
-				float minDist = float.MaxValue;
-				float dist = 0.0f;
-				selectedWall = null;
-				foreach (MazeWall wall in mazeWalls)
-				{
-					for (int i = 0; i < 2; i++)
-					{
-						dist = GetLength(wall.points[i], tempPoints[0]);
-						if (dist < minDist)
-						{
-							selectedWall = wall;
-							minDist = dist;
-							movedWallPointIndex = i;
-						}
-					}
-				}
-				if (selectedWall != null)
-				{
-					moveInProgress = true;
-					tempPoints[0] = selectedWall.points[movedWallPointIndex];
-					mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
+            if (moveInProgress)
+            {
+                moveInProgress = false;
+            }
+            else
+            {
+                tempPoints[0].X = x;
+                tempPoints[0].Y = y;
+                invertedMazeMatrix.TransformPoints(tempPoints);
+                float minDist = float.MaxValue;
+                float dist = 0.0f;
+                selectedWall = null;
+                foreach (MazeWall wall in mazeWalls)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        dist = GetLength(wall.points[i], tempPoints[0]);
+                        if (dist < minDist)
+                        {
+                            selectedWall = wall;
+                            minDist = dist;
+                            movedWallPointIndex = i;
+                        }
+                    }
+                }
+                if (selectedWall != null)
+                {
+                    moveInProgress = true;
+                    tempPoints[0] = selectedWall.points[movedWallPointIndex];
+                    mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
                     firstPoint = tempPoints[0];
                 }
                 mazeWallsListBox.SelectedItem = selectedWall;
-			}
-		}
+            }
+        }
 
-		private void MoveRobot(int x, int y)
-		{
+        private void MoveRobot(int x, int y)
+        {
 
-			if (moveInProgress)
-			{
-				moveInProgress = false;
-			}
-			else
-			{
-				tempPoints[0].X = x;
-				tempPoints[0].Y = y;
-				invertedMazeMatrix.TransformPoints(tempPoints);
-				float minDist = float.MaxValue;
-				float dist = 0.0f;
-				selectedRobot = null;
-				foreach (MazeRobot robot in mazeRobots)
-				{
-					dist = GetLength(robot.position, tempPoints[0]);
-					if (dist < minDist)
-					{
-						selectedRobot = robot;
-						minDist = dist;
-					}
-				}
-				if (selectedRobot != null)
-				{
-					moveInProgress = true;
-					tempPoints[0] = selectedRobot.position;
-					firstPoint = tempPoints[0];
-					mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
-				}
-			}
-		}
+            if (moveInProgress)
+            {
+                moveInProgress = false;
+            }
+            else
+            {
+                tempPoints[0].X = x;
+                tempPoints[0].Y = y;
+                invertedMazeMatrix.TransformPoints(tempPoints);
+                float minDist = float.MaxValue;
+                float dist = 0.0f;
+                selectedRobot = null;
+                foreach (MazeRobot robot in mazeRobots)
+                {
+                    dist = GetLength(robot.position, tempPoints[0]);
+                    if (dist < minDist)
+                    {
+                        selectedRobot = robot;
+                        minDist = dist;
+                    }
+                }
+                if (selectedRobot != null)
+                {
+                    moveInProgress = true;
+                    tempPoints[0] = selectedRobot.position;
+                    firstPoint = tempPoints[0];
+                    mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
+                }
+            }
+        }
         private void MoveVictim(int x, int y)
         {
 
@@ -2616,67 +2617,67 @@ namespace MazeEditor
                 }
             }
         }
-		private void MoveNode(int x, int y)
-		{
+        private void MoveNode(int x, int y)
+        {
 
-			if (moveInProgress)
-			{
-				moveInProgress = false;
-			}
-			else
-			{
-				tempPoints[0].X = x;
-				tempPoints[0].Y = y;
-				invertedMazeMatrix.TransformPoints(tempPoints);
-				float minDist = float.MaxValue;
-				float dist = 0.0f;
-				selectedNode = null;
-				if (mazeGraph != null)
-				{
+            if (moveInProgress)
+            {
+                moveInProgress = false;
+            }
+            else
+            {
+                tempPoints[0].X = x;
+                tempPoints[0].Y = y;
+                invertedMazeMatrix.TransformPoints(tempPoints);
+                float minDist = float.MaxValue;
+                float dist = 0.0f;
+                selectedNode = null;
+                if (mazeGraph != null)
+                {
                     foreach (MazeNode n in mazeGraph.MazeGraphNodes)
-					{
-						dist = (float) Vector2D.GetLength(n.position.x - tempPoints[0].X, n.position.y - tempPoints[0].Y);
-						if (dist < minDist)
-						{
-							selectedNode = n;
-							minDist = dist;
-						}
-					}
-				}
-				if (selectedNode != null)
-				{
-					moveInProgress = true;
-					tempPoints[0] = new PointF((float)selectedNode.position.x, (float)selectedNode.position.y);
-					firstPoint = tempPoints[0];
-					mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
-				}
-			}
-		}
+                    {
+                        dist = (float)Vector2D.GetLength(n.position.x - tempPoints[0].X, n.position.y - tempPoints[0].Y);
+                        if (dist < minDist)
+                        {
+                            selectedNode = n;
+                            minDist = dist;
+                        }
+                    }
+                }
+                if (selectedNode != null)
+                {
+                    moveInProgress = true;
+                    tempPoints[0] = new PointF((float)selectedNode.position.x, (float)selectedNode.position.y);
+                    firstPoint = tempPoints[0];
+                    mazeBitmapGraphics.Transform.TransformPoints(tempPoints);
+                }
+            }
+        }
 
-		private void DeletWall(int x, int y)
-		{
-			tempPoints[0].X = x;
-			tempPoints[0].Y = y;
-			invertedMazeMatrix.TransformPoints(tempPoints);
-			float minDist = float.MaxValue;
-			float dist = 0.0f;
-			selectedWall = null;
-			foreach (MazeWall wall in mazeWalls)
-			{
-				dist = Math.Min(GetLength(wall.points[0], tempPoints[0]), GetLength(wall.points[1], tempPoints[0]));
-				if (dist < minDist)
-				{
-					selectedWall = wall;
-					minDist = dist;
-				}
-			}
-			if (selectedWall != null)
-			{
-				mazeWalls.Remove(selectedWall);
+        private void DeletWall(int x, int y)
+        {
+            tempPoints[0].X = x;
+            tempPoints[0].Y = y;
+            invertedMazeMatrix.TransformPoints(tempPoints);
+            float minDist = float.MaxValue;
+            float dist = 0.0f;
+            selectedWall = null;
+            foreach (MazeWall wall in mazeWalls)
+            {
+                dist = Math.Min(GetLength(wall.points[0], tempPoints[0]), GetLength(wall.points[1], tempPoints[0]));
+                if (dist < minDist)
+                {
+                    selectedWall = wall;
+                    minDist = dist;
+                }
+            }
+            if (selectedWall != null)
+            {
+                mazeWalls.Remove(selectedWall);
                 RefreshMazeWallsTreeView();
-			}
-			mazePanel_Paint(this, null);
-		}
+            }
+            mazePanel_Paint(this, null);
+        }
 
 
         private void DeleteRobot(int x, int y)
@@ -2728,95 +2729,95 @@ namespace MazeEditor
             mazePanel_Paint(this, null);
         }
 
-		private float GetLength(PointF p1, PointF p2)
-		{
-			return (float)Math.Sqrt((p2.X - p1.X)*(p2.X - p1.X) + (p2.Y - p1.Y)*(p2.Y - p1.Y));
-		}
+        private float GetLength(PointF p1, PointF p2)
+        {
+            return (float)Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y));
+        }
 
 
         private void SaveMazeForRoBOSS()
-		{
-			if (mazeRobots.Count == 0)
-			{
-				if (MessageBox.Show("There are no robots in the maze. Generated file will not be accepted by RoBOSSController.\nAre you sure you want to save the maze?","Incomplete definition",MessageBoxButtons.YesNo,MessageBoxIcon.Question) != DialogResult.Yes)
-				{
-					return;
-				}
-			}
+        {
+            if (mazeRobots.Count == 0)
+            {
+                if (MessageBox.Show("There are no robots in the maze. Generated file will not be accepted by RoBOSSController.\nAre you sure you want to save the maze?", "Incomplete definition", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
 
-			SaveFileDialog fileDialog = new SaveFileDialog();
-			fileDialog.Filter = "XML file (*.xml)|*.xml";
-			if (fileDialog.ShowDialog() != DialogResult.OK)
-				return;
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.Filter = "XML file (*.xml)|*.xml";
+            if (fileDialog.ShowDialog() != DialogResult.OK)
+                return;
 
-			XmlTextWriter writer;
-			try 
-			{
-				writer = new XmlTextWriter (fileDialog.FileName,null);
-			}
-			catch 
-			{
+            XmlTextWriter writer;
+            try
+            {
+                writer = new XmlTextWriter(fileDialog.FileName, null);
+            }
+            catch
+            {
 
-				return;
-			}
-			writer.Formatting = Formatting.Indented;
+                return;
+            }
+            writer.Formatting = Formatting.Indented;
 
-			writer.WriteStartElement("World");
-			writer.WriteAttributeString("name",worldNameTextBox.Text);
-			writer.WriteAttributeString("gravity",gravityNumericUpDown.Value.ToString(MazeEditorForm.numberFormatInfo));
-			writer.WriteStartElement("Robots");
-			foreach (MazeRobot robot in mazeRobots)
-			{
-				robot.WriteXMLDefinitionNode(writer);
-			}
-			writer.WriteEndElement();
-			writer.WriteStartElement("Environment");
-			writer.WriteStartElement("Geoms");
-			writer.WriteStartElement("Geom");
-			writer.WriteAttributeString("type","box");
-			writer.WriteAttributeString("position_z","-0.5");
-			writer.WriteAttributeString("size_x",(mazePanel.Width / (zoom * 100)).ToString(MazeEditorForm.numberFormatInfo));
-			writer.WriteAttributeString("size_y",(mazePanel.Height / (zoom * 100)).ToString(MazeEditorForm.numberFormatInfo));
-			writer.WriteAttributeString("size_z","1.0");
-			writer.WriteAttributeString("color","00000000");
-			writer.WriteEndElement();
+            writer.WriteStartElement("World");
+            writer.WriteAttributeString("name", worldNameTextBox.Text);
+            writer.WriteAttributeString("gravity", gravityNumericUpDown.Value.ToString(MazeEditorForm.numberFormatInfo));
+            writer.WriteStartElement("Robots");
+            foreach (MazeRobot robot in mazeRobots)
+            {
+                robot.WriteXMLDefinitionNode(writer);
+            }
+            writer.WriteEndElement();
+            writer.WriteStartElement("Environment");
+            writer.WriteStartElement("Geoms");
+            writer.WriteStartElement("Geom");
+            writer.WriteAttributeString("type", "box");
+            writer.WriteAttributeString("position_z", "-0.5");
+            writer.WriteAttributeString("size_x", (mazePanel.Width / (zoom * 100)).ToString(MazeEditorForm.numberFormatInfo));
+            writer.WriteAttributeString("size_y", (mazePanel.Height / (zoom * 100)).ToString(MazeEditorForm.numberFormatInfo));
+            writer.WriteAttributeString("size_z", "1.0");
+            writer.WriteAttributeString("color", "00000000");
+            writer.WriteEndElement();
 
-			foreach (MazeWall wall in mazeWalls)
-			{
-				wall.WriteXMLDefinitionNode(writer);
-			}
+            foreach (MazeWall wall in mazeWalls)
+            {
+                wall.WriteXMLDefinitionNode(writer);
+            }
 
-			writer.WriteEndElement();
-			writer.WriteEndElement();
-			writer.WriteEndElement();
-            
-			writer.Flush();
-			writer.Close();
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+            writer.WriteEndElement();
 
-		}
+            writer.Flush();
+            writer.Close();
 
-		private void wallColorPanel_Click(object sender, System.EventArgs e)
-		{
-			if (wallColorDialog.ShowDialog() == DialogResult.OK)
-			{
-				wallColor = wallColorDialog.Color;
-				wallColorPanel.BackColor = wallColor;
-			}
+        }
 
-		}
+        private void wallColorPanel_Click(object sender, System.EventArgs e)
+        {
+            if (wallColorDialog.ShowDialog() == DialogResult.OK)
+            {
+                wallColor = wallColorDialog.Color;
+                wallColorPanel.BackColor = wallColor;
+            }
 
-
-
-		private void robotTypeTextBox_TextChanged(object sender, System.EventArgs e)
-		{
-			robotNameIndex = 0;
-		}
+        }
 
 
-		private void snapToGridLabel_Click(object sender, System.EventArgs e)
-		{
-			SnapToGrid = !SnapToGrid;
-		}
+
+        private void robotTypeTextBox_TextChanged(object sender, System.EventArgs e)
+        {
+            robotNameIndex = 0;
+        }
+
+
+        private void snapToGridLabel_Click(object sender, System.EventArgs e)
+        {
+            SnapToGrid = !SnapToGrid;
+        }
 
         private void snapToAngleLabel_Click(object sender, System.EventArgs e)
         {
@@ -2830,27 +2831,27 @@ namespace MazeEditor
 
 
 
-		private void widthHeightNumericUpDown_ValueChanged(object sender, System.EventArgs e)
-		{
+        private void widthHeightNumericUpDown_ValueChanged(object sender, System.EventArgs e)
+        {
             mazePanel.Size = new Size((int)((float)widthNumericUpDown.Value * 100 * zoom), (int)((float)heightNumericUpDown.Value * 100 * zoom));
             CreateMazeGraphics();
-			mazePanel_Paint(this,null);
-		}
+            mazePanel_Paint(this, null);
+        }
 
-		private void objectSelectorTabControl_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			selectEditMode();
-			mazePanel_Paint(this, null);
-		}
+        private void objectSelectorTabControl_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            selectEditMode();
+            mazePanel_Paint(this, null);
+        }
 
-		private void recreateRoomsButton_Click(object sender, EventArgs e)
-		{
+        private void recreateRoomsButton_Click(object sender, EventArgs e)
+        {
             if (mazeGraph != null && MessageBox.Show("This operation will remove the rooms and the graph. It cannot be undone.\n Are you sure?", "", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 return;
             mazeGraph = new MazeGraph();
             mazeRooms = new ArrayList();
 
-			roomsTreeView.Nodes.Clear();
+            roomsTreeView.Nodes.Clear();
 
             RoomsGraphBuilder roomsGraphBuilder = new RoomsGraphBuilder();
             if (!ConvexOnlyCheckBox.Checked)
@@ -2865,7 +2866,7 @@ namespace MazeEditor
                 else
                     roomsGraphBuilder.AddDoor(new Point2D(wall.points[0].X, wall.points[0].Y), new Point2D(wall.points[1].X, wall.points[1].Y));
             }
-			roomsGraphBuilder.BuildRegion();
+            roomsGraphBuilder.BuildRegion();
 
             Hashtable mazeNodeByRoomasGraphNodes = new Hashtable();
             Hashtable mazeWallsByRoomasGraphWalls = new Hashtable();
@@ -2875,7 +2876,7 @@ namespace MazeEditor
             foreach (Room graphBuilderRoom in roomsGraphBuilder.Rooms)
             {
                 ArrayList roomWalls = new ArrayList();
-                foreach (Wall graphBuilderWall in graphBuilderRoom.Walls)     
+                foreach (Wall graphBuilderWall in graphBuilderRoom.Walls)
                 {
                     bool oldWallFound = false;
                     foreach (MazeWall mazeWall in oldMazeWalls)     //find old 
@@ -2917,30 +2918,30 @@ namespace MazeEditor
                     }
                 }
 
-  /*              ///reorder walls
-                ArrayList orderedRoomWalls = new ArrayList();
-                orderedRoomWalls.Add(roomWalls[0]);
-                roomWalls.RemoveAt(0);
-                Point2D nextPoint = (roomWalls[0] as Wall).To;
-                while (roomWalls.Count > 0)
-                {
-                    foreach (Wall wall in roomWalls)
-                        if (wall.From.GetDistance(nextPoint) < 0.01)
-                        {
-                            nextPoint = wall.From;
-                            roomWalls.Remove(wall);
-                            orderedRoomWalls.Add(wall);
-                            break;
-                        }
-                        else if (wall.To.GetDistance(nextPoint) < 0.01)
-                        {
-                            nextPoint = wall.To;
-                            roomWalls.Remove(wall);
-                            orderedRoomWalls.Add(wall);
-                            break;
-                        }
-                }
-*/
+                /*              ///reorder walls
+                              ArrayList orderedRoomWalls = new ArrayList();
+                              orderedRoomWalls.Add(roomWalls[0]);
+                              roomWalls.RemoveAt(0);
+                              Point2D nextPoint = (roomWalls[0] as Wall).To;
+                              while (roomWalls.Count > 0)
+                              {
+                                  foreach (Wall wall in roomWalls)
+                                      if (wall.From.GetDistance(nextPoint) < 0.01)
+                                      {
+                                          nextPoint = wall.From;
+                                          roomWalls.Remove(wall);
+                                          orderedRoomWalls.Add(wall);
+                                          break;
+                                      }
+                                      else if (wall.To.GetDistance(nextPoint) < 0.01)
+                                      {
+                                          nextPoint = wall.To;
+                                          roomWalls.Remove(wall);
+                                          orderedRoomWalls.Add(wall);
+                                          break;
+                                      }
+                              }
+              */
                 MazeSpace room = new MazeSpace(roomWalls);
                 mazeRooms.Add(room);
                 foreach (MazeWall roomWall in roomWalls)
@@ -2987,8 +2988,8 @@ namespace MazeEditor
             recreateGraphTreeView();
             RefreshMazeWallsTreeView();
 
-			mazePanel_Paint(this, null);
-		}
+            mazePanel_Paint(this, null);
+        }
 
 
         private void RefreshMazeWallsTreeView()
@@ -2997,7 +2998,7 @@ namespace MazeEditor
             if (mazeWalls == null)
                 return;
 
-            foreach(MazeWall wall in mazeWalls )
+            foreach (MazeWall wall in mazeWalls)
             {
                 mazeWallsListBox.Items.Add(wall);
             }
@@ -3014,7 +3015,7 @@ namespace MazeEditor
             {
                 TreeNode roomTreeNode = new TreeNode();
                 roomTreeNode.Tag = room;
-                roomTreeNode.Text = room.ID+" with " + room.Walls.Count + " walls around " + room.CenterPoint.ToString();
+                roomTreeNode.Text = room.ID + " with " + room.Walls.Count + " walls around " + room.CenterPoint.ToString();
                 roomsTreeView.Nodes.Add(roomTreeNode);
                 foreach (MazeWall roomWall in room.Walls)
                 {
@@ -3039,11 +3040,11 @@ namespace MazeEditor
 
             foreach (MazeNode node in mazeGraph.MazeGraphNodes)
             {
-                ArrayList accessibleTargetNodes = new ArrayList();     
+                ArrayList accessibleTargetNodes = new ArrayList();
 
                 TreeNode nodenode = new TreeNode();
                 nodenode.Tag = node;
-                nodenode.Text = node.MazeGraphNodeType +": "+ node.position.ToString();
+                nodenode.Text = node.MazeGraphNodeType + ": " + node.position.ToString();
                 graphTreeView.Nodes.Add(nodenode);
                 // wêz³y dostêpne 
                 //foreach (MazeGraphArc arc in node.OutgoingGraphArcs)
@@ -3063,8 +3064,8 @@ namespace MazeEditor
         }
 
 
-		private void roomsTreeView_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
-		{
+        private void roomsTreeView_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
+        {
             if (roomsTreeView.SelectedNode == null)
                 return;
 
@@ -3072,8 +3073,8 @@ namespace MazeEditor
             if (roomsTreeView.SelectedNode.Tag as MazeSpace != null)
             {
                 typeSelectComboBox.Items.Clear();
-                foreach (MazeSpaceType roomType in  Enum.GetValues(typeof(MazeSpaceType)))                 
-                     typeSelectComboBox.Items.Add(roomType);
+                foreach (MazeSpaceType roomType in Enum.GetValues(typeof(MazeSpaceType)))
+                    typeSelectComboBox.Items.Add(roomType);
                 typeSelectComboBox.SelectedItem = (roomsTreeView.SelectedNode.Tag as MazeSpace).MazeRoomType;
                 doorPropertiesPanel.Visible = false;
                 roomPropertiesPanel.Visible = true;
@@ -3097,7 +3098,7 @@ namespace MazeEditor
             else if (roomsTreeView.SelectedNode.Tag as MazeWall != null && (roomsTreeView.SelectedNode.Tag as MazeWall).MazeWallType == MazeWallType.gate)
             {
                 typeSelectComboBox.Items.Clear();
-                foreach (MazeGateType doorType in Enum.GetValues(typeof(MazeGateType)))  
+                foreach (MazeGateType doorType in Enum.GetValues(typeof(MazeGateType)))
                     typeSelectComboBox.Items.Add(doorType);
                 typeSelectComboBox.SelectedItem = (roomsTreeView.SelectedNode.Tag as MazeWall).MazeDoorType;
 
@@ -3107,7 +3108,7 @@ namespace MazeEditor
 
             }
             mazePanel_Paint(this, null);
-        
+
         }
 
         /// <summary>
@@ -3161,7 +3162,7 @@ namespace MazeEditor
                     if (node.Door == wall)
                         nodesToRemove.Add(node);
                 foreach (MazeNode node in nodesToRemove)
-                        mazeGraph.RemoveNode(node);
+                    mazeGraph.RemoveNode(node);
             }
 
             foreach (MazeWall wall in commonWalls)
@@ -3173,7 +3174,7 @@ namespace MazeEditor
 
             foreach (MazeWall wall in newRoomWalls)
             {
-                foreach (MazeNode node in mazeGraph.MazeGraphNodes )
+                foreach (MazeNode node in mazeGraph.MazeGraphNodes)
                     if (node.Door == wall && (node.Room == firstRoom || node.Room == secondRoom))
                     {
                         node.Room = newRoom;
@@ -3259,7 +3260,7 @@ namespace MazeEditor
                         if (node.Room == door.RoomFrom)
                             nodeFrom = node;
                         else if (node.Room == door.RoomTo)
-                            nodeTo = node; 
+                            nodeTo = node;
                     }
                 }
 
@@ -3281,9 +3282,9 @@ namespace MazeEditor
                     {
                         mazeGraph.AddArc(nodeTo, nodeFrom);
                     }
-              
+
                 }
-           
+
                 recreateGraphTreeView();
 
             }
@@ -3322,7 +3323,7 @@ namespace MazeEditor
             if (mazeRooms == null || mazeRobots == null)
                 return;
 
-            if (mazeRobots.Count ==0 )
+            if (mazeRobots.Count == 0)
             {
                 MessageBox.Show("No robots in the maze -- all rooms would be deleted! ");
                 return;
@@ -3331,10 +3332,10 @@ namespace MazeEditor
             ArrayList accessibleRooms = new ArrayList();
             foreach (MazeRobot robot in mazeRobots)
                 foreach (MazeSpace room in mazeRooms)
-                    if (!accessibleRooms.Contains(room) &&  room.ContainsPoint(robot.position))
+                    if (!accessibleRooms.Contains(room) && room.ContainsPoint(robot.position))
                         accessibleRooms.Add(room);
 
-            for (int i = 0 ; i < accessibleRooms.Count ; i ++)
+            for (int i = 0; i < accessibleRooms.Count; i++)
             {
                 MazeSpace room = (MazeSpace)accessibleRooms[i];
                 foreach (MazeWall door in room.Walls)
@@ -3349,17 +3350,17 @@ namespace MazeEditor
                 }
             }
 
-           ArrayList inaccessibleRooms = new ArrayList();
-           foreach (MazeSpace room in mazeRooms)
-               if (!accessibleRooms.Contains(room))
-                   inaccessibleRooms.Add(room);
+            ArrayList inaccessibleRooms = new ArrayList();
+            foreach (MazeSpace room in mazeRooms)
+                if (!accessibleRooms.Contains(room))
+                    inaccessibleRooms.Add(room);
 
             foreach (MazeSpace room in inaccessibleRooms)
                 RemoveRoom(room);
 
             recreateGraphTreeView();
             recreateRoomsTreeView();
- 
+
         }
 
         private void graphTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -3375,8 +3376,8 @@ namespace MazeEditor
                 selectedWall = wall;
                 wallLengthLabel.Text = "length: " + (wall.Segment.Length / 100).ToString("f2");
                 wallAngleLabel.Text = "angle: " + (new Vector2D(wall.points[0], wall.points[1])).Angle.ToString("f2");
-                wallHeightLabel.Text = "height: " + (wall.Height/100).ToString("f2");
-                wallWidthLabel.Text = "width: " + (wall.Width/100).ToString("f2");
+                wallHeightLabel.Text = "height: " + (wall.Height / 100).ToString("f2");
+                wallWidthLabel.Text = "width: " + (wall.Width / 100).ToString("f2");
             }
             else
             {
@@ -3445,7 +3446,7 @@ namespace MazeEditor
                 if (maxWidth < wall.Width)
                     maxWidth = wall.Width;
             }
-            
+
             foreach (MazeWall wall in mazeWalls)
             {
                 wall.points[0].X -= minX - maxWidth * 2;
@@ -3460,7 +3461,8 @@ namespace MazeEditor
 
         private void butStart_Click(object sender, EventArgs e)
         {
-            initUDPandStart(txtIP.Text, int.Parse(txtPort.Text),Convert.ToInt32(dNumberRobots.Value));
+            initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
+            initUDP_BBandStart("127.0.0.1", 5555);
         }
 
         UdpClient udp;
@@ -3475,11 +3477,11 @@ namespace MazeEditor
 
         int maxRobots;
 
-        private void initUDPandStart(string sIP, int port,int iRobotNumber)
+        private void initUDPandStart(string sIP, int port, int iRobotNumber)
         {
             mazeRobots.Clear();
-            MazeIdentifiable.ClearBusyIdsCache(); 
-            
+            MazeIdentifiable.ClearBusyIdsCache();
+
             RobotsPF = new MazeRobot[iRobotNumber];
             maxRobots = iRobotNumber;
             string robotName;
@@ -3549,7 +3551,14 @@ namespace MazeEditor
 
             reciveThread.Abort();
 
-            reciveThread = null;           
+            reciveThread = null;
+
+            endTransmision_BB = true;
+            udp_BB.Close();
+
+            reciveThread_BB.Abort();
+
+            reciveThread_BB = null;
         }
 
         private void threadPause()
@@ -3565,6 +3574,106 @@ namespace MazeEditor
         private void butPause_Click(object sender, EventArgs e)
         {
             threadPause();
+        }
+
+        #endregion
+
+        #region ::    BoundingBox    ::
+
+        UdpClient udp_BB;
+
+        bool endTransmision_BB = false;
+
+        IPEndPoint endPoint_BB;
+
+        Thread reciveThread_BB;
+
+        private void initUDP_BBandStart(string sIP, int port)
+        {
+            udp_BB = new UdpClient(port);
+            endPoint_BB = new IPEndPoint(IPAddress.Parse(sIP), port);
+
+            endTransmision_BB = false;
+
+            reciveThread_BB = new Thread(new ThreadStart(getBoundingBoxPossition));
+            reciveThread_BB.Start();
+        }
+
+        private void getBoundingBoxPossition()
+        {
+            int id = 999999;
+            byte[] tablica;
+            string temp;
+            string[] tmp;
+
+            while (!endTransmision_BB)
+            {
+                tablica = udp_BB.Receive(ref endPoint_BB);
+                temp = System.Text.Encoding.Default.GetString(tablica);
+
+                foreach (var item in temp.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    tmp = item.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                    MazeWall mazeWall = new MazeWall(
+                            new Point2D(double.Parse(tmp[1].Replace(".", ",")) * 100, double.Parse(tmp[2].Replace(".", ",")) * 100),
+                            new Point2D(double.Parse(tmp[3].Replace(".", ",")) * 100, double.Parse(tmp[4].Replace(".", ",")) * 100),
+                            (float)0.05 * 100,
+                            (float)0.05 * 100,
+                            Color.Yellow);
+
+                    mazeWall.ID = id.ToString();
+                    mazeWalls.Add(mazeWall);
+
+                    id++;
+
+
+
+                    mazeWall = new MazeWall(
+       new Point2D(double.Parse(tmp[5].Replace(".", ",")) * 100, double.Parse(tmp[6].Replace(".", ",")) * 100),
+       new Point2D(double.Parse(tmp[7].Replace(".", ",")) * 100, double.Parse(tmp[8].Replace(".", ",")) * 100),
+       (float)0.05 * 100,
+       (float)0.05 * 100,
+       Color.Yellow);
+
+                    mazeWall.ID = id.ToString();
+                    mazeWalls.Add(mazeWall);
+
+                    id++;
+
+
+                    mazeWall = new MazeWall(
+new Point2D(double.Parse(tmp[5].Replace(".", ",")) * 100, double.Parse(tmp[6].Replace(".", ",")) * 100),
+new Point2D(double.Parse(tmp[1].Replace(".", ",")) * 100, double.Parse(tmp[2].Replace(".", ",")) * 100),
+(float)0.05 * 100,
+(float)0.05 * 100,
+Color.Yellow);
+
+                    mazeWall.ID = id.ToString();
+                    mazeWalls.Add(mazeWall);
+
+                    id++;
+
+
+                    mazeWall = new MazeWall(
+        new Point2D(double.Parse(tmp[7].Replace(".", ",")) * 100, double.Parse(tmp[8].Replace(".", ",")) * 100),
+        new Point2D(double.Parse(tmp[3].Replace(".", ",")) * 100, double.Parse(tmp[4].Replace(".", ",")) * 100),
+        (float)0.05 * 100,
+        (float)0.05 * 100,
+        Color.Yellow);
+
+                    mazeWall.ID = id.ToString();
+                    mazeWalls.Add(mazeWall);
+
+                    id++;
+                }
+
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    mazePanel_Paint(this, null);
+                });
+            }
         }
 
         #endregion
