@@ -146,6 +146,7 @@ namespace MazeEditor
         private Pen selectedWallPen;
 
         private Brush robotBrush;
+        private Brush robotBrushSelected;
         private Brush victimBrush;
 
         private bool snapToWall;
@@ -293,6 +294,13 @@ namespace MazeEditor
         private TextBox txtIP;
         private Label label9;
         private Label label8;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn X;
+        private DataGridViewTextBoxColumn Y;
+        private DataGridViewTextBoxColumn Prop;
+        private DataGridViewTextBoxColumn Alfa;
+        private Button button1;
         private MazeSpace previousSelectedRoom;
 
         public MazeEditorForm()
@@ -310,6 +318,7 @@ namespace MazeEditor
             coordPoints = new PointF[1];
 
             robotBrush = (new Pen(Color.White, 1)).Brush;
+            robotBrushSelected = (new Pen(Color.Red, 1)).Brush;
             victimBrush = (new Pen(Color.Orange, 1)).Brush;
 
 
@@ -360,6 +369,7 @@ namespace MazeEditor
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -444,6 +454,13 @@ namespace MazeEditor
             this.sizeTrackBar = new System.Windows.Forms.TrackBar();
             this.removeDoorDoorEdgesButton = new System.Windows.Forms.Button();
             this.PFTabPage = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Prop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Alfa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.txtIP = new System.Windows.Forms.TextBox();
@@ -454,7 +471,6 @@ namespace MazeEditor
             this.dNumberRobots = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.butStart = new System.Windows.Forms.Button();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
@@ -475,6 +491,7 @@ namespace MazeEditor
             this.graphTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeTrackBar)).BeginInit();
             this.PFTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots)).BeginInit();
             this.SuspendLayout();
@@ -489,6 +506,17 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
+            // 
+            // mazePanel
+            // 
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -898,9 +926,9 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
@@ -937,7 +965,7 @@ namespace MazeEditor
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -947,7 +975,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -957,7 +985,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -967,7 +995,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -982,7 +1010,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 303);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 251);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1078,9 +1106,9 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
             // 
@@ -1154,9 +1182,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1171,9 +1199,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1213,7 +1241,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1321,7 +1349,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1353,7 +1381,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1368,7 +1396,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1389,9 +1417,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1404,7 +1432,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -1433,6 +1461,8 @@ namespace MazeEditor
             // 
             // PFTabPage
             // 
+            this.PFTabPage.Controls.Add(this.button1);
+            this.PFTabPage.Controls.Add(this.dataGridView1);
             this.PFTabPage.Controls.Add(this.groupBox1);
             this.PFTabPage.Controls.Add(this.butPause);
             this.PFTabPage.Controls.Add(this.butStop);
@@ -1445,6 +1475,65 @@ namespace MazeEditor
             this.PFTabPage.TabIndex = 6;
             this.PFTabPage.Text = "PF";
             this.PFTabPage.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(260, 108);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "ShowSelected";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.X,
+            this.Y,
+            this.Prop,
+            this.Alfa});
+            this.dataGridView1.Location = new System.Drawing.Point(3, 137);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(347, 292);
+            this.dataGridView1.TabIndex = 6;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.Width = 50;
+            // 
+            // X
+            // 
+            this.X.HeaderText = "X";
+            this.X.Name = "X";
+            this.X.Width = 50;
+            // 
+            // Y
+            // 
+            this.Y.HeaderText = "Y";
+            this.Y.Name = "Y";
+            this.Y.Width = 50;
+            // 
+            // Prop
+            // 
+            this.Prop.HeaderText = "Prop";
+            this.Prop.Name = "Prop";
+            this.Prop.Width = 50;
+            // 
+            // Alfa
+            // 
+            this.Alfa.HeaderText = "Alfa";
+            this.Alfa.Name = "Alfa";
+            this.Alfa.Width = 50;
             // 
             // groupBox1
             // 
@@ -1473,7 +1562,8 @@ namespace MazeEditor
             this.txtIP.Name = "txtIP";
             this.txtIP.Size = new System.Drawing.Size(100, 20);
             this.txtIP.TabIndex = 2;
-            this.txtIP.Text = "127.0.0.1";
+            this.txtIP.Text = "192.168.2.100";
+            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
             // 
             // label9
             // 
@@ -1496,7 +1586,7 @@ namespace MazeEditor
             // butPause
             // 
             this.butPause.Enabled = false;
-            this.butPause.Location = new System.Drawing.Point(145, 108);
+            this.butPause.Location = new System.Drawing.Point(89, 108);
             this.butPause.Name = "butPause";
             this.butPause.Size = new System.Drawing.Size(75, 23);
             this.butPause.TabIndex = 4;
@@ -1507,7 +1597,7 @@ namespace MazeEditor
             // 
             // butStop
             // 
-            this.butStop.Location = new System.Drawing.Point(238, 108);
+            this.butStop.Location = new System.Drawing.Point(170, 108);
             this.butStop.Name = "butStop";
             this.butStop.Size = new System.Drawing.Size(75, 23);
             this.butStop.TabIndex = 3;
@@ -1537,7 +1627,7 @@ namespace MazeEditor
             this.dNumberRobots.Size = new System.Drawing.Size(93, 20);
             this.dNumberRobots.TabIndex = 2;
             this.dNumberRobots.Value = new decimal(new int[] {
-            5000,
+            104,
             0,
             0,
             0});
@@ -1553,24 +1643,13 @@ namespace MazeEditor
             // 
             // butStart
             // 
-            this.butStart.Location = new System.Drawing.Point(52, 108);
+            this.butStart.Location = new System.Drawing.Point(8, 108);
             this.butStart.Name = "butStart";
             this.butStart.Size = new System.Drawing.Size(75, 23);
             this.butStart.TabIndex = 0;
             this.butStart.Text = "Start";
             this.butStart.UseVisualStyleBackColor = true;
             this.butStart.Click += new System.EventHandler(this.butStart_Click);
-            // 
-            // mazePanel
-            // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // MazeEditorForm
             // 
@@ -1613,6 +1692,7 @@ namespace MazeEditor
             ((System.ComponentModel.ISupportInitialize)(this.sizeTrackBar)).EndInit();
             this.PFTabPage.ResumeLayout(false);
             this.PFTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots)).EndInit();
@@ -2007,7 +2087,10 @@ namespace MazeEditor
 
             foreach (MazeRobot robot in mazeRobots)
             {
-                mazeBitmapGraphics.FillEllipse(robotBrush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                if (robot.Selected)
+                    mazeBitmapGraphics.FillEllipse(robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                else
+                    mazeBitmapGraphics.FillEllipse(robotBrush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
             }
             foreach (MazeVictim victim in mazeVictims)
             {
@@ -3461,8 +3544,9 @@ namespace MazeEditor
 
         private void butStart_Click(object sender, EventArgs e)
         {
-            initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
-            initUDP_BBandStart("127.0.0.1", 5555);
+            // initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
+            // initUDP_BBandStart("127.0.0.1", 5555);
+            initUDPandStart(txtIP.Text, 1234, Convert.ToInt32(dNumberRobots.Value));
         }
 
         UdpClient udp;
@@ -3486,6 +3570,9 @@ namespace MazeEditor
             maxRobots = iRobotNumber;
             string robotName;
 
+            dataGridView1.Rows.Clear();
+
+
             for (int i = 0; i < maxRobots; i++)
             {
                 robotName = string.Format("robot{0}", i.ToString());
@@ -3494,6 +3581,9 @@ namespace MazeEditor
                 RobotsPF[i].ID = robotName;
 
                 mazeRobots.Add(RobotsPF[i]);
+
+                dataGridView1.Rows.Add();
+                dataGridView1.Rows[i].Cells["ID"].Value = i;
             }
 
             udp = new UdpClient(port);
@@ -3510,11 +3600,11 @@ namespace MazeEditor
             byte[] tablica;
             string temp;
             string[] tmp;
-            int indexTable;
-            double x;
-            double y;
-            double alfa;
-            double probability;
+            int indexTable = 0;
+            double x = 0;
+            double y = 0;
+            double alfa = 0;
+            double probability = 0;
 
             while (!endTransmision)
             {
@@ -3531,15 +3621,30 @@ namespace MazeEditor
                     {
                         x = double.Parse(tmp[1].Replace(".", ","));
                         y = double.Parse(tmp[2].Replace(".", ","));
-                        //alfa = double.Parse(tmp[3].Replace(".", ","));
+                        alfa = double.Parse(tmp[3].Replace(".", ","));
+
+                        if(double.TryParse(tmp[4].Replace(".", ","),out probability))
                         //probability = double.Parse(tmp[4].Replace(".", ","));
 
                         RobotsPF[indexTable].position = new Point2D(x * 100, y * 100);
+
                     }
+
+                    this.Invoke((MethodInvoker)delegate()
+                    {
+                        if (dataGridView1.Rows.Count > indexTable)
+                        {
+                            dataGridView1.Rows[indexTable].Cells["X"].Value = x;
+                            dataGridView1.Rows[indexTable].Cells["Y"].Value = y;
+                            dataGridView1.Rows[indexTable].Cells["Prop"].Value = probability;
+                            dataGridView1.Rows[indexTable].Cells["Alfa"].Value = alfa;
+                        }
+                    });
                 }
                 this.Invoke((MethodInvoker)delegate()
                 {
                     mazePanel_Paint(this, null);
+
                 });
             }
         }
@@ -3554,9 +3659,12 @@ namespace MazeEditor
             reciveThread = null;
 
             endTransmision_BB = true;
-            udp_BB.Close();
 
-            reciveThread_BB.Abort();
+            if (udp_BB != null)
+                udp_BB.Close();
+
+            if (reciveThread_BB != null)
+                reciveThread_BB.Abort();
 
             reciveThread_BB = null;
         }
@@ -3677,5 +3785,31 @@ Color.Yellow);
         }
 
         #endregion
+
+        private void txtIP_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < RobotsPF.Length; i++)
+                RobotsPF[i].Selected = false;
+            
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                for (int i = 0; i < dataGridView1.SelectedRows.Count; i++)
+                {
+                    int index = int.Parse(dataGridView1.SelectedRows[i].Cells["ID"].Value.ToString());
+
+                    RobotsPF[index].Selected = true;
+                }
+            }
+
+            this.Invoke((MethodInvoker)delegate()
+            {
+                mazePanel_Paint(this, null);
+            });
+        }
     }
 }

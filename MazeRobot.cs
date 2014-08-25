@@ -32,6 +32,7 @@ namespace MazeEditor
 		private string name;
 		public PointF position;
 		public readonly float Height;
+        public bool Selected;
 
 		public MazeRobot(string type, string name, PointF position, float height) : base()
 		{
