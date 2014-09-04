@@ -147,6 +147,9 @@ namespace MazeEditor
 
         private Brush robotBrush;
         private Brush robotBrushSelected;
+        private Pen robotPenSelected;
+        private Pen robotPenArrow;
+
         private Brush victimBrush;
 
         private bool snapToWall;
@@ -319,9 +322,10 @@ namespace MazeEditor
 
             robotBrush = (new Pen(Color.White, 1)).Brush;
             robotBrushSelected = (new Pen(Color.Red, 1)).Brush;
+            robotPenArrow = new Pen(Color.Red,2);
             victimBrush = (new Pen(Color.Orange, 1)).Brush;
 
-
+            robotPenSelected = new Pen(Color.Red, 1);
 
 
 
@@ -1010,7 +1014,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 251);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 277);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -2088,9 +2092,16 @@ namespace MazeEditor
             foreach (MazeRobot robot in mazeRobots)
             {
                 if (robot.Selected)
+                {
                     mazeBitmapGraphics.FillEllipse(robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                    mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);   
+                }
                 else
-                    mazeBitmapGraphics.FillEllipse(robotBrush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                {
+                    robotPenSelected.Color = getRobotColor(robot.Probability);
+                    mazeBitmapGraphics.FillEllipse(robotPenSelected.Brush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                    mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);
+            }
             }
             foreach (MazeVictim victim in mazeVictims)
             {
@@ -3129,7 +3140,7 @@ namespace MazeEditor
                 nodenode.Tag = node;
                 nodenode.Text = node.MazeGraphNodeType + ": " + node.position.ToString();
                 graphTreeView.Nodes.Add(nodenode);
-                // wêz³y dostêpne 
+                // wÄ™zÅ‚y dostÄ™pne 
                 //foreach (MazeGraphArc arc in node.OutgoingGraphArcs)
                 //{
                 //    if (accessibleTargetNodes.Contains(arc.EndNode))
@@ -3627,7 +3638,8 @@ namespace MazeEditor
                         //probability = double.Parse(tmp[4].Replace(".", ","));
 
                         RobotsPF[indexTable].position = new Point2D(x * 100, y * 100);
-
+                        RobotsPF[indexTable].Probability = probability;
+                        RobotsPF[indexTable].UpdateArrowPosiotion(alfa);
                     }
 
                     this.Invoke((MethodInvoker)delegate()
@@ -3638,7 +3650,7 @@ namespace MazeEditor
                             dataGridView1.Rows[indexTable].Cells["Y"].Value = y;
                             dataGridView1.Rows[indexTable].Cells["Prop"].Value = probability;
                             dataGridView1.Rows[indexTable].Cells["Alfa"].Value = alfa;
-                        }
+                }
                     });
                 }
                 this.Invoke((MethodInvoker)delegate()
@@ -3661,10 +3673,10 @@ namespace MazeEditor
             endTransmision_BB = true;
 
             if (udp_BB != null)
-                udp_BB.Close();
+            udp_BB.Close();
 
             if (reciveThread_BB != null)
-                reciveThread_BB.Abort();
+            reciveThread_BB.Abort();
 
             reciveThread_BB = null;
         }
@@ -3810,6 +3822,32 @@ Color.Yellow);
             {
                 mazePanel_Paint(this, null);
             });
+        }
+
+        private Color getRobotColor(double propability)
+        {
+            if ((propability >= 0) && (propability < 0.1))
+                return Color.White;
+            else if ((propability >= 0.1) && (propability < 0.2))
+                return Color.Brown;
+            else if ((propability >= 0.2) && (propability < 0.3))
+                return Color.Blue;
+            else if ((propability >= 0.3) && (propability < 0.4))
+                return Color.Green;
+            else if ((propability >= 0.4) && (propability < 0.5))
+                return Color.Yellow;
+            else if ((propability >= 0.5) && (propability < 0.6))
+                return Color.Pink;
+            else if ((propability >= 0.6) && (propability < 0.7))
+                return Color.Gold;
+            else if ((propability >= 0.7) && (propability < 0.8))
+                return Color.Orange;
+            else if ((propability >= 0.8) && (propability < 0.9))
+                return Color.Violet;
+            else if ((propability >= 0.9) && (propability <= 1))
+                return Color.Red;
+            else
+                return Color.Black;
         }
     }
 }
