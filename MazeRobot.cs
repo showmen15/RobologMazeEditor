@@ -20,6 +20,7 @@ using System;
 using System.Xml;
 using System.Drawing;
 using Geometry;
+ 
 
 namespace MazeEditor
 {
@@ -31,6 +32,9 @@ namespace MazeEditor
          public readonly string Type;
 		private string name;
 		public PointF position;
+        public PointF arrow;
+        public double Probability;
+        private const int arrowLength = 10;
 		public readonly float Height;
         public bool Selected;
 
@@ -40,9 +44,14 @@ namespace MazeEditor
 			this.name = name;
 			this.position = position;
 			this.Type = type;
-
+            this.arrow = this.position;
         }
 
+        public void UpdateArrowPosiotion(double angle)
+        {
+            arrow.X = position.X + (float) (arrowLength * Math.Cos(angle));
+            arrow.Y = position.Y + (float) (arrowLength * Math.Sin(angle));
+        }
 
 		public void WriteXMLDefinitionNode(XmlTextWriter writer)
 		{
