@@ -149,6 +149,7 @@ namespace MazeEditor
         private Brush robotBrushSelected;
         private Pen robotPenSelected;
         private Pen robotPenArrow;
+        private Font fontSelected;
 
         private Brush victimBrush;
 
@@ -324,6 +325,7 @@ namespace MazeEditor
             robotBrushSelected = (new Pen(Color.Red, 1)).Brush;
             robotPenArrow = new Pen(Color.Red,2);
             victimBrush = (new Pen(Color.Orange, 1)).Brush;
+            fontSelected = new System.Drawing.Font(this.Font, FontStyle.Bold);
 
             robotPenSelected = new Pen(Color.Red, 1);
 
@@ -1668,6 +1670,7 @@ namespace MazeEditor
             this.MinimumSize = new System.Drawing.Size(472, 424);
             this.Name = "MazeEditorForm";
             this.Text = "Maze Editor";
+            this.Load += new System.EventHandler(this.MazeEditorForm_Load);
             this.viewPanel.ResumeLayout(false);
             this.leftMenuPanel.ResumeLayout(false);
             this.objectSelectorTabControl.ResumeLayout(false);
@@ -1908,7 +1911,7 @@ namespace MazeEditor
                 {
                     mazeRobots.Add(MazeRobot.BuildFromXmlNode(robotsNodeList.Item(i)));
                 }
-
+                
 
 
 
@@ -2094,6 +2097,7 @@ namespace MazeEditor
                 if (robot.Selected)
                 {
                     mazeBitmapGraphics.FillEllipse(robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                    mazeBitmapGraphics.DrawString(robot.name, fontSelected, robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset);
                     mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);   
                 }
                 else
@@ -3251,7 +3255,9 @@ namespace MazeEditor
             ArrayList nodesToRemove = new ArrayList();
             foreach (MazeWall wall in commonWalls)
             {
-                mazeWalls.Remove(wall);
+              //if(wall.MazeWallType == MazeWallType.gate) //wywalamy tylko drzwi pomieedzy pomiesczeniami
+                mazeWalls.Remove(wall); 
+                
                 foreach (MazeNode node in mazeGraph.MazeGraphNodes)
                     if (node.Door == wall)
                         nodesToRemove.Add(node);
@@ -3261,6 +3267,15 @@ namespace MazeEditor
 
             foreach (MazeWall wall in commonWalls)
                 mazeWalls.Remove(wall);
+
+           /* foreach (MazeWall wall in commonWalls) //dodanie scian wspolnych
+            {
+                if (wall.MazeWallType == MazeWallType.wall)
+                {
+                    mazeWalls.Add(wall);
+                    newRoomWalls.Add(wall);
+                }
+            }*/
 
             MazeSpace newRoom = new MazeSpace(newRoomWalls);
             newRoom.CetralNode = new MazeNode(newRoom.CenterPoint, newRoom, null);
@@ -3556,7 +3571,7 @@ namespace MazeEditor
         private void butStart_Click(object sender, EventArgs e)
         {
             // initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
-            // initUDP_BBandStart("127.0.0.1", 5555);
+            // initUDP_BBandStart(txtIP.Text, 5555);
             initUDPandStart(txtIP.Text, 1234, Convert.ToInt32(dNumberRobots.Value));
         }
 
@@ -3663,22 +3678,25 @@ namespace MazeEditor
 
         private void threadStop()
         {
-            endTransmision = true;
-            udp.Close();
+            if (reciveThread != null)
+            {
+                endTransmision = true;
+                udp.Close();
 
-            reciveThread.Abort();
+                reciveThread.Abort();
 
-            reciveThread = null;
+                reciveThread = null;
 
-            endTransmision_BB = true;
+                endTransmision_BB = true;
 
-            if (udp_BB != null)
-            udp_BB.Close();
+                if (udp_BB != null)
+                    udp_BB.Close();
 
-            if (reciveThread_BB != null)
-            reciveThread_BB.Abort();
+                if (reciveThread_BB != null)
+                    reciveThread_BB.Abort();
 
-            reciveThread_BB = null;
+                reciveThread_BB = null;
+            }
         }
 
         private void threadPause()
@@ -3826,28 +3844,61 @@ Color.Yellow);
 
         private Color getRobotColor(double propability)
         {
-            if ((propability >= 0) && (propability < 0.1))
+            /*if ((propability >= 0) && (propability < 0.1))
                 return Color.White;
             else if ((propability >= 0.1) && (propability < 0.2))
-                return Color.Brown;
+                return Color.PaleVioletRed;
             else if ((propability >= 0.2) && (propability < 0.3))
-                return Color.Blue;
-            else if ((propability >= 0.3) && (propability < 0.4))
-                return Color.Green;
-            else if ((propability >= 0.4) && (propability < 0.5))
-                return Color.Yellow;
-            else if ((propability >= 0.5) && (propability < 0.6))
-                return Color.Pink;
-            else if ((propability >= 0.6) && (propability < 0.7))
-                return Color.Gold;
-            else if ((propability >= 0.7) && (propability < 0.8))
-                return Color.Orange;
-            else if ((propability >= 0.8) && (propability < 0.9))
                 return Color.Violet;
+            else if ((propability >= 0.3) && (propability < 0.4))
+                return Color.BlueViolet;
+            else if ((propability >= 0.4) && (propability < 0.5))
+                return Color.Blue;
+            else if ((propability >= 0.5) && (propability < 0.6))
+                return Color.LightGreen;
+            else if ((propability >= 0.6) && (propability < 0.7))
+                return Color.Green;
+            else if ((propability >= 0.7) && (propability < 0.8))
+                return Color.GreenYellow;
+            else if ((propability >= 0.8) && (propability < 0.9))
+                return Color.Yellow;
             else if ((propability >= 0.9) && (propability <= 1))
-                return Color.Red;
+                return Color.Orange;
+            else
+                return Color.Black;*/
+
+            if ((propability >= 0) && (propability < 0.4))
+                return Color.White;
+            else if ((propability >= 0.4) && (propability < 0.6))
+                return Color.Blue;
+            else if ((propability >= 0.6) && (propability < 0.8))
+                return Color.Green;
+            else if ((propability >= 0.8) && (propability < 0.9))
+                return Color.Yellow;
+            else if ((propability >= 0.9) && (propability <= 1))
+                return Color.Orange;
             else
                 return Color.Black;
+        }
+
+        private string getIPAdress()
+        {
+            IPHostEntry host;
+            string localIP = "?";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily.ToString() == "InterNetwork")
+                {
+                    localIP = ip.ToString();
+                }
+            }
+            return localIP;
+        }
+
+        private void MazeEditorForm_Load(object sender, EventArgs e)
+        {
+            txtIP.Text = getIPAdress();
         }
     }
 }

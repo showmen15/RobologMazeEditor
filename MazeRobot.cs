@@ -30,7 +30,7 @@ namespace MazeEditor
     public class MazeRobot : MazeIdentifiable
 	{
          public readonly string Type;
-		private string name;
+		public string name;
 		public PointF position;
         public PointF arrow;
         public double Probability;
