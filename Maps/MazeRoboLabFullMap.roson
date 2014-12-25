@@ -1,0 +1,608 @@
+{
+  "walls": [
+    {
+      "type": "wall",
+      "id": "Wall487",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.92,
+        "y": 2.5
+      },
+      "to": {
+        "x": 1.7,
+        "y": 2.5
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall490",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 2.5
+      },
+      "to": {
+        "x": 0.3,
+        "y": 2.5
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall491",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 2.5
+      },
+      "to": {
+        "x": 0.0,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall493",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 1.1,
+        "y": 3.26
+      },
+      "to": {
+        "x": 1.4,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall494",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 1.4,
+        "y": 3.26
+      },
+      "to": {
+        "x": 2.0,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall495",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.0,
+        "y": 3.26
+      },
+      "to": {
+        "x": 2.35,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall496",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.35,
+        "y": 2.26
+      },
+      "to": {
+        "x": 2.35,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall504",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.35,
+        "y": 1.38
+      },
+      "to": {
+        "x": 2.35,
+        "y": 2.5
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall505",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.07,
+        "y": 1.38
+      },
+      "to": {
+        "x": 2.35,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall507",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.92,
+        "y": 1.38
+      },
+      "to": {
+        "x": 1.2,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall509",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.92,
+        "y": 2.3
+      },
+      "to": {
+        "x": 0.92,
+        "y": 2.5
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall519",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.0,
+        "y": 3.26
+      },
+      "to": {
+        "x": 2.0,
+        "y": 3.66
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall521",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.0,
+        "y": 4.9
+      },
+      "to": {
+        "x": 2.35,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall527",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.35,
+        "y": 4.9
+      },
+      "to": {
+        "x": 3.0,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall528",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 3.0,
+        "y": 3.26
+      },
+      "to": {
+        "x": 3.0,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall529",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.35,
+        "y": 3.26
+      },
+      "to": {
+        "x": 3.0,
+        "y": 3.26
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall536",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.55,
+        "y": 1.38
+      },
+      "to": {
+        "x": 0.74,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall538",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.00,
+        "y": 1.38
+      },
+      "to": {
+        "x": 0.00,
+        "y": 2.5
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall550",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.74,
+        "y": 1.38
+      },
+      "to": {
+        "x": 0.92,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall558",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.00,
+        "y": 3.26
+      },
+      "to": {
+        "x": 0.00,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall559",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.00,
+        "y": 4.9
+      },
+      "to": {
+        "x": 1.4,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall560",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 1.4,
+        "y": 4.5
+      },
+      "to": {
+        "x": 1.4,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall569",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 1.4,
+        "y": 4.9
+      },
+      "to": {
+        "x": 2.0,
+        "y": 4.9
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall577",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 2.35,
+        "y": 0.4
+      },
+      "to": {
+        "x": 2.35,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall578",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.74,
+        "y": 0.4
+      },
+      "to": {
+        "x": 2.35,
+        "y": 0.4
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall579",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.74,
+        "y": 0.4
+      },
+      "to": {
+        "x": 0.74,
+        "y": 0.69
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall581",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.74,
+        "y": 1.2
+      },
+      "to": {
+        "x": 0.74,
+        "y": 1.38
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall593",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.74,
+        "y": 0.0
+      },
+      "to": {
+        "x": 0.74,
+        "y": 0.4
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall594",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "to": {
+        "x": 0.74,
+        "y": 0.0
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall595",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "to": {
+        "x": 0.00,
+        "y": 1.38
+      }
+    }
+  ],
+  "robots": [],
+  "victims": [],
+  "space-walls": [
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall487"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall490"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall491"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall493"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall494"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall495"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall496"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall504"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall505"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall507"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall509"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall558"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall559"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall560"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall569"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall519"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall577"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall578"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall579"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall581"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall550"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall593"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall594"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall595"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall536"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall521"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall527"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall528"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall529"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space497",
+      "wallId": "Wall538"
+    }
+  ]
+}

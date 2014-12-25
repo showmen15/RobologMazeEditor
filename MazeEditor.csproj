@@ -21,7 +21,7 @@
     <StartupObject />
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>0.0</OldToolsVersion>
@@ -40,6 +40,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -122,6 +123,7 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -166,6 +168,26 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Maps\2ndFloor-rooms.roson" />
+    <None Include="Maps\2ndFloor-roomsA.roson" />
+    <None Include="Maps\2ndFloor-roomsB.roson" />
+    <None Include="Maps\2ndFloor-walls.roson" />
+    <None Include="Maps\labNowe3b.roson" />
+    <None Include="Maps\MazeRoboLabFullMap.roson" />
+    <None Include="Maps\MazeRoboLabFullMap_graph.roson" />
+    <None Include="Maps\MazeRoboLabFullMap_graphSimple.roson" />
+    <None Include="Maps\MazeRoboLabFullMap_graphSimpleKopia.roson" />
+    <None Include="Maps\MazeRoboLabFullMap_graphSimpleKopia2.roson" />
+    <None Include="Maps\MazeRoboLabSplitIntoRooms2.roson" />
+    <None Include="Maps\MazeRoboLabSplitIntoRooms3.roson" />
+    <None Include="Maps\MazeRoboLabSplitIntoRooms8.roson" />
+    <None Include="Maps\new4.roson" />
+    <None Include="Maps\test.roson" />
+    <None Include="Maps\test2.roson" />
+    <None Include="Maps\test3.roson" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
