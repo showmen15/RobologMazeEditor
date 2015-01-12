@@ -149,6 +149,7 @@
     <Compile Include="MazeWall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Target.cs" />
     <Compile Include="XmlHelper.cs">
       <SubType>Code</SubType>
     </Compile>
