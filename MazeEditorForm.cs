@@ -4249,6 +4249,7 @@ Color.Yellow);
             {
                 tablica = udpDTP.Receive(ref endPointDTP);
                 temp = System.Text.Encoding.Default.GetString(tablica);
+                mazeRobots.Clear();
                 robotsTaskList.Clear();
 
                 foreach (var item in temp.Split(new string[] { "#" }, StringSplitOptions.RemoveEmptyEntries))
