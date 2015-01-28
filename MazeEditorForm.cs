@@ -4310,7 +4310,8 @@ Color.Yellow);
             foreach (var tmp in temp)
             {
                 MazeRobot tt = new MazeRobot("Robot", tmp.ID, new Point2D(tmp.X, tmp.Y), (float)(1.0 * 100));
-
+                tt.UpdateArrowPosiotion(tmp.Angle);
+                
                 tempRobot.Add(tt);
                 mazeRobots.Add(tt);
             }
