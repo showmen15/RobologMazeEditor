@@ -35,6 +35,7 @@ namespace MazeEditor
         public MazeNode CetralNode;
         public string Function;
         public int ExpectedPersonCount;
+        public int Searched;
 
 
         protected static Random random = new Random();

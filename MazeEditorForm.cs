@@ -94,7 +94,8 @@ namespace MazeEditor
         private System.Windows.Forms.Label snapToGridLabel;
         private System.Windows.Forms.Label snapToAngleLabel;
 
-
+        private string worldName = string.Empty;
+        private int iWorldTimeout;
         private ArrayList mazeWalls = null;
         private ArrayList mazeRobots = null;
         private ArrayList mazeVictims = null;
@@ -103,6 +104,10 @@ namespace MazeEditor
         private MazeGraph mazeGraph = null;
 
         private ArrayList mazeTargets = null;
+
+        private ArrayList mazeNodeNodes = null;
+        public ArrayList mazeSpaceNode = null;
+        public ArrayList mazeSpaceRobots = null;
 
         private Graphics mazeBitmapGraphics = null;
         private float zoom = 1.0f;
@@ -154,6 +159,9 @@ namespace MazeEditor
         private Pen robotPenSelected;
         private Pen robotPenArrow;
         private Font fontSelected;
+        private Font fontGraph;
+
+        private Pen[] taskPanDirection;
 
         private Brush victimBrush;
 
@@ -332,6 +340,14 @@ namespace MazeEditor
         private DataGridViewTextBoxColumn colTask_Y;
         private DataGridViewTextBoxColumn colTask_Name;
         private DataGridViewCheckBoxColumn colIsEnd;
+        private Label label13;
+        private Label label12;
+        private TextBox TargetY;
+        private TextBox TargetX;
+        private NumericUpDown iTimeout;
+        private Label label15;
+        private TabPage tabPage2;
+        private Button button3;
         private MazeSpace previousSelectedRoom;
 
         public MazeEditorForm()
@@ -351,8 +367,12 @@ namespace MazeEditor
             robotBrush = (new Pen(Color.White, 1)).Brush;
             robotBrushSelected = (new Pen(Color.Red, 1)).Brush;
             robotPenArrow = new Pen(Color.Red, 2);
+
+            taskPanDirection = new Pen[] { new Pen(Color.Red, 2), new Pen(Color.Green, 2), new Pen(Color.Orange, 2) };
+
             victimBrush = (new Pen(Color.Orange, 1)).Brush;
             fontSelected = new System.Drawing.Font(this.Font, FontStyle.Bold);
+            fontGraph = new Font(FontFamily.GenericSansSerif,3.0F, FontStyle.Bold);
 
             robotPenSelected = new Pen(Color.Red, 1);
 
@@ -403,7 +423,6 @@ namespace MazeEditor
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -432,6 +451,8 @@ namespace MazeEditor
             this.snapToGridLabel = new System.Windows.Forms.Label();
             this.objectSelectorTabControl = new System.Windows.Forms.TabControl();
             this.mazeTabPage = new System.Windows.Forms.TabPage();
+            this.iTimeout = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
             this.mazeNameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -456,6 +477,10 @@ namespace MazeEditor
             this.label123 = new System.Windows.Forms.Label();
             this.wallWidthNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.robotsTabPage = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.TargetY = new System.Windows.Forms.TextBox();
+            this.TargetX = new System.Windows.Forms.TextBox();
             this.robotNameLabel = new System.Windows.Forms.Label();
             this.robotTypeTextBox = new System.Windows.Forms.TextBox();
             this.robotTypeLabel = new System.Windows.Forms.Label();
@@ -508,14 +533,6 @@ namespace MazeEditor
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.dataGridView1DTP = new System.Windows.Forms.DataGridView();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.txtIPDTP = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.butPauseDTP = new System.Windows.Forms.Button();
-            this.butStopDTP = new System.Windows.Forms.Button();
-            this.bytStartDTP = new System.Windows.Forms.Button();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colY = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -525,10 +542,22 @@ namespace MazeEditor
             this.colTask_Y = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTask_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIsEnd = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtIPDTP = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.butPauseDTP = new System.Windows.Forms.Button();
+            this.butStopDTP = new System.Windows.Forms.Button();
+            this.bytStartDTP = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
             this.mazeTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gravityNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightNumericUpDown)).BeginInit();
@@ -551,6 +580,7 @@ namespace MazeEditor
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1DTP)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // viewPanel
@@ -563,17 +593,6 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
-            // 
-            // mazePanel
-            // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -813,6 +832,7 @@ namespace MazeEditor
             this.objectSelectorTabControl.Controls.Add(this.graphTabPage);
             this.objectSelectorTabControl.Controls.Add(this.PFTabPage);
             this.objectSelectorTabControl.Controls.Add(this.tabPage1);
+            this.objectSelectorTabControl.Controls.Add(this.tabPage2);
             this.objectSelectorTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectSelectorTabControl.ImageList = this.mainMenuImageList;
             this.objectSelectorTabControl.ItemSize = new System.Drawing.Size(42, 30);
@@ -827,6 +847,8 @@ namespace MazeEditor
             // 
             // mazeTabPage
             // 
+            this.mazeTabPage.Controls.Add(this.iTimeout);
+            this.mazeTabPage.Controls.Add(this.label15);
             this.mazeTabPage.Controls.Add(this.mazeNameLabel);
             this.mazeTabPage.Controls.Add(this.label1);
             this.mazeTabPage.Controls.Add(this.label2);
@@ -841,6 +863,33 @@ namespace MazeEditor
             this.mazeTabPage.Size = new System.Drawing.Size(363, 478);
             this.mazeTabPage.TabIndex = 3;
             this.mazeTabPage.Text = "maze";
+            // 
+            // iTimeout
+            // 
+            this.iTimeout.Location = new System.Drawing.Point(80, 153);
+            this.iTimeout.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.iTimeout.Name = "iTimeout";
+            this.iTimeout.Size = new System.Drawing.Size(112, 20);
+            this.iTimeout.TabIndex = 20;
+            this.iTimeout.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.iTimeout.ValueChanged += new System.EventHandler(this.iTimeout_ValueChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(8, 160);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(45, 13);
+            this.label15.TabIndex = 19;
+            this.label15.Text = "Timeout";
             // 
             // mazeNameLabel
             // 
@@ -966,6 +1015,7 @@ namespace MazeEditor
             this.worldNameTextBox.Size = new System.Drawing.Size(184, 20);
             this.worldNameTextBox.TabIndex = 8;
             this.worldNameTextBox.Text = "MyMaze";
+            this.worldNameTextBox.TextChanged += new System.EventHandler(this.worldNameTextBox_TextChanged);
             // 
             // wallsTabPage
             // 
@@ -984,9 +1034,9 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
@@ -1023,7 +1073,7 @@ namespace MazeEditor
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -1033,7 +1083,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -1043,7 +1093,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -1053,7 +1103,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -1068,7 +1118,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 251);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 238);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1157,6 +1207,10 @@ namespace MazeEditor
             // 
             // robotsTabPage
             // 
+            this.robotsTabPage.Controls.Add(this.label13);
+            this.robotsTabPage.Controls.Add(this.label12);
+            this.robotsTabPage.Controls.Add(this.TargetY);
+            this.robotsTabPage.Controls.Add(this.TargetX);
             this.robotsTabPage.Controls.Add(this.robotNameLabel);
             this.robotsTabPage.Controls.Add(this.robotTypeTextBox);
             this.robotsTabPage.Controls.Add(this.robotTypeLabel);
@@ -1164,11 +1218,45 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(19, 194);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(51, 13);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "Target Y:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(16, 161);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(51, 13);
+            this.label12.TabIndex = 23;
+            this.label12.Text = "Target X:";
+            // 
+            // TargetY
+            // 
+            this.TargetY.Location = new System.Drawing.Point(88, 188);
+            this.TargetY.Name = "TargetY";
+            this.TargetY.Size = new System.Drawing.Size(100, 20);
+            this.TargetY.TabIndex = 22;
+            this.TargetY.Text = "0";
+            // 
+            // TargetX
+            // 
+            this.TargetX.Location = new System.Drawing.Point(88, 161);
+            this.TargetX.Name = "TargetX";
+            this.TargetX.Size = new System.Drawing.Size(100, 20);
+            this.TargetX.TabIndex = 21;
+            this.TargetX.Text = "0";
             // 
             // robotNameLabel
             // 
@@ -1240,9 +1328,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1257,9 +1345,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1299,7 +1387,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1407,7 +1495,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1439,7 +1527,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1454,7 +1542,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1655,6 +1743,7 @@ namespace MazeEditor
             // 
             // butStop
             // 
+            this.butStop.Enabled = false;
             this.butStop.Location = new System.Drawing.Point(170, 108);
             this.butStop.Name = "butStop";
             this.butStop.Size = new System.Drawing.Size(75, 23);
@@ -1722,7 +1811,7 @@ namespace MazeEditor
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(363, 478);
             this.tabPage1.TabIndex = 7;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "TC";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // button2
@@ -1740,6 +1829,9 @@ namespace MazeEditor
             this.dataGridView1DTP.AllowUserToAddRows = false;
             this.dataGridView1DTP.AllowUserToDeleteRows = false;
             this.dataGridView1DTP.AllowUserToResizeRows = false;
+            this.dataGridView1DTP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1DTP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1DTP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1DTP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1757,8 +1849,66 @@ namespace MazeEditor
             this.dataGridView1DTP.ReadOnly = true;
             this.dataGridView1DTP.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dataGridView1DTP.RowHeadersVisible = false;
-            this.dataGridView1DTP.Size = new System.Drawing.Size(347, 292);
+            this.dataGridView1DTP.Size = new System.Drawing.Size(347, 325);
             this.dataGridView1DTP.TabIndex = 12;
+            // 
+            // colID
+            // 
+            this.colID.HeaderText = "ID";
+            this.colID.Name = "colID";
+            this.colID.ReadOnly = true;
+            // 
+            // colX
+            // 
+            this.colX.HeaderText = "X";
+            this.colX.Name = "colX";
+            this.colX.ReadOnly = true;
+            this.colX.Visible = false;
+            // 
+            // colY
+            // 
+            this.colY.HeaderText = "Y";
+            this.colY.Name = "colY";
+            this.colY.ReadOnly = true;
+            this.colY.Visible = false;
+            // 
+            // colAngle
+            // 
+            this.colAngle.HeaderText = "Angle";
+            this.colAngle.Name = "colAngle";
+            this.colAngle.ReadOnly = true;
+            this.colAngle.Visible = false;
+            // 
+            // colTaskID
+            // 
+            this.colTaskID.HeaderText = "TaskID";
+            this.colTaskID.Name = "colTaskID";
+            this.colTaskID.ReadOnly = true;
+            this.colTaskID.Visible = false;
+            // 
+            // colTask_X
+            // 
+            this.colTask_X.HeaderText = "Task_X";
+            this.colTask_X.Name = "colTask_X";
+            this.colTask_X.ReadOnly = true;
+            // 
+            // colTask_Y
+            // 
+            this.colTask_Y.HeaderText = "Task_Y";
+            this.colTask_Y.Name = "colTask_Y";
+            this.colTask_Y.ReadOnly = true;
+            // 
+            // colTask_Name
+            // 
+            this.colTask_Name.HeaderText = "Task_Name";
+            this.colTask_Name.Name = "colTask_Name";
+            this.colTask_Name.ReadOnly = true;
+            // 
+            // colIsEnd
+            // 
+            this.colIsEnd.HeaderText = "IsEnd";
+            this.colIsEnd.Name = "colIsEnd";
+            this.colIsEnd.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -1821,6 +1971,7 @@ namespace MazeEditor
             // 
             // butStopDTP
             // 
+            this.butStopDTP.Enabled = false;
             this.butStopDTP.Location = new System.Drawing.Point(175, 94);
             this.butStopDTP.Name = "butStopDTP";
             this.butStopDTP.Size = new System.Drawing.Size(75, 23);
@@ -1839,63 +1990,37 @@ namespace MazeEditor
             this.bytStartDTP.UseVisualStyleBackColor = true;
             this.bytStartDTP.Click += new System.EventHandler(this.butStartDTP_Click);
             // 
-            // colID
+            // tabPage2
             // 
-            this.colID.HeaderText = "ID";
-            this.colID.Name = "colID";
-            this.colID.ReadOnly = true;
+            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Location = new System.Drawing.Point(4, 67);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(363, 478);
+            this.tabPage2.TabIndex = 8;
+            this.tabPage2.Text = "BFS";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // colX
+            // button3
             // 
-            this.colX.HeaderText = "X";
-            this.colX.Name = "colX";
-            this.colX.ReadOnly = true;
-            this.colX.Visible = false;
+            this.button3.Location = new System.Drawing.Point(115, 51);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // colY
+            // mazePanel
             // 
-            this.colY.HeaderText = "Y";
-            this.colY.Name = "colY";
-            this.colY.ReadOnly = true;
-            this.colY.Visible = false;
-            // 
-            // colAngle
-            // 
-            this.colAngle.HeaderText = "Angle";
-            this.colAngle.Name = "colAngle";
-            this.colAngle.ReadOnly = true;
-            this.colAngle.Visible = false;
-            // 
-            // colTaskID
-            // 
-            this.colTaskID.HeaderText = "TaskID";
-            this.colTaskID.Name = "colTaskID";
-            this.colTaskID.ReadOnly = true;
-            this.colTaskID.Visible = false;
-            // 
-            // colTask_X
-            // 
-            this.colTask_X.HeaderText = "Task_X";
-            this.colTask_X.Name = "colTask_X";
-            this.colTask_X.ReadOnly = true;
-            // 
-            // colTask_Y
-            // 
-            this.colTask_Y.HeaderText = "Task_Y";
-            this.colTask_Y.Name = "colTask_Y";
-            this.colTask_Y.ReadOnly = true;
-            // 
-            // colTask_Name
-            // 
-            this.colTask_Name.HeaderText = "Task_Name";
-            this.colTask_Name.Name = "colTask_Name";
-            this.colTask_Name.ReadOnly = true;
-            // 
-            // colIsEnd
-            // 
-            this.colIsEnd.HeaderText = "IsEnd";
-            this.colIsEnd.Name = "colIsEnd";
-            this.colIsEnd.ReadOnly = true;
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // MazeEditorForm
             // 
@@ -1910,12 +2035,14 @@ namespace MazeEditor
             this.MinimumSize = new System.Drawing.Size(472, 424);
             this.Name = "MazeEditorForm";
             this.Text = "Maze Editor";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MazeEditorForm_FormClosed);
             this.Load += new System.EventHandler(this.MazeEditorForm_Load);
             this.viewPanel.ResumeLayout(false);
             this.leftMenuPanel.ResumeLayout(false);
             this.objectSelectorTabControl.ResumeLayout(false);
             this.mazeTabPage.ResumeLayout(false);
             this.mazeTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gravityNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightNumericUpDown)).EndInit();
@@ -1947,6 +2074,7 @@ namespace MazeEditor
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1DTP)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2011,6 +2139,9 @@ namespace MazeEditor
             mazeRooms = new ArrayList();
             mazeGraph = new MazeGraph();
             mazeTargets = new ArrayList();
+            mazeNodeNodes = new ArrayList();
+            mazeSpaceNode = new ArrayList();
+            mazeSpaceRobots = new ArrayList();
             MazeIdentifiable.ClearBusyIdsCache();
 
             recreateRoomsTreeView();
@@ -2049,6 +2180,12 @@ namespace MazeEditor
             mazeVictims = jsonHelper.mazeVictims;
             mazeGraph = jsonHelper.mazeGraph;
             mazeRooms = jsonHelper.mazeSpaces;
+            worldName = jsonHelper.worldName;
+            mazeNodeNodes = jsonHelper.mazeNodeNodes;
+            mazeSpaceNode = jsonHelper.mazeSpaceNode;
+            mazeSpaceRobots = jsonHelper.mazeSpaceRobots;
+
+            iWorldTimeout = jsonHelper.iWorldTimeout;
 
 
             double maxX = 500;
@@ -2078,7 +2215,7 @@ namespace MazeEditor
             if (fileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            JsonHelper.SaveAll(fileDialog.FileName, mazeWalls, mazeRobots, mazeVictims, mazeRooms, mazeGraph);
+            JsonHelper.SaveAll(fileDialog.FileName, mazeWalls, mazeRobots, mazeVictims, mazeRooms, mazeGraph, worldName,iWorldTimeout);
 
 
 
@@ -2353,13 +2490,61 @@ namespace MazeEditor
                 }
             }
 
-            foreach (Target target in mazeTargets)
+            RobotTask taskCurrent;
+            RobotTask taskPrivious = null;
+
+            for (int i = 0; i < robotsTaskList.Count(); i++)
             {
+                taskCurrent = robotsTaskList[i];
+
+                if (taskCurrent.IsEnd)
+                    mazeBitmapGraphics.FillRectangle(taskPenDone, taskCurrent.GetTaskX - sizeOffset, taskCurrent.GetTaskY - sizeOffset, size, size);
+                else
+                    mazeBitmapGraphics.FillRectangle(taskPenInProgress, taskCurrent.GetTaskX - sizeOffset, taskCurrent.GetTaskY - sizeOffset, size, size);
+
+
+                if (i == 0)
+                    taskPrivious = taskCurrent;
+                else
+                {
+                    if (taskPrivious.RobotID != taskCurrent.RobotID)
+                        taskPrivious = taskCurrent;
+                    else
+                    {
+                        Pen temp = taskPanDirection[taskPrivious.RobotID - 1];
+                        temp.CustomEndCap = new AdjustableArrowCap(size / 2, size / 2);
+                        Vector2D arcDir = new Vector2D(new Point2D(taskPrivious.GetTaskX, taskPrivious.GetTaskY), new Point2D(taskCurrent.GetTaskX, taskCurrent.GetTaskY));
+                        arcDir.Normalize();
+
+                        mazeBitmapGraphics.DrawLine(temp, taskPrivious.GetTaskX, taskPrivious.GetTaskY, taskCurrent.GetTaskX, taskCurrent.GetTaskY);
+
+                        taskPrivious = taskCurrent;
+                    }                    
+                }
+            }
+
+
+
+            /*for(int i = 0; i < mazeTargets.Count; i++)
+            {
+                target = (Target) mazeTargets[i];
+
                 if (target.TaskDone)
                     mazeBitmapGraphics.FillRectangle(taskPenDone, target.X - sizeOffset, target.Y - sizeOffset, size, size);
                 else
                     mazeBitmapGraphics.FillRectangle(taskPenInProgress, target.X - sizeOffset, target.Y - sizeOffset, size, size);
-            }
+
+                if ((i > 0) && (i != mazeTargets.Count))
+                {
+                    targetPrevious = (Target)mazeTargets[i - 1];
+                    Pen temp = taskPanDirection[targetPrevious.ID - 1];
+                    temp.CustomEndCap = new AdjustableArrowCap(size / 2, size / 2);
+                    Vector2D arcDir = new Vector2D(new Point2D(targetPrevious.X, targetPrevious.Y), new Point2D(target.X, target.Y));
+                    arcDir.Normalize();
+
+                    mazeBitmapGraphics.DrawLine(temp, targetPrevious.X, targetPrevious.Y, target.X, target.Y);
+                }
+            }*/
 
             foreach (MazeVictim victim in mazeVictims)
             {
@@ -2398,6 +2583,9 @@ namespace MazeEditor
                     Point2D from = arc.from.position.GetTranslatedPoint(arcDir * (arc.from.Door == null ? size : size / 2));
                     arcDir.Inverse();
                     Point2D to = arc.to.position.GetTranslatedPoint(arcDir * (arc.to.Door == null ? size : size / 2));
+
+                    if (true)
+                        mazeBitmapGraphics.DrawString(arc.Weight.ToString(), fontGraph, robotBrushSelected, (float)((arc.from.position.x + arc.to.position.x) / 2), (float)((arc.from.position.y + arc.to.position.y) / 2));
 
                     mazeBitmapGraphics.DrawLine(graphPen, from, to);
                 }
@@ -2775,11 +2963,18 @@ namespace MazeEditor
 
         private void CreateRobot(int x, int y)
         {
+            float tmpTargetX,tmpTargetY;
+            tmpTargetX = tmpTargetY = 0;
+
+            float.TryParse(TargetX.Text, out tmpTargetX);
+            float.TryParse(TargetY.Text, out tmpTargetY);
+
             tempPoints[0].X = x;
             tempPoints[0].Y = y;
             invertedMazeMatrix.TransformPoints(tempPoints);
-            mazeRobots.Add(new MazeRobot(robotTypeTextBox.Text, robotNameTextBox.Text + robotNameIndex.ToString(), tempPoints[0], (float)robotHeightNumericUpDown.Value * 100));
+            mazeRobots.Add(new MazeRobot(robotTypeTextBox.Text, robotNameTextBox.Text, tempPoints[0], (float)robotHeightNumericUpDown.Value * 100, new PointF(tmpTargetX,tmpTargetY)));            
             robotNameIndex++;
+            robotNameTextBox.Text = robotNameTextBox.Text + robotNameIndex.ToString();
             mazePanel_Paint(this, null);
         }
 
@@ -3396,7 +3591,7 @@ namespace MazeEditor
 
                 TreeNode nodenode = new TreeNode();
                 nodenode.Tag = node;
-                nodenode.Text = node.MazeGraphNodeType + ": " + node.position.ToString();
+                nodenode.Text = node.MazeGraphNodeType + ": " + node.position.ToString() + "[" + node.ID + "]";
                 graphTreeView.Nodes.Add(nodenode);
                 // węzły dostępne 
                 //foreach (MazeGraphArc arc in node.OutgoingGraphArcs)
@@ -3827,6 +4022,8 @@ namespace MazeEditor
             // initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
             // initUDP_BBandStart(txtIP.Text, 5555);
             initUDPandStart(txtIP.Text, 1234, Convert.ToInt32(dNumberRobots.Value));
+            butStart.Enabled = false;
+            butStop.Enabled = true;
         }
 
         UdpClient udp;
@@ -3857,7 +4054,7 @@ namespace MazeEditor
             {
                 robotName = string.Format("robot{0}", i.ToString());
 
-                RobotsPF[i] = new MazeRobot("Robot", robotName, new Point2D(i * 100, i * 100), (float)(1.0 * 100));
+                RobotsPF[i] = new MazeRobot("Robot", robotName, new Point2D(i * 100, i * 100), (float)(1.0 * 100),new PointF(0,0));
                 RobotsPF[i].ID = robotName;
 
                 mazeRobots.Add(RobotsPF[i]);
@@ -3961,6 +4158,8 @@ namespace MazeEditor
         private void butStop_Click(object sender, EventArgs e)
         {
             threadStop();
+            butStart.Enabled = true;
+            butStop.Enabled = false;
         }
 
         private void butPause_Click(object sender, EventArgs e)
@@ -4152,7 +4351,7 @@ Color.Yellow);
 
         private void MazeEditorForm_Load(object sender, EventArgs e)
         {
-            txtIP.Text = getIPAdress();
+           txtIPDTP.Text = txtIP.Text = getIPAdress();
         }
 
         #region Drive to point implementation
@@ -4162,6 +4361,8 @@ Color.Yellow);
             // initUDPandStart(txtIP.Text, int.Parse(txtPort.Text), Convert.ToInt32(dNumberRobots.Value));
             // initUDP_BBandStart("127.0.0.1", 5555);
             initUDPandStartDTP(txtIPDTP.Text, 4321);
+            bytStartDTP.Enabled = false;
+            butStopDTP.Enabled = true;
         }
 
         UdpClient udpDTP;
@@ -4203,18 +4404,21 @@ Color.Yellow);
 
         private void addItem(string[] item)
         {
+            int indexFromTaskList = -1;
             string sID = item[1];
             double dX = double.Parse(item[2].Replace(".",","));
             double dY = double.Parse(item[3].Replace(".", ","));
             double dAngle = double.Parse(item[4].Replace(".", ","));
+            int id = int.Parse(item[5]);
 
-            for (int i = 5; i < item.Length; i += 5)
+            for (int i = 6; i < item.Length; i += 5)
             {
                 RobotTask tempRobot = new RobotTask();
                 tempRobot.ID = sID;
                 tempRobot.X = dX * 100;
                 tempRobot.Y = dY * 100;
                 tempRobot.Angle = dAngle;
+                tempRobot.RobotID = id;
 
                 tempRobot.TaskID = item[i];
                 tempRobot.Task_X = double.Parse(item[i+ 1].Replace(".", ",")) * 100;
@@ -4222,9 +4426,31 @@ Color.Yellow);
                 tempRobot.Task_Name = item[i + 3];
                 tempRobot.IsEnd = bool.Parse(item[i +4].Replace(".", ","));
 
-                robotsTaskList.Add(tempRobot);
+                indexFromTaskList = getRobotTaskId(tempRobot);
+
+                if (indexFromTaskList > -1) //aktualizacja zadania
+                {
+                    robotsTaskList[indexFromTaskList].IsEnd = tempRobot.IsEnd;
+                    robotsTaskList[indexFromTaskList].X = tempRobot.X;
+                    robotsTaskList[indexFromTaskList].Y = tempRobot.Y;
+                    robotsTaskList[indexFromTaskList].Angle = tempRobot.Angle;
+                }
+                else
+                    robotsTaskList.Add(tempRobot);
             }
         }
+
+        private int getRobotTaskId(RobotTask tempRobot)
+        {
+            for (int i = 0; i < robotsTaskList.Count(); i++)
+            {
+                if (robotsTaskList[i].TaskID == tempRobot.TaskID)
+                    return i;
+            }
+
+            return -1;
+        }
+
 
        /* private void updateItem(string[] item)
         {
@@ -4249,8 +4475,8 @@ Color.Yellow);
             {
                 tablica = udpDTP.Receive(ref endPointDTP);
                 temp = System.Text.Encoding.Default.GetString(tablica);
-                mazeRobots.Clear();
-                robotsTaskList.Clear();
+                //mazeRobots.Clear();
+                //robotsTaskList.Clear();
 
                 foreach (var item in temp.Split(new string[] { "#" }, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -4266,7 +4492,9 @@ Color.Yellow);
                 }
 
                 RobotRefresh();
-                TaskRefresh();
+                
+                
+                //TaskRefresh();
                 //    indexTable = int.Parse(tmp[0]); //aktaualny index;
 
                 //    if ((tmp.Length == 5) && (indexTable < maxRobots)) //zmienic gdy ilosc danych do przeslania sie zmienia;
@@ -4304,12 +4532,14 @@ Color.Yellow);
 
         private void RobotRefresh()
         {
+            mazeRobots.Clear();
+            
             List<MazeRobot> tempRobot = new List<MazeRobot>();
             var temp = robotsTaskList.GroupBy(pp => pp.ID).Select(f => f.First()).ToList();
 
             foreach (var tmp in temp)
             {
-                MazeRobot tt = new MazeRobot("Robot", tmp.ID, new Point2D(tmp.X, tmp.Y), (float)(1.0 * 100));
+                MazeRobot tt = new MazeRobot("Robot", tmp.ID, new Point2D(tmp.X, tmp.Y), (float)(1.0 * 100),new PointF(0,0));
                 tt.UpdateArrowPosiotion(tmp.Angle);
                 
                 tempRobot.Add(tt);
@@ -4325,7 +4555,7 @@ Color.Yellow);
 
             foreach (var task in robotsTaskList)
             {
-                Target targ = new Target(task.Task_X, task.Task_Y, task.IsEnd);
+                Target targ = new Target(task.Task_X, task.Task_Y, task.IsEnd, task.ID, task.RobotID);
                 mazeTargets.Add(targ);
             }
         }
@@ -4339,23 +4569,16 @@ Color.Yellow);
 
         private void threadStopDTP()
         {
-            endTransmisionDTP = true;
-            udpDTP.Close();
-
             if (reciveThreadDTP != null)
             {
+                udpDTP.Close();
+                endTransmisionDTP = true;
+
+                udpDTP = null;
+
                 reciveThreadDTP.Abort();
                 reciveThreadDTP = null;
             }
-            // endTransmision_BBDTP = true;
-
-            //if (udp_BBDTP != null)
-            //    udp_BBDTP.Close();
-
-            //if (reciveThread_BBDTP != null)
-            //    reciveThread_BBDTP.Abort();
-
-            //reciveThread_BBDTP = null;
         }
 
         private void threadPauseDTP()
@@ -4366,6 +4589,8 @@ Color.Yellow);
         private void butStopDTP_Click(object sender, EventArgs e)
         {
             threadStopDTP();
+            bytStartDTP.Enabled = true;
+            butStopDTP.Enabled = false;
         }
 
         private void butPauseDTP_Click(object sender, EventArgs e)
@@ -4380,10 +4605,55 @@ Color.Yellow);
             public double Y { get; set; }
             public double Angle { get; set; }
             public string TaskID { get; set; }
-            public double Task_X { get; set; }
-            public double Task_Y { get; set; }
+
+            private double dTask_X;
+            public double Task_X 
+            {
+                get
+                {
+                    return dTask_X;
+                }
+                set
+                {
+                    dTask_X  = value;
+                    iTask_X = Convert.ToInt32(value);
+                }
+            }
+
+            private double dTask_Y;
+            public double Task_Y 
+            {
+                get
+                {
+                    return dTask_Y;
+                }
+                set
+                {
+                    dTask_Y = value;
+                    iTask_Y = Convert.ToInt32(value);
+                }
+            }
             public string Task_Name { get; set; }
             public bool IsEnd { get; set; }
+            public int RobotID { get; set; }
+
+            private int iTask_X;
+            public int GetTaskX
+            {
+                get
+                {
+                    return iTask_X;
+                }
+            }
+
+            private int iTask_Y;
+            public int GetTaskY
+            {
+                get
+                {
+                    return iTask_Y;
+                }
+            }
 
             public RobotTask()
             {
@@ -4422,30 +4692,327 @@ Color.Yellow);
 
         #endregion
 
-       /* private void txtIP_TextChanged(object sender, EventArgs e)
+        private void worldNameTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            worldName = worldNameTextBox.Text;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void iTimeout_ValueChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < RobotsPF.Length; i++)
-                RobotsPF[i].Selected = false;
+            iWorldTimeout = Convert.ToInt32(iTimeout.Value);
+        }
 
-            if (dataGridView1.SelectedRows.Count > 0)
+        private void MazeEditorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            butStop.PerformClick();
+            butStopDTP.PerformClick();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            RunSimulation( 1, 1);
+        }
+
+        /* private void txtIP_TextChanged(object sender, EventArgs e)
+         {
+
+         }
+
+         private void button1_Click(object sender, EventArgs e)
+         {
+             for (int i = 0; i < RobotsPF.Length; i++)
+                 RobotsPF[i].Selected = false;
+
+             if (dataGridView1.SelectedRows.Count > 0)
+             {
+                 for (int i = 0; i < dataGridView1.SelectedRows.Count; i++)
+                 {
+                     int index = int.Parse(dataGridView1.SelectedRows[i].Cells["ID"].Value.ToString());
+
+                     RobotsPF[index].Selected = true;
+                 }
+             }
+
+             this.Invoke((MethodInvoker)delegate()
+             {
+                 mazePanel_Paint(this, null);
+             });
+         }*/
+
+        #region ::  BFS ::
+
+        public double RunSimulation(double dSearchFactor, double dPassageFactor)
+        {
+            MazeRobot currentRobot;
+            mazeRobotsComparerClass compRobot = new mazeRobotsComparerClass();
+            int minCostRoomToSearchIndex = -1;
+            int roomRobotCurrentIndex = -1;
+
+            int roomMinCostIndex = -1;
+            double dCurrentPassageCost = 0.0;
+            int roomToSearchCount = 0;
+            
+            Dijkstras.Graph graph = initGraph(mazeNodeNodes);
+            List<string> spaceNodeList = getSpaceNode(mazeGraph.MazeGraphNodes);
+             
+            List<MazeSpaceNodesArea> allRooms =  initRoomToSearch(spaceNodeList,mazeSpaceNode, mazeRooms);
+            roomToSearchCount = allRooms.Count - 1;
+
+            double[][] shortPathCost = initShortPathCost(allRooms, graph); //przelicz kosztu przejscia pomiedzy spaceNodeami (pokojami)
+
+            initRobotsSpaceRoom(mazeRobots, mazeSpaceRobots); //kazdy robot trafil do innego pomieszzczenie 
+
+            while (roomToSearchCount != 0)
             {
-                for (int i = 0; i < dataGridView1.SelectedRows.Count; i++)
-                {
-                    int index = int.Parse(dataGridView1.SelectedRows[i].Cells["ID"].Value.ToString());
+                mazeRobots.Sort(0, mazeRobots.Count, compRobot);
+                currentRobot = mazeRobots[0] as MazeRobot;
 
-                    RobotsPF[index].Selected = true;
+                roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
+
+                if (roomRobotCurrentIndex == -1)
+                    throw new Exception("Wrong getIndexRoomByName -> roomRobotCurrentIndex");
+
+                currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor;
+                allRooms[roomRobotCurrentIndex].Searched = true;
+
+                minCostRoomToSearchIndex = getIndexMinCost(shortPathCost[roomRobotCurrentIndex], allRooms); //szukam najblizszy pokoj do przeszukania
+
+                if (minCostRoomToSearchIndex == -1)
+                    throw new Exception("Wrong getIndexMinCost -> minCostRoomToSearchIndex");
+
+                dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex];
+
+                currentRobot.PassageCost += allRooms[minCostRoomToSearchIndex].Area * dPassageFactor;
+                currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId;
+                currentRobot.TracePathRobot += string.Format("{0};", currentRobot.CurrentRoom);
+
+                roomToSearchCount--; 
+
+            }
+
+            double sumRobotCost = 0.0;
+
+            foreach (MazeRobot robot in mazeRobots)
+            {
+                System.Diagnostics.Trace.Write(robot.TracePathRobot + "\n");
+                sumRobotCost += robot.PassageCost;
+            }
+
+            return sumRobotCost;
+        }
+
+        private int getIndexMinCost(double[] dCosts, List<MazeSpaceNodesArea> allRooms)
+        {
+            double tempCost = double.MaxValue;
+            int index = -1;
+
+            for (int i = 0; i < dCosts.Length; i++)
+            {
+                if ((dCosts[i] > 0.0) && (allRooms[i].Searched == false))
+                {
+                    if (dCosts[i] < tempCost)
+                    {
+                        index = i;
+                        tempCost = dCosts[i];
+                    } 
                 }
             }
 
-            this.Invoke((MethodInvoker)delegate()
+            return index;
+        }
+
+        private int getIndexRoomByName(string sSpaceId, List<MazeSpaceNodesArea> allRooms)
+        {
+            for (int i = 0; i < allRooms.Count; i++)
+                if (allRooms[i].SpaceId == sSpaceId)
+                    return i;
+
+            return -1;
+        }
+
+        public class mazeRobotsComparerClass : IComparer
+        {
+            int IComparer.Compare(Object robot1, Object robot2)
             {
-                mazePanel_Paint(this, null);
-            });
-        }*/
+                MazeRobot tempRobot1 = robot1 as MazeRobot;
+                MazeRobot tempRobot2 = robot2 as MazeRobot;
+
+                if (tempRobot1.PassageCost == tempRobot2.PassageCost)
+                    return 0;
+                else if (tempRobot1.PassageCost > tempRobot2.PassageCost)
+                    return 1;
+                else
+                    return -1;
+            }
+        }
+
+        private void initRobotsSpaceRoom(ArrayList mazeRobots, ArrayList mazeSpaceRobots)
+        {
+            MazeSpaceRobots tempSpace;
+            int index;
+
+            foreach (MazeRobot itemRobot in mazeRobots)
+            {
+                index = getSpaceIndexByRobotName(itemRobot.ID,mazeSpaceRobots);
+
+                if(index == -1)
+                    throw new Exception("Cannot getSpaceNameByRobotName -> sMazeSpaceRobot");
+            
+                tempSpace = mazeSpaceRobots[index] as MazeSpaceRobots;
+
+                itemRobot.CurrentRoom = tempSpace.SpaceId;
+                itemRobot.TracePathRobot = string.Format("{0};", itemRobot.CurrentRoom);
+
+                  
+                //sMazeSpaceRobot = roomToSerch[index].SpaceId;
+
+                //dCost = getRoomCostByName(sMazeSpaceRobot,roomToSerch) * dSearchFactor;
+
+                //if(dCost <= 0.0)
+                //    throw new Exception("Wrong cost getRoomCostByName -> dCost");
+
+                ////itemRobot.PassageCost += dCost;
+                //itemRobot.CurrentRoom = sMazeSpaceRobot;
+
+                ////roomToSerch.RemoveAt(index); //usun z listy pomieszczeni do przeszukania
+            }
+        }
+
+        private double getRoomCostByName(string sRoomName, List<MazeSpaceNodesArea> roomToSerch)
+        {
+            foreach (var room in roomToSerch)
+                if (sRoomName == room.SpaceId)
+                    return room.Area;
+
+            return 0.0;
+        }
+
+        private int getSpaceIndexByRobotName(string sRobotId, ArrayList mazeSpaceRobots)
+        {
+            MazeSpaceRobots itemSpaceRobot;
+
+            for (int i = 0; i < mazeSpaceRobots.Count; i++)
+			{
+                itemSpaceRobot = mazeSpaceRobots[i] as MazeSpaceRobots;
+                
+                if (itemSpaceRobot.RobotId == sRobotId)
+                    return i;
+			} 
+              
+            return -1;
+        }
+
+        private double[][] initShortPathCost(List<MazeSpaceNodesArea> roomToSerch, Dijkstras.Graph graph)
+        {
+            double[][] shortPathCostTemp = new double[roomToSerch.Count][];
+
+            for (int i = 0; i < shortPathCostTemp.Length; i++)
+                shortPathCostTemp[i] = new double[shortPathCostTemp.Length];
+
+            MazeSpaceNodesArea tempStart,tempEnd;
+
+            for (int i = 0; i < roomToSerch.Count; i++)
+            {
+                tempStart = roomToSerch[i] as MazeSpaceNodesArea;
+
+                for (int j = 0; j < roomToSerch.Count; j++)
+                {  
+                    tempEnd = roomToSerch[j] as MazeSpaceNodesArea; 
+                    shortPathCostTemp[i][j] =  graph.SumShortestPathConst(tempStart.NodeId,tempEnd.NodeId);
+                }
+            }
+
+            return shortPathCostTemp;
+        }
+
+        private List<string> getSpaceNode(ArrayList mazeGraphNodes)
+        {
+            List<string> tempSpaceNodes = new List<string>();
+
+            foreach (MazeNode node in mazeGraphNodes)
+            {
+                if (node.MazeGraphNodeType == MazeNodeType.SpaceNode)
+                    tempSpaceNodes.Add(node.ID);
+            }
+
+
+            return tempSpaceNodes;
+        }
+
+        private List<MazeSpaceNodesArea> initRoomToSearch(List<string> spaceNodeList, ArrayList mazeSpaceNode, ArrayList mazeRooms)
+        {
+            string sCurrentSpaceID;
+            double? dArea;
+            List<MazeSpaceNodesArea> tempSpaceNodeRoom = new List<MazeSpaceNodesArea>();
+            int iCurrentIndex = 0;
+
+            foreach (string itemNode in spaceNodeList)
+            {
+                sCurrentSpaceID = getSpaceID(itemNode, mazeSpaceNode);
+
+                 if(string.IsNullOrEmpty(sCurrentSpaceID))
+                     throw new Exception("Cannot find Space ID by itemNode ");
+
+                 dArea = getArea(sCurrentSpaceID,mazeRooms);
+
+                if(!dArea.HasValue)
+                    throw new Exception("Cannot get Area from  sCurrentSpaceID");
+
+                tempSpaceNodeRoom.Add(new MazeSpaceNodesArea(sCurrentSpaceID, itemNode, dArea.Value, iCurrentIndex));
+                iCurrentIndex++;
+            }
+
+            return tempSpaceNodeRoom;
+        }
+
+        private double? getArea(string sCurrentSpaceID, ArrayList mazeRooms)
+        {
+            foreach (MazeSpace item in mazeRooms)
+            {
+                if (sCurrentSpaceID == item.ID)
+                    return item.Area;
+            }
+            return null;
+        }
+
+
+        private string getSpaceID(string itemNode, ArrayList mazeSpaceNode)
+        {
+            foreach (MazeSpaceNodes item in mazeSpaceNode)
+                if (item.NodeId == itemNode)
+                    return item.SpaceId;
+
+            return null;
+        }
+
+        private MazeSpace getSpaceByName( ArrayList mazeRooms,string sId)
+        {
+            foreach (MazeSpace item in mazeRooms)
+                if (item.ID == sId)
+                    return item;
+
+            return null;
+        }
+
+        private Dijkstras.Graph initGraph(ArrayList mazeNodeNades)
+        {
+            Dijkstras.Graph temp = new Dijkstras.Graph();
+
+            foreach (MazeNodeNodes item in mazeNodeNades)
+            {
+                temp.add_vertex(item.NodeFromId, item.NodeToId, item.Cost);
+                System.Diagnostics.Trace.Write(string.Format("{0};{1};{2};\n", item.NodeFromId, item.NodeToId, item.Cost));
+            }
+
+            return temp;
+        }
+
+        //private double[][] calculatePathCosts()
+        //{
+
+        //}
+
+        #endregion
+
     }
 }

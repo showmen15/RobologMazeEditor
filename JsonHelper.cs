@@ -21,11 +21,24 @@ namespace MazeEditor
         public ArrayList mazeSpaces = null;
         public MazeGraph mazeGraph = null;
 
+        public string worldName;
+        public int iWorldTimeout;
+
+        public ArrayList mazeNodeNodes = null;
+        public ArrayList mazeSpaceNode = null;
+        public ArrayList mazeSpaceRobots = null;
 
         public void LoadAll(String filename) 
         {
+            JToken tempJObject;
             StreamReader reader = File.OpenText(filename);
             JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+            if (o.TryGetValue("name", out tempJObject))
+                worldName =  o.GetValue("name").ToString();
+
+            if (o.TryGetValue("timeout", out tempJObject))
+                iWorldTimeout = (int)o.GetValue("timeout");
 
             mazeWalls = new ArrayList();
             Hashtable mazeWallsById = new Hashtable();
@@ -35,6 +48,10 @@ namespace MazeEditor
             mazeSpaces = new ArrayList();
             Hashtable mazeSpacesById = new Hashtable();
             mazeGraph = new MazeGraph();
+
+            mazeNodeNodes = new ArrayList();
+            mazeSpaceNode = new ArrayList();
+            mazeSpaceRobots = new ArrayList();
 
             foreach (JObject jObject in o.GetValue("walls").Children())
             {
@@ -69,13 +86,25 @@ namespace MazeEditor
             }
             if (o.GetValue("robots") != null)
             {
+                JToken tmp;
+                Point2D? target;
+
                 foreach (JObject jObject in o.GetValue("robots").Children())
                 {
+                    if (jObject.TryGetValue("target", out tmp))
+                        target = new Point2D((double)((JObject)jObject.GetValue("target")).GetValue("x"), (double)((JObject)jObject.GetValue("target")).GetValue("y"));
+                    else
+                        target = null;
+
                     MazeRobot mazeRobot = new MazeRobot(
                         (string)jObject.GetValue("type"),
                         (string)jObject.GetValue("id"),
                         new Point2D((double)((JObject)jObject.GetValue("location")).GetValue("x") * 100, (double)((JObject)jObject.GetValue("location")).GetValue("y") * 100),
-                        (float)((JObject)jObject.GetValue("location")).GetValue("z") * 100);
+                        (float)((JObject)jObject.GetValue("location")).GetValue("z") * 100,
+                        //new Point2D((double)((JObject)jObject.GetValue("target")).GetValue("x"),(double)((JObject)jObject.GetValue("target")).GetValue("y"))
+                       target
+
+                        );
                     mazeRobot.ID = (string)jObject.GetValue("id");
                     mazeRobots.Add(mazeRobot);
                 }
@@ -141,6 +170,10 @@ namespace MazeEditor
                     newRoom.Function = (string)jObject.GetValue("function");
                     newRoom.Name = (string)jObject.GetValue("name");
                     newRoom.ExpectedPersonCount = (int)jObject.GetValue("expectedPersonCount");
+
+                    if (jObject.TryGetValue("searched", out tempJObject))
+                        newRoom.Searched = (int)jObject.GetValue("searched");
+                    
                     mazeSpaces.Add(newRoom);
                     mazeSpacesById[newRoom.ID] = newRoom;
 
@@ -193,6 +226,7 @@ namespace MazeEditor
                 {
                     MazeNode fromNode = (MazeNode)nodesById[(string)jObject.GetValue("nodeFromId")];
                     MazeNode toNode = (MazeNode)nodesById[(string)jObject.GetValue("nodeToId")];
+
                     if (fromNode.Door != null && (fromNode.Door.MazeDoorType == MazeGateType.doorOneWayFromTo || fromNode.Door.MazeDoorType == MazeGateType.doorOneWayToFrom))
                     {
                         if (fromNode.Room == fromNode.Door.RoomFrom)
@@ -201,17 +235,43 @@ namespace MazeEditor
                             fromNode.Door.MazeDoorType = MazeGateType.doorOneWayToFrom;
                     }
                     mazeGraph.AddArc(fromNode, toNode);
+
+                    mazeNodeNodes.Add(new MazeNodeNodes(jObject.GetValue("nodeFromId").ToString(), jObject.GetValue("nodeToId").ToString(), double.Parse(jObject.GetValue("cost").ToString()), double.Parse(jObject.GetValue("blocked").ToString())));
                 }
             }
+
+            if (o.GetValue("space-nodes") != null)
+            {
+                foreach (JObject jObject in o.GetValue("space-nodes").Children())
+                {
+                    mazeSpaceNode.Add(new MazeSpaceNodes(jObject.GetValue("type").ToString(), 
+                                                         jObject.GetValue("spaceId").ToString(), 
+                                                         jObject.GetValue("nodeId").ToString()));
+                }
+            }
+
+            if (o.GetValue("space-robots") != null)
+            {
+                foreach (JObject jObject in o.GetValue("space-robots").Children())
+                {
+                    mazeSpaceRobots.Add(new MazeSpaceRobots(jObject.GetValue("type").ToString(),
+                                                         jObject.GetValue("spaceId").ToString(),
+                                                         jObject.GetValue("robotId").ToString()));
+                }
+            }
+
+            
             reader.Close();
         }
 
-        public static void SaveAll(String filename, ArrayList mazeWalls, ArrayList mazeRobots, ArrayList mazeVictims, ArrayList mazeRooms, MazeGraph mazeGraph)
+        public static void SaveAll(String filename, ArrayList mazeWalls, ArrayList mazeRobots, ArrayList mazeVictims, ArrayList mazeRooms, MazeGraph mazeGraph,string sWorldName,int iTimeout)
         {
 
             ArrayList jWalls = new ArrayList();
             ArrayList jGates = new ArrayList(); 
             
+
+
             foreach (MazeWall mazeWall in mazeWalls)
             {
                 if (mazeWall.MazeWallType == MazeWallType.wall)
@@ -248,7 +308,10 @@ namespace MazeEditor
                                new JProperty("x", mazeRobot.position.X / 100),
                                new JProperty("y", mazeRobot.position.Y / 100),
                                new JProperty("z", mazeRobot.Height / 100),
-                               new JProperty("alpha", 0.0001)))
+                               new JProperty("alpha", 0.0001))),
+                           new JProperty("target", new JObject(
+                               new JProperty("x", mazeRobot.target.X),
+                               new JProperty("y", mazeRobot.target.Y)))                           
                               ));
             }
 
@@ -274,7 +337,8 @@ namespace MazeEditor
                            new JProperty("function", mazeRoom.Function),
                            new JProperty("expectedPersonCount", mazeRoom.ExpectedPersonCount),
                            new JProperty("area", mazeRoom.Area),
-                           new JProperty("diameter", mazeRoom.Diameter)));
+                           new JProperty("diameter", mazeRoom.Diameter),
+                           new JProperty("searched",mazeRoom.Searched)));
 
                 foreach (MazeWall roomWall in mazeRoom.Walls)
                 {
@@ -375,6 +439,8 @@ namespace MazeEditor
 
 
             JObject data = new JObject(
+                new JProperty("name", sWorldName),
+                new JProperty("timeout", iTimeout),
                 new JProperty("walls", new JArray(jWalls)),
                 new JProperty("gates", new JArray(jGates)),
                 new JProperty("spaces", new JArray(jSpaces)),
@@ -400,6 +466,8 @@ namespace MazeEditor
         }
 
 
-	
-	}
+
+
+
+    }
 }

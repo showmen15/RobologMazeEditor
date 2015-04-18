@@ -129,13 +129,18 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dijkstras.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="MazeGraph.cs" />
     <Compile Include="MazeGraphNode.cs" />
     <Compile Include="MazeGraphArc.cs" />
     <Compile Include="MazeIdentifiable.cs" />
+    <Compile Include="MazeNodeNodes.cs" />
     <Compile Include="MazeRoom.cs" />
     <Compile Include="JsonHelper.cs" />
+    <Compile Include="MazeSpaceNodes.cs" />
+    <Compile Include="MazeSpaceNodesArea.cs" />
+    <Compile Include="MazeSpaceRobots.cs" />
     <Compile Include="MazeVictim.cs" />
     <Compile Include="DoubleBufferedPanel.cs">
       <SubType>Component</SubType>

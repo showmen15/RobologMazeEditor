@@ -22,10 +22,15 @@ namespace MazeEditor
             get { return id; }
             set 
             {
-                busyIds.Remove(id);
-                if (busyIds.Contains(value))
-                    throw new Exception("ID already taken");
-                busyIds.Add(value);
+                if (!busyIds.Contains(value))
+                {
+                    //busyIds.Remove(id);
+                    //if (busyIds.Contains(value))
+                    //{
+                    //    //throw new Exception("ID already taken");
+                    //}
+                    busyIds.Add(value);
+                }
 
                 id = value;
             }
@@ -35,6 +40,7 @@ namespace MazeEditor
         {
             while (busyIds.Contains(this.GetType().Name.Replace("Maze", "") + counter))
                 counter++;
+            
             ID = this.GetType().Name.Replace("Maze", "") + counter++;
         }
        
