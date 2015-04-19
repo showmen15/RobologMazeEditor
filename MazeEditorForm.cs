@@ -348,6 +348,15 @@ namespace MazeEditor
         private Label label15;
         private TabPage tabPage2;
         private Button button3;
+        private Button butSelectDirectory;
+        private Label label14;
+        private TextBox txtWorkingPath;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private Button butRun;
+        private NumericUpDown dPassageFactor;
+        private NumericUpDown dSearchFactor;
+        private Label label17;
+        private Label label16;
         private MazeSpace previousSelectedRoom;
 
         public MazeEditorForm()
@@ -423,6 +432,7 @@ namespace MazeEditor
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -551,8 +561,16 @@ namespace MazeEditor
             this.butStopDTP = new System.Windows.Forms.Button();
             this.bytStartDTP = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.dPassageFactor = new System.Windows.Forms.NumericUpDown();
+            this.dSearchFactor = new System.Windows.Forms.NumericUpDown();
+            this.butRun = new System.Windows.Forms.Button();
+            this.butSelectDirectory = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtWorkingPath = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
@@ -581,6 +599,8 @@ namespace MazeEditor
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1DTP)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dPassageFactor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dSearchFactor)).BeginInit();
             this.SuspendLayout();
             // 
             // viewPanel
@@ -593,6 +613,17 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
+            // 
+            // mazePanel
+            // 
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -1034,9 +1065,9 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
@@ -1073,7 +1104,7 @@ namespace MazeEditor
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -1083,7 +1114,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -1093,7 +1124,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -1103,7 +1134,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -1118,7 +1149,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 238);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 199);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1218,9 +1249,9 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
             // 
@@ -1328,9 +1359,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1345,9 +1376,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1387,7 +1418,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1495,7 +1526,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1527,7 +1558,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1542,7 +1573,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1563,9 +1594,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1578,7 +1609,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -1992,6 +2023,14 @@ namespace MazeEditor
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label17);
+            this.tabPage2.Controls.Add(this.label16);
+            this.tabPage2.Controls.Add(this.dPassageFactor);
+            this.tabPage2.Controls.Add(this.dSearchFactor);
+            this.tabPage2.Controls.Add(this.butRun);
+            this.tabPage2.Controls.Add(this.butSelectDirectory);
+            this.tabPage2.Controls.Add(this.label14);
+            this.tabPage2.Controls.Add(this.txtWorkingPath);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Location = new System.Drawing.Point(4, 67);
             this.tabPage2.Name = "tabPage2";
@@ -2001,26 +2040,93 @@ namespace MazeEditor
             this.tabPage2.Text = "BFS";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 36);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(84, 13);
+            this.label17.TabIndex = 8;
+            this.label17.Text = "Passage Factor:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(13, 10);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(77, 13);
+            this.label16.TabIndex = 7;
+            this.label16.Text = "Search Factor:";
+            // 
+            // dPassageFactor
+            // 
+            this.dPassageFactor.Location = new System.Drawing.Point(104, 34);
+            this.dPassageFactor.Name = "dPassageFactor";
+            this.dPassageFactor.Size = new System.Drawing.Size(127, 20);
+            this.dPassageFactor.TabIndex = 6;
+            this.dPassageFactor.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // dSearchFactor
+            // 
+            this.dSearchFactor.Location = new System.Drawing.Point(104, 8);
+            this.dSearchFactor.Name = "dSearchFactor";
+            this.dSearchFactor.Size = new System.Drawing.Size(126, 20);
+            this.dSearchFactor.TabIndex = 5;
+            this.dSearchFactor.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // butRun
+            // 
+            this.butRun.Location = new System.Drawing.Point(271, 118);
+            this.butRun.Name = "butRun";
+            this.butRun.Size = new System.Drawing.Size(75, 23);
+            this.butRun.TabIndex = 4;
+            this.butRun.Text = "RunForAll";
+            this.butRun.UseVisualStyleBackColor = true;
+            this.butRun.Click += new System.EventHandler(this.butRun_Click);
+            // 
+            // butSelectDirectory
+            // 
+            this.butSelectDirectory.Location = new System.Drawing.Point(323, 92);
+            this.butSelectDirectory.Name = "butSelectDirectory";
+            this.butSelectDirectory.Size = new System.Drawing.Size(23, 23);
+            this.butSelectDirectory.TabIndex = 3;
+            this.butSelectDirectory.UseVisualStyleBackColor = true;
+            this.butSelectDirectory.Click += new System.EventHandler(this.butSelectDirectory_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 76);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(74, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Working path:";
+            // 
+            // txtWorkingPath
+            // 
+            this.txtWorkingPath.Location = new System.Drawing.Point(13, 92);
+            this.txtWorkingPath.Name = "txtWorkingPath";
+            this.txtWorkingPath.ReadOnly = true;
+            this.txtWorkingPath.Size = new System.Drawing.Size(304, 20);
+            this.txtWorkingPath.TabIndex = 1;
+            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(27, 123);
+            this.button3.Location = new System.Drawing.Point(271, 50);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 0;
-            this.button3.Text = "button3";
+            this.button3.Text = "Run Current";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // mazePanel
-            // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // MazeEditorForm
             // 
@@ -2075,6 +2181,9 @@ namespace MazeEditor
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dPassageFactor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dSearchFactor)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2170,10 +2279,15 @@ namespace MazeEditor
             if (fileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            LoadMaze(fileDialog.FileName);         
+        }
+
+        private void LoadMaze(string sFileName)
+        {
             MazeIdentifiable.ClearBusyIdsCache();
 
             JsonHelper jsonHelper = new JsonHelper();
-            jsonHelper.LoadAll(fileDialog.FileName);
+            jsonHelper.LoadAll(sFileName);
 
             mazeWalls = jsonHelper.mazeWalls;
             mazeRobots = jsonHelper.mazeRobots;
@@ -2207,6 +2321,7 @@ namespace MazeEditor
             mazePanel_Paint(this, null);
 
         }
+
 
         private void SaveMaze()
         {
@@ -4710,7 +4825,11 @@ Color.Yellow);
 
         private void button3_Click(object sender, EventArgs e)
         {
-            double sumCost  = RunSimulation( 1, 1);
+            double dSearchFactor = Convert.ToDouble(this.dSearchFactor.Value);
+            double dPassageFactor = Convert.ToDouble(this.dPassageFactor.Value);
+            double sumCost = RunSimulation(dSearchFactor, dPassageFactor);
+
+            MessageBox.Show(this, string.Format("Sum cost BFS: {0}",sumCost.ToString()));
         }
 
         /* private void txtIP_TextChanged(object sender, EventArgs e)
@@ -4789,7 +4908,7 @@ Color.Yellow);
                     throw new Exception("Wrong getIndexMinCost -> minCostRoomToSearchIndex");
 
                 dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex]; //koszt przejscia do pomieszczenia 
-                currentRobot.PassageCost += dCurrentPassageCost; //dodanie kosztu przejscia do najblizszego pomieszczenia
+                currentRobot.PassageCost += dCurrentPassageCost * dPassageFactor; //dodanie kosztu przejscia do najblizszego pomieszczenia
                 currentRobot.TraceCostRobot += string.Format("{0};", dCurrentPassageCost);
 
                 currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId; //ustawienie aktulnie przeszukiwanego pomieszczenia
@@ -5021,6 +5140,33 @@ Color.Yellow);
             }
 
             return temp;
+        }
+
+        private void butSelectDirectory_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                txtWorkingPath.Text = folderBrowserDialog1.SelectedPath;
+        }
+
+        private void butRun_Click(object sender, EventArgs e)
+        {
+            string[] fileRosonList;
+            string result = string.Empty;
+            double dSearchFactor = Convert.ToDouble(this.dSearchFactor.Value);
+            double dPassageFactor =Convert.ToDouble(this.dPassageFactor.Value);
+            double dSumCost;
+
+            if (Directory.Exists(txtWorkingPath.Text))
+            {
+                fileRosonList = Directory.GetFiles(txtWorkingPath.Text, "*.roson");
+
+                foreach (var item in fileRosonList)
+                {
+                    LoadMaze(item);
+                    dSumCost = RunSimulation(dSearchFactor, dPassageFactor);
+                    result += string.Format("{0};{1};\n", item, dSumCost);
+                }  
+            }
         }
 
         //private double[][] calculatePathCosts()
