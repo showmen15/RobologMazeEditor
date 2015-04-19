@@ -1563,9 +1563,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1578,7 +1578,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -2003,7 +2003,7 @@ namespace MazeEditor
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(115, 51);
+            this.button3.Location = new System.Drawing.Point(27, 123);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 0;
@@ -4710,7 +4710,7 @@ Color.Yellow);
 
         private void button3_Click(object sender, EventArgs e)
         {
-            RunSimulation( 1, 1);
+            double sumCost  = RunSimulation( 1, 1);
         }
 
         /* private void txtIP_TextChanged(object sender, EventArgs e)
@@ -4756,15 +4756,26 @@ Color.Yellow);
             List<string> spaceNodeList = getSpaceNode(mazeGraph.MazeGraphNodes);
              
             List<MazeSpaceNodesArea> allRooms =  initRoomToSearch(spaceNodeList,mazeSpaceNode, mazeRooms);
-            roomToSearchCount = allRooms.Count - 1;
+            roomToSearchCount = allRooms.Count - mazeRobots.Count;
 
             double[][] shortPathCost = initShortPathCost(allRooms, graph); //przelicz kosztu przejscia pomiedzy spaceNodeami (pokojami)
 
             initRobotsSpaceRoom(mazeRobots, mazeSpaceRobots); //kazdy robot trafil do innego pomieszzczenie 
 
+            for (int i = 0; i < mazeRobots.Count; i++) //ustaw pomieszczenia w ktorych sa roboty jako przeszukane i dodaj do nadaj robotom koszt 
+            {
+                currentRobot = mazeRobots[i] as MazeRobot;
+                roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
+
+                currentRobot.TracePathRobot = string.Format("{0};", allRooms[roomRobotCurrentIndex].SpaceId);
+                currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot 
+                currentRobot.TraceCostRobot += string.Format("{0};", currentRobot.PassageCost.ToString());
+
+                allRooms[roomRobotCurrentIndex].Searched = true;   //oznacz pokoj jako przeszukany             
+            }
+
             while (roomToSearchCount != 0)
             {
-                mazeRobots.Sort(0, mazeRobots.Count, compRobot);
                 currentRobot = mazeRobots[0] as MazeRobot;
 
                 roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
@@ -4772,21 +4783,25 @@ Color.Yellow);
                 if (roomRobotCurrentIndex == -1)
                     throw new Exception("Wrong getIndexRoomByName -> roomRobotCurrentIndex");
 
-                currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor;
-                allRooms[roomRobotCurrentIndex].Searched = true;
-
                 minCostRoomToSearchIndex = getIndexMinCost(shortPathCost[roomRobotCurrentIndex], allRooms); //szukam najblizszy pokoj do przeszukania
 
                 if (minCostRoomToSearchIndex == -1)
                     throw new Exception("Wrong getIndexMinCost -> minCostRoomToSearchIndex");
 
-                dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex];
+                dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex]; //koszt przejscia do pomieszczenia 
+                currentRobot.PassageCost += dCurrentPassageCost; //dodanie kosztu przejscia do najblizszego pomieszczenia
+                currentRobot.TraceCostRobot += string.Format("{0};", dCurrentPassageCost);
 
-                currentRobot.PassageCost += allRooms[minCostRoomToSearchIndex].Area * dPassageFactor;
-                currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId;
+                currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId; //ustawienie aktulnie przeszukiwanego pomieszczenia
+
                 currentRobot.TracePathRobot += string.Format("{0};", currentRobot.CurrentRoom);
+                currentRobot.PassageCost += allRooms[minCostRoomToSearchIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot
+                currentRobot.TraceCostRobot += string.Format("{0};", allRooms[minCostRoomToSearchIndex].Area * dSearchFactor);
 
-                roomToSearchCount--; 
+                allRooms[minCostRoomToSearchIndex].Searched = true; //oznacz pokoj jako przeszukany 
+
+                roomToSearchCount--;
+                mazeRobots.Sort(0, mazeRobots.Count, compRobot);
 
             }
 
@@ -4794,7 +4809,8 @@ Color.Yellow);
 
             foreach (MazeRobot robot in mazeRobots)
             {
-                System.Diagnostics.Trace.Write(robot.TracePathRobot + "\n");
+                System.Diagnostics.Trace.Write(string.Format("{0}\tCost: {1} \tCostRobot: {2}\n", robot.TracePathRobot, robot.PassageCost.ToString(), robot.TraceCostRobot));
+                
                 sumRobotCost += robot.PassageCost;
             }
 

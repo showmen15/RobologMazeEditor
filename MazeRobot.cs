@@ -42,6 +42,7 @@ namespace MazeEditor
         public double PassageCost { get; set; }
         public string CurrentRoom { get; set; }
         public string TracePathRobot { get; set; }
+        public string TraceCostRobot { get; set; }
 
         public MazeRobot(string type, string name, PointF position, float height, PointF? target)
             : base()
