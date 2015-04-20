@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Dijkstras
 {
+    //https://github.com/mburst/dijkstras-algorithm/blob/master/graph.png
     class Graph
     {
         Dictionary<string, Dictionary<string, double>> vertices = new Dictionary<string, Dictionary<string, double>>();
