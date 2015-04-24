@@ -432,7 +432,6 @@ namespace MazeEditor
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
             this.viewPanel = new System.Windows.Forms.Panel();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -571,6 +570,7 @@ namespace MazeEditor
             this.txtWorkingPath = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
@@ -613,17 +613,6 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
-            // 
-            // mazePanel
-            // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -1065,9 +1054,9 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
@@ -1104,7 +1093,7 @@ namespace MazeEditor
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -1114,7 +1103,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -1124,7 +1113,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -1134,7 +1123,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -1149,7 +1138,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 199);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 225);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1249,9 +1238,9 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
             // 
@@ -1359,9 +1348,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1376,9 +1365,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1418,7 +1407,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1526,7 +1515,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1558,7 +1547,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1573,7 +1562,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1594,9 +1583,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1609,7 +1598,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -2060,6 +2049,7 @@ namespace MazeEditor
             // 
             // dPassageFactor
             // 
+            this.dPassageFactor.DecimalPlaces = 2;
             this.dPassageFactor.Location = new System.Drawing.Point(104, 34);
             this.dPassageFactor.Name = "dPassageFactor";
             this.dPassageFactor.Size = new System.Drawing.Size(127, 20);
@@ -2072,6 +2062,7 @@ namespace MazeEditor
             // 
             // dSearchFactor
             // 
+            this.dSearchFactor.DecimalPlaces = 2;
             this.dSearchFactor.Location = new System.Drawing.Point(104, 8);
             this.dSearchFactor.Name = "dSearchFactor";
             this.dSearchFactor.Size = new System.Drawing.Size(126, 20);
@@ -2127,6 +2118,17 @@ namespace MazeEditor
             this.button3.Text = "Run Current";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // mazePanel
+            // 
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // MazeEditorForm
             // 
@@ -4875,23 +4877,23 @@ Color.Yellow);
             List<string> spaceNodeList = getSpaceNode(mazeGraph.MazeGraphNodes);
              
             List<MazeSpaceNodesArea> allRooms =  initRoomToSearch(spaceNodeList,mazeSpaceNode, mazeRooms);
-            roomToSearchCount = allRooms.Count - mazeRobots.Count;
+            roomToSearchCount = allRooms.Count; // -mazeRobots.Count;
 
             double[][] shortPathCost = initShortPathCost(allRooms, graph); //przelicz kosztu przejscia pomiedzy spaceNodeami (pokojami)
 
             initRobotsSpaceRoom(mazeRobots, mazeSpaceRobots); //kazdy robot trafil do innego pomieszzczenie 
 
-            for (int i = 0; i < mazeRobots.Count; i++) //ustaw pomieszczenia w ktorych sa roboty jako przeszukane i dodaj do nadaj robotom koszt 
-            {
-                currentRobot = mazeRobots[i] as MazeRobot;
-                roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
+            //for (int i = 0; i < mazeRobots.Count; i++) //ustaw pomieszczenia w ktorych sa roboty jako przeszukane i dodaj do nadaj robotom koszt 
+            //{
+            //    currentRobot = mazeRobots[i] as MazeRobot;
+            //    roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
 
-                currentRobot.TracePathRobot = string.Format("{0};", allRooms[roomRobotCurrentIndex].SpaceId);
-                currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot 
-                currentRobot.TraceCostRobot += string.Format("{0};", currentRobot.PassageCost.ToString());
+            //    currentRobot.TracePathRobot = string.Format("{0};", allRooms[roomRobotCurrentIndex].SpaceId);
+            //    currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot 
+            //    currentRobot.TraceCostRobot += string.Format("{0};", currentRobot.PassageCost.ToString());
 
-                allRooms[roomRobotCurrentIndex].Searched = true;   //oznacz pokoj jako przeszukany             
-            }
+            //    allRooms[roomRobotCurrentIndex].Searched = true;   //oznacz pokoj jako przeszukany             
+            //}
 
             while (roomToSearchCount != 0)
             {
@@ -4899,25 +4901,36 @@ Color.Yellow);
 
                 roomRobotCurrentIndex = getIndexRoomByName(currentRobot.CurrentRoom, allRooms); //pobieram index pokoju w ktorym jest aktualnie robot
 
-                if (roomRobotCurrentIndex == -1)
-                    throw new Exception("Wrong getIndexRoomByName -> roomRobotCurrentIndex");
+                if (!allRooms[roomRobotCurrentIndex].Searched) //pomieszczenie nie zostalo jeszcze przeszukane
+                {
+                    currentRobot.TracePathRobot = string.Format("{0};", allRooms[roomRobotCurrentIndex].SpaceId);
+                    currentRobot.PassageCost += allRooms[roomRobotCurrentIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot 
+                    currentRobot.TraceCostRobot += string.Format("{0};", currentRobot.PassageCost.ToString());
 
-                minCostRoomToSearchIndex = getIndexMinCost(shortPathCost[roomRobotCurrentIndex], allRooms); //szukam najblizszy pokoj do przeszukania
+                    allRooms[roomRobotCurrentIndex].Searched = true;   //oznacz pokoj jako przeszukany             
+                }
+                else
+                {
+                    if (roomRobotCurrentIndex == -1)
+                        throw new Exception("Wrong getIndexRoomByName -> roomRobotCurrentIndex");
 
-                if (minCostRoomToSearchIndex == -1)
-                    throw new Exception("Wrong getIndexMinCost -> minCostRoomToSearchIndex");
+                    minCostRoomToSearchIndex = getIndexMinCost(shortPathCost[roomRobotCurrentIndex], allRooms); //szukam najblizszy pokoj do przeszukania
 
-                dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex]; //koszt przejscia do pomieszczenia 
-                currentRobot.PassageCost += dCurrentPassageCost * dPassageFactor; //dodanie kosztu przejscia do najblizszego pomieszczenia
-                currentRobot.TraceCostRobot += string.Format("{0};", dCurrentPassageCost);
+                    if (minCostRoomToSearchIndex == -1)
+                        throw new Exception("Wrong getIndexMinCost -> minCostRoomToSearchIndex");
 
-                currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId; //ustawienie aktulnie przeszukiwanego pomieszczenia
+                    dCurrentPassageCost = shortPathCost[roomRobotCurrentIndex][minCostRoomToSearchIndex]; //koszt przejscia do pomieszczenia 
+                    currentRobot.PassageCost += dCurrentPassageCost * dPassageFactor; //dodanie kosztu przejscia do najblizszego pomieszczenia
+                    currentRobot.TraceCostRobot += string.Format("{0};", dCurrentPassageCost);
 
-                currentRobot.TracePathRobot += string.Format("{0};", currentRobot.CurrentRoom);
-                currentRobot.PassageCost += allRooms[minCostRoomToSearchIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot
-                currentRobot.TraceCostRobot += string.Format("{0};", allRooms[minCostRoomToSearchIndex].Area * dSearchFactor);
+                    currentRobot.CurrentRoom = allRooms[minCostRoomToSearchIndex].SpaceId; //ustawienie aktulnie przeszukiwanego pomieszczenia
 
-                allRooms[minCostRoomToSearchIndex].Searched = true; //oznacz pokoj jako przeszukany 
+                    currentRobot.TracePathRobot += string.Format("{0};", currentRobot.CurrentRoom);
+                    currentRobot.PassageCost += allRooms[minCostRoomToSearchIndex].Area * dSearchFactor; //koszt przeszukania pokoju w ktorym aktualnie jest robot
+                    currentRobot.TraceCostRobot += string.Format("{0};", allRooms[minCostRoomToSearchIndex].Area * dSearchFactor);
+
+                    allRooms[minCostRoomToSearchIndex].Searched = true; //oznacz pokoj jako przeszukany 
+                }
 
                 roomToSearchCount--;
                 mazeRobots.Sort(0, mazeRobots.Count, compRobot);
@@ -4925,15 +4938,20 @@ Color.Yellow);
             }
 
             double sumRobotCost = 0.0;
+            double maxRobotCost = 0.0;
 
             foreach (MazeRobot robot in mazeRobots)
             {
                 System.Diagnostics.Trace.Write(string.Format("{0}\tCost: {1} \tCostRobot: {2}\n", robot.TracePathRobot, robot.PassageCost.ToString(), robot.TraceCostRobot));
                 
                 sumRobotCost += robot.PassageCost;
+
+                if (robot.PassageCost > maxRobotCost)
+                    maxRobotCost = robot.PassageCost;
             }
 
-            return sumRobotCost;
+            //return sumRobotCost;
+            return maxRobotCost;
         }
 
         private int getIndexMinCost(double[] dCosts, List<MazeSpaceNodesArea> allRooms)
@@ -5167,6 +5185,8 @@ Color.Yellow);
                     result += string.Format("{0};{1};\n", item, dSumCost);
                 }  
             }
+
+            File.WriteAllText(string.Format("{0}\\result.csv", txtWorkingPath.Text), result);
         }
 
         //private double[][] calculatePathCosts()
