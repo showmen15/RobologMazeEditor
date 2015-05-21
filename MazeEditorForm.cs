@@ -357,6 +357,16 @@ namespace MazeEditor
         private NumericUpDown dSearchFactor;
         private Label label17;
         private Label label16;
+        private Label label21;
+        private Label label20;
+        private Label label19;
+        private Label label18;
+        private TextBox txtToX;
+        private TextBox txtToY;
+        private TextBox txtFromY;
+        private TextBox txtFromX;
+        private Button butWallUpdate;
+        private Button butRemoveCurrentWall;
         private MazeSpace previousSelectedRoom;
 
         public MazeEditorForm()
@@ -570,6 +580,16 @@ namespace MazeEditor
             this.txtWorkingPath = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.butWallUpdate = new System.Windows.Forms.Button();
+            this.txtFromX = new System.Windows.Forms.TextBox();
+            this.txtFromY = new System.Windows.Forms.TextBox();
+            this.txtToY = new System.Windows.Forms.TextBox();
+            this.txtToX = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.butRemoveCurrentWall = new System.Windows.Forms.Button();
             this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
@@ -1039,6 +1059,16 @@ namespace MazeEditor
             // 
             // wallsTabPage
             // 
+            this.wallsTabPage.Controls.Add(this.butRemoveCurrentWall);
+            this.wallsTabPage.Controls.Add(this.label21);
+            this.wallsTabPage.Controls.Add(this.label20);
+            this.wallsTabPage.Controls.Add(this.label19);
+            this.wallsTabPage.Controls.Add(this.label18);
+            this.wallsTabPage.Controls.Add(this.txtToX);
+            this.wallsTabPage.Controls.Add(this.txtToY);
+            this.wallsTabPage.Controls.Add(this.txtFromY);
+            this.wallsTabPage.Controls.Add(this.txtFromX);
+            this.wallsTabPage.Controls.Add(this.butWallUpdate);
             this.wallsTabPage.Controls.Add(this.translateWallsToZeroZeoButton);
             this.wallsTabPage.Controls.Add(this.FlopAllWallButton);
             this.wallsTabPage.Controls.Add(this.createDoorWallCheckBox);
@@ -1054,9 +1084,9 @@ namespace MazeEditor
             this.wallsTabPage.Controls.Add(this.label123);
             this.wallsTabPage.Controls.Add(this.wallWidthNumericUpDown);
             this.wallsTabPage.ImageIndex = 5;
-            this.wallsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.wallsTabPage.Location = new System.Drawing.Point(4, 67);
             this.wallsTabPage.Name = "wallsTabPage";
-            this.wallsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.wallsTabPage.Size = new System.Drawing.Size(363, 478);
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
@@ -1093,7 +1123,7 @@ namespace MazeEditor
             // wallWidthLabel
             // 
             this.wallWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallWidthLabel.Location = new System.Drawing.Point(167, 435);
+            this.wallWidthLabel.Location = new System.Drawing.Point(167, 402);
             this.wallWidthLabel.Name = "wallWidthLabel";
             this.wallWidthLabel.Size = new System.Drawing.Size(123, 24);
             this.wallWidthLabel.TabIndex = 23;
@@ -1103,7 +1133,7 @@ namespace MazeEditor
             // wallHeightLabel
             // 
             this.wallHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallHeightLabel.Location = new System.Drawing.Point(167, 459);
+            this.wallHeightLabel.Location = new System.Drawing.Point(167, 426);
             this.wallHeightLabel.Name = "wallHeightLabel";
             this.wallHeightLabel.Size = new System.Drawing.Size(113, 24);
             this.wallHeightLabel.TabIndex = 24;
@@ -1113,7 +1143,7 @@ namespace MazeEditor
             // wallAngleLabel
             // 
             this.wallAngleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallAngleLabel.Location = new System.Drawing.Point(8, 459);
+            this.wallAngleLabel.Location = new System.Drawing.Point(8, 426);
             this.wallAngleLabel.Name = "wallAngleLabel";
             this.wallAngleLabel.Size = new System.Drawing.Size(120, 24);
             this.wallAngleLabel.TabIndex = 22;
@@ -1123,7 +1153,7 @@ namespace MazeEditor
             // wallLengthLabel
             // 
             this.wallLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wallLengthLabel.Location = new System.Drawing.Point(8, 435);
+            this.wallLengthLabel.Location = new System.Drawing.Point(8, 402);
             this.wallLengthLabel.Name = "wallLengthLabel";
             this.wallLengthLabel.Size = new System.Drawing.Size(120, 24);
             this.wallLengthLabel.TabIndex = 21;
@@ -1138,7 +1168,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 225);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 186);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1609,7 +1639,7 @@ namespace MazeEditor
             this.sizeTrackBar.Maximum = 100;
             this.sizeTrackBar.Minimum = 2;
             this.sizeTrackBar.Name = "sizeTrackBar";
-            this.sizeTrackBar.Size = new System.Drawing.Size(104, 45);
+            this.sizeTrackBar.Size = new System.Drawing.Size(104, 42);
             this.sizeTrackBar.TabIndex = 11;
             this.sizeTrackBar.TickFrequency = 10;
             this.sizeTrackBar.Value = 10;
@@ -2118,6 +2148,90 @@ namespace MazeEditor
             this.button3.Text = "Run Current";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // butWallUpdate
+            // 
+            this.butWallUpdate.Location = new System.Drawing.Point(170, 376);
+            this.butWallUpdate.Name = "butWallUpdate";
+            this.butWallUpdate.Size = new System.Drawing.Size(87, 23);
+            this.butWallUpdate.TabIndex = 27;
+            this.butWallUpdate.Text = "Update Wall";
+            this.butWallUpdate.UseVisualStyleBackColor = true;
+            this.butWallUpdate.Click += new System.EventHandler(this.butWallUpdate_Click);
+            // 
+            // txtFromX
+            // 
+            this.txtFromX.Location = new System.Drawing.Point(54, 317);
+            this.txtFromX.Name = "txtFromX";
+            this.txtFromX.Size = new System.Drawing.Size(100, 20);
+            this.txtFromX.TabIndex = 28;
+            // 
+            // txtFromY
+            // 
+            this.txtFromY.Location = new System.Drawing.Point(55, 345);
+            this.txtFromY.Name = "txtFromY";
+            this.txtFromY.Size = new System.Drawing.Size(100, 20);
+            this.txtFromY.TabIndex = 29;
+            // 
+            // txtToY
+            // 
+            this.txtToY.Location = new System.Drawing.Point(209, 345);
+            this.txtToY.Name = "txtToY";
+            this.txtToY.Size = new System.Drawing.Size(100, 20);
+            this.txtToY.TabIndex = 30;
+            // 
+            // txtToX
+            // 
+            this.txtToX.Location = new System.Drawing.Point(209, 317);
+            this.txtToX.Name = "txtToX";
+            this.txtToX.Size = new System.Drawing.Size(100, 20);
+            this.txtToX.TabIndex = 31;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(8, 320);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(43, 13);
+            this.label18.TabIndex = 32;
+            this.label18.Text = "From X:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(9, 349);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(43, 13);
+            this.label19.TabIndex = 33;
+            this.label19.Text = "From Y:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(162, 320);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(33, 13);
+            this.label20.TabIndex = 34;
+            this.label20.Text = "To X:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(165, 348);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(33, 13);
+            this.label21.TabIndex = 35;
+            this.label21.Text = "To Y:";
+            // 
+            // butRemoveCurrentWall
+            // 
+            this.butRemoveCurrentWall.Location = new System.Drawing.Point(264, 376);
+            this.butRemoveCurrentWall.Name = "butRemoveCurrentWall";
+            this.butRemoveCurrentWall.Size = new System.Drawing.Size(87, 23);
+            this.butRemoveCurrentWall.TabIndex = 36;
+            this.butRemoveCurrentWall.Text = "Remove Wall";
+            this.butRemoveCurrentWall.UseVisualStyleBackColor = true;
+            this.butRemoveCurrentWall.Click += new System.EventHandler(this.butRemoveCurrentWall_Click);
             // 
             // mazePanel
             // 
@@ -4053,6 +4167,11 @@ namespace MazeEditor
                 wallAngleLabel.Text = "angle: " + (new Vector2D(wall.points[0], wall.points[1])).Angle.ToString("f2");
                 wallHeightLabel.Text = "height: " + (wall.Height / 100).ToString("f2");
                 wallWidthLabel.Text = "width: " + (wall.Width / 100).ToString("f2");
+
+                txtFromX.Text = wall.points[0].X.ToString();
+                txtFromY.Text = wall.points[0].Y.ToString();
+                txtToX.Text = wall.points[1].X.ToString();
+                txtToY.Text = wall.points[1].Y.ToString();
             }
             else
             {
@@ -5187,6 +5306,38 @@ Color.Yellow);
             }
 
             File.WriteAllText(string.Format("{0}\\result.csv", txtWorkingPath.Text), result);
+        }
+
+        private void butWallUpdate_Click(object sender, EventArgs e)
+        {
+            MazeWall wall = mazeWallsListBox.SelectedItem as MazeWall;
+
+            wall.points[0].X = float.Parse(txtFromX.Text);
+            wall.points[0].Y = float.Parse(txtFromY.Text);
+            wall.points[1].X = float.Parse(txtToX.Text);
+            wall.points[1].Y = float.Parse(txtToY.Text);
+        }
+
+        private void butRemoveCurrentWall_Click(object sender, EventArgs e)
+        {
+            MazeWall wall = mazeWallsListBox.SelectedItem as MazeWall;
+            MazeWall selectedWallTemp = null;
+
+            foreach (MazeWall item in mazeWalls)
+            {
+                if (wall.ID == item.ID)
+                {
+                    selectedWallTemp = item;
+                    break;
+                }
+            }
+
+            if (selectedWallTemp != null)
+            {
+                mazeWalls.Remove(selectedWallTemp);
+                RefreshMazeWallsTreeView();
+            }
+            mazePanel_Paint(this, null);
         }
 
         //private double[][] calculatePathCosts()
