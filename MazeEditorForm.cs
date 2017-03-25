@@ -34,6 +34,8 @@ using System.Net;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Concurrent;
+using Newtonsoft.Json.Linq;
 
 
 namespace MazeEditor
@@ -158,6 +160,7 @@ namespace MazeEditor
         private Brush robotBrushSelected;
         private Pen robotPenSelected;
         private Pen robotPenArrow;
+        private Pen robotPenRey;
         private Font fontSelected;
         private Font fontGraph;
 
@@ -367,6 +370,34 @@ namespace MazeEditor
         private TextBox txtFromX;
         private Button butWallUpdate;
         private Button butRemoveCurrentWall;
+        private TabPage tabPage4;
+        private Button button4;
+        private DataGridView dataGridView2;
+        private GroupBox groupBox3;
+        private TextBox txtPort2;
+        private TextBox txtIP2;
+        private Label label22;
+        private Label label23;
+        private Button butPause2;
+        private Button butStop2;
+        private NumericUpDown dNumberRobots2;
+        private Label label24;
+        private Button butStart2;
+        private TabPage tabPage3;
+        private Button butSaveDB;
+        private DataGridView dataGridView3;
+        private DataGridViewTextBoxColumn RobotID;
+        private DataGridViewTextBoxColumn StartX;
+        private DataGridViewTextBoxColumn StartY;
+        private DataGridViewTextBoxColumn StartAlfa;
+        private DataGridViewTextBoxColumn EndX;
+        private DataGridViewTextBoxColumn EndY;
+        private Button button5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private MazeSpace previousSelectedRoom;
 
         public MazeEditorForm()
@@ -386,6 +417,7 @@ namespace MazeEditor
             robotBrush = (new Pen(Color.White, 1)).Brush;
             robotBrushSelected = (new Pen(Color.Red, 1)).Brush;
             robotPenArrow = new Pen(Color.Red, 2);
+            robotPenRey = new Pen(Color.Blue, 1);
 
             taskPanDirection = new Pen[] { new Pen(Color.Red, 2), new Pen(Color.Green, 2), new Pen(Color.Orange, 2) };
 
@@ -441,7 +473,20 @@ namespace MazeEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeEditorForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.verticalSplitter = new System.Windows.Forms.Splitter();
             this.topHorizontalSplitter = new System.Windows.Forms.Splitter();
             this.mainToolBar = new System.Windows.Forms.ToolBar();
@@ -481,6 +526,16 @@ namespace MazeEditor
             this.heightNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.worldNameTextBox = new System.Windows.Forms.TextBox();
             this.wallsTabPage = new System.Windows.Forms.TabPage();
+            this.butRemoveCurrentWall = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtToX = new System.Windows.Forms.TextBox();
+            this.txtToY = new System.Windows.Forms.TextBox();
+            this.txtFromY = new System.Windows.Forms.TextBox();
+            this.txtFromX = new System.Windows.Forms.TextBox();
+            this.butWallUpdate = new System.Windows.Forms.Button();
             this.translateWallsToZeroZeoButton = new System.Windows.Forms.Button();
             this.FlopAllWallButton = new System.Windows.Forms.Button();
             this.createDoorWallCheckBox = new System.Windows.Forms.CheckBox();
@@ -579,18 +634,35 @@ namespace MazeEditor
             this.label14 = new System.Windows.Forms.Label();
             this.txtWorkingPath = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.txtPort2 = new System.Windows.Forms.TextBox();
+            this.txtIP2 = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.butPause2 = new System.Windows.Forms.Button();
+            this.butStop2 = new System.Windows.Forms.Button();
+            this.dNumberRobots2 = new System.Windows.Forms.NumericUpDown();
+            this.label24 = new System.Windows.Forms.Label();
+            this.butStart2 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.butSaveDB = new System.Windows.Forms.Button();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.RobotID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartAlfa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EndX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EndY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.butWallUpdate = new System.Windows.Forms.Button();
-            this.txtFromX = new System.Windows.Forms.TextBox();
-            this.txtFromY = new System.Windows.Forms.TextBox();
-            this.txtToY = new System.Windows.Forms.TextBox();
-            this.txtToX = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.butRemoveCurrentWall = new System.Windows.Forms.Button();
-            this.mazePanel = new MazeEditor.DoubleBufferedPanel();
             this.viewPanel.SuspendLayout();
             this.leftMenuPanel.SuspendLayout();
             this.objectSelectorTabControl.SuspendLayout();
@@ -621,6 +693,12 @@ namespace MazeEditor
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dPassageFactor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dSearchFactor)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots2)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // viewPanel
@@ -633,6 +711,17 @@ namespace MazeEditor
             this.viewPanel.Name = "viewPanel";
             this.viewPanel.Size = new System.Drawing.Size(559, 608);
             this.viewPanel.TabIndex = 0;
+            // 
+            // mazePanel
+            // 
+            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
+            this.mazePanel.Location = new System.Drawing.Point(0, 0);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(0, 0);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
+            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
+            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
             // 
             // verticalSplitter
             // 
@@ -873,6 +962,8 @@ namespace MazeEditor
             this.objectSelectorTabControl.Controls.Add(this.PFTabPage);
             this.objectSelectorTabControl.Controls.Add(this.tabPage1);
             this.objectSelectorTabControl.Controls.Add(this.tabPage2);
+            this.objectSelectorTabControl.Controls.Add(this.tabPage4);
+            this.objectSelectorTabControl.Controls.Add(this.tabPage3);
             this.objectSelectorTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectSelectorTabControl.ImageList = this.mainMenuImageList;
             this.objectSelectorTabControl.ItemSize = new System.Drawing.Size(42, 30);
@@ -1090,6 +1181,90 @@ namespace MazeEditor
             this.wallsTabPage.TabIndex = 0;
             this.wallsTabPage.Text = "walls";
             // 
+            // butRemoveCurrentWall
+            // 
+            this.butRemoveCurrentWall.Location = new System.Drawing.Point(264, 376);
+            this.butRemoveCurrentWall.Name = "butRemoveCurrentWall";
+            this.butRemoveCurrentWall.Size = new System.Drawing.Size(87, 23);
+            this.butRemoveCurrentWall.TabIndex = 36;
+            this.butRemoveCurrentWall.Text = "Remove Wall";
+            this.butRemoveCurrentWall.UseVisualStyleBackColor = true;
+            this.butRemoveCurrentWall.Click += new System.EventHandler(this.butRemoveCurrentWall_Click);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(165, 348);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(33, 13);
+            this.label21.TabIndex = 35;
+            this.label21.Text = "To Y:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(162, 320);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(33, 13);
+            this.label20.TabIndex = 34;
+            this.label20.Text = "To X:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(9, 349);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(43, 13);
+            this.label19.TabIndex = 33;
+            this.label19.Text = "From Y:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(8, 320);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(43, 13);
+            this.label18.TabIndex = 32;
+            this.label18.Text = "From X:";
+            // 
+            // txtToX
+            // 
+            this.txtToX.Location = new System.Drawing.Point(209, 317);
+            this.txtToX.Name = "txtToX";
+            this.txtToX.Size = new System.Drawing.Size(100, 20);
+            this.txtToX.TabIndex = 31;
+            // 
+            // txtToY
+            // 
+            this.txtToY.Location = new System.Drawing.Point(209, 345);
+            this.txtToY.Name = "txtToY";
+            this.txtToY.Size = new System.Drawing.Size(100, 20);
+            this.txtToY.TabIndex = 30;
+            // 
+            // txtFromY
+            // 
+            this.txtFromY.Location = new System.Drawing.Point(55, 345);
+            this.txtFromY.Name = "txtFromY";
+            this.txtFromY.Size = new System.Drawing.Size(100, 20);
+            this.txtFromY.TabIndex = 29;
+            // 
+            // txtFromX
+            // 
+            this.txtFromX.Location = new System.Drawing.Point(54, 317);
+            this.txtFromX.Name = "txtFromX";
+            this.txtFromX.Size = new System.Drawing.Size(100, 20);
+            this.txtFromX.TabIndex = 28;
+            // 
+            // butWallUpdate
+            // 
+            this.butWallUpdate.Location = new System.Drawing.Point(170, 376);
+            this.butWallUpdate.Name = "butWallUpdate";
+            this.butWallUpdate.Size = new System.Drawing.Size(87, 23);
+            this.butWallUpdate.TabIndex = 27;
+            this.butWallUpdate.Text = "Update Wall";
+            this.butWallUpdate.UseVisualStyleBackColor = true;
+            this.butWallUpdate.Click += new System.EventHandler(this.butWallUpdate_Click);
+            // 
             // translateWallsToZeroZeoButton
             // 
             this.translateWallsToZeroZeoButton.Location = new System.Drawing.Point(228, 33);
@@ -1168,7 +1343,7 @@ namespace MazeEditor
             this.mazeWallsListBox.FormattingEnabled = true;
             this.mazeWallsListBox.Location = new System.Drawing.Point(11, 116);
             this.mazeWallsListBox.Name = "mazeWallsListBox";
-            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 186);
+            this.mazeWallsListBox.Size = new System.Drawing.Size(349, 121);
             this.mazeWallsListBox.TabIndex = 20;
             this.mazeWallsListBox.SelectedIndexChanged += new System.EventHandler(this.mazeWallsListBox_SelectedIndexChanged);
             // 
@@ -1268,9 +1443,9 @@ namespace MazeEditor
             this.robotsTabPage.Controls.Add(this.robotHeightNumericUpDown);
             this.robotsTabPage.Controls.Add(this.robotNameTextBox);
             this.robotsTabPage.ImageIndex = 6;
-            this.robotsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.robotsTabPage.Location = new System.Drawing.Point(4, 67);
             this.robotsTabPage.Name = "robotsTabPage";
-            this.robotsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.robotsTabPage.Size = new System.Drawing.Size(363, 478);
             this.robotsTabPage.TabIndex = 1;
             this.robotsTabPage.Text = "robots";
             // 
@@ -1378,9 +1553,9 @@ namespace MazeEditor
             // victimsTabPage
             // 
             this.victimsTabPage.ImageIndex = 14;
-            this.victimsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.victimsTabPage.Location = new System.Drawing.Point(4, 67);
             this.victimsTabPage.Name = "victimsTabPage";
-            this.victimsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.victimsTabPage.Size = new System.Drawing.Size(363, 478);
             this.victimsTabPage.TabIndex = 5;
             this.victimsTabPage.Text = "victims";
             this.victimsTabPage.UseVisualStyleBackColor = true;
@@ -1395,9 +1570,9 @@ namespace MazeEditor
             this.roomsTabPage.Controls.Add(this.roomsTreeView);
             this.roomsTabPage.Controls.Add(this.recreateRoomsButton);
             this.roomsTabPage.ImageIndex = 13;
-            this.roomsTabPage.Location = new System.Drawing.Point(4, 34);
+            this.roomsTabPage.Location = new System.Drawing.Point(4, 67);
             this.roomsTabPage.Name = "roomsTabPage";
-            this.roomsTabPage.Size = new System.Drawing.Size(363, 511);
+            this.roomsTabPage.Size = new System.Drawing.Size(363, 478);
             this.roomsTabPage.TabIndex = 4;
             this.roomsTabPage.Text = "rooms";
             this.roomsTabPage.UseVisualStyleBackColor = true;
@@ -1437,7 +1612,7 @@ namespace MazeEditor
             this.roomPropertiesPanel.Controls.Add(this.roomAreaLabel);
             this.roomPropertiesPanel.Controls.Add(this.joinWithRadioButton);
             this.roomPropertiesPanel.Controls.Add(this.removeRoomButton);
-            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 406);
+            this.roomPropertiesPanel.Location = new System.Drawing.Point(50, 373);
             this.roomPropertiesPanel.Name = "roomPropertiesPanel";
             this.roomPropertiesPanel.Size = new System.Drawing.Size(300, 102);
             this.roomPropertiesPanel.TabIndex = 11;
@@ -1545,7 +1720,7 @@ namespace MazeEditor
             this.doorPropertiesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doorPropertiesPanel.Controls.Add(this.gateBlockedNumericUpDown);
             this.doorPropertiesPanel.Controls.Add(this.label4);
-            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 406);
+            this.doorPropertiesPanel.Location = new System.Drawing.Point(15, 373);
             this.doorPropertiesPanel.Name = "doorPropertiesPanel";
             this.doorPropertiesPanel.Size = new System.Drawing.Size(288, 39);
             this.doorPropertiesPanel.TabIndex = 12;
@@ -1577,7 +1752,7 @@ namespace MazeEditor
             // 
             this.typeSelectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 378);
+            this.typeSelectComboBox.Location = new System.Drawing.Point(15, 345);
             this.typeSelectComboBox.Name = "typeSelectComboBox";
             this.typeSelectComboBox.Size = new System.Drawing.Size(337, 21);
             this.typeSelectComboBox.TabIndex = 2;
@@ -1592,7 +1767,7 @@ namespace MazeEditor
             this.roomsTreeView.HideSelection = false;
             this.roomsTreeView.Location = new System.Drawing.Point(15, 80);
             this.roomsTreeView.Name = "roomsTreeView";
-            this.roomsTreeView.Size = new System.Drawing.Size(337, 292);
+            this.roomsTreeView.Size = new System.Drawing.Size(337, 259);
             this.roomsTreeView.TabIndex = 6;
             this.roomsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.roomsTreeView_AfterSelect);
             // 
@@ -1613,9 +1788,9 @@ namespace MazeEditor
             this.graphTabPage.Controls.Add(this.sizeTrackBar);
             this.graphTabPage.Controls.Add(this.removeDoorDoorEdgesButton);
             this.graphTabPage.ImageIndex = 12;
-            this.graphTabPage.Location = new System.Drawing.Point(4, 34);
+            this.graphTabPage.Location = new System.Drawing.Point(4, 67);
             this.graphTabPage.Name = "graphTabPage";
-            this.graphTabPage.Size = new System.Drawing.Size(363, 511);
+            this.graphTabPage.Size = new System.Drawing.Size(363, 478);
             this.graphTabPage.TabIndex = 2;
             this.graphTabPage.Text = "graph";
             // 
@@ -1628,7 +1803,7 @@ namespace MazeEditor
             this.graphTreeView.HideSelection = false;
             this.graphTreeView.Location = new System.Drawing.Point(15, 78);
             this.graphTreeView.Name = "graphTreeView";
-            this.graphTreeView.Size = new System.Drawing.Size(337, 399);
+            this.graphTreeView.Size = new System.Drawing.Size(337, 366);
             this.graphTreeView.TabIndex = 9;
             this.graphTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.graphTreeView_AfterSelect);
             // 
@@ -1639,7 +1814,7 @@ namespace MazeEditor
             this.sizeTrackBar.Maximum = 100;
             this.sizeTrackBar.Minimum = 2;
             this.sizeTrackBar.Name = "sizeTrackBar";
-            this.sizeTrackBar.Size = new System.Drawing.Size(104, 42);
+            this.sizeTrackBar.Size = new System.Drawing.Size(104, 45);
             this.sizeTrackBar.TabIndex = 11;
             this.sizeTrackBar.TickFrequency = 10;
             this.sizeTrackBar.Value = 10;
@@ -1687,6 +1862,14 @@ namespace MazeEditor
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
@@ -1694,8 +1877,24 @@ namespace MazeEditor
             this.Y,
             this.Prop,
             this.Alfa});
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle14;
             this.dataGridView1.Location = new System.Drawing.Point(3, 137);
             this.dataGridView1.Name = "dataGridView1";
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(347, 292);
@@ -1883,6 +2082,14 @@ namespace MazeEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1DTP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1DTP.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dataGridView1DTP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1DTP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colID,
@@ -1894,10 +2101,26 @@ namespace MazeEditor
             this.colTask_Y,
             this.colTask_Name,
             this.colIsEnd});
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1DTP.DefaultCellStyle = dataGridViewCellStyle17;
             this.dataGridView1DTP.Location = new System.Drawing.Point(8, 147);
             this.dataGridView1DTP.Name = "dataGridView1DTP";
             this.dataGridView1DTP.ReadOnly = true;
             this.dataGridView1DTP.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1DTP.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
             this.dataGridView1DTP.RowHeadersVisible = false;
             this.dataGridView1DTP.Size = new System.Drawing.Size(347, 325);
             this.dataGridView1DTP.TabIndex = 12;
@@ -2149,100 +2372,326 @@ namespace MazeEditor
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // butWallUpdate
+            // tabPage4
             // 
-            this.butWallUpdate.Location = new System.Drawing.Point(170, 376);
-            this.butWallUpdate.Name = "butWallUpdate";
-            this.butWallUpdate.Size = new System.Drawing.Size(87, 23);
-            this.butWallUpdate.TabIndex = 27;
-            this.butWallUpdate.Text = "Update Wall";
-            this.butWallUpdate.UseVisualStyleBackColor = true;
-            this.butWallUpdate.Click += new System.EventHandler(this.butWallUpdate_Click);
+            this.tabPage4.Controls.Add(this.button4);
+            this.tabPage4.Controls.Add(this.dataGridView2);
+            this.tabPage4.Controls.Add(this.groupBox3);
+            this.tabPage4.Controls.Add(this.butPause2);
+            this.tabPage4.Controls.Add(this.butStop2);
+            this.tabPage4.Controls.Add(this.dNumberRobots2);
+            this.tabPage4.Controls.Add(this.label24);
+            this.tabPage4.Controls.Add(this.butStart2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 67);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(363, 478);
+            this.tabPage4.TabIndex = 10;
+            this.tabPage4.Text = "PF_V2";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // txtFromX
+            // button4
             // 
-            this.txtFromX.Location = new System.Drawing.Point(54, 317);
-            this.txtFromX.Name = "txtFromX";
-            this.txtFromX.Size = new System.Drawing.Size(100, 20);
-            this.txtFromX.TabIndex = 28;
+            this.button4.Location = new System.Drawing.Point(260, 108);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "ShowSelected";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // txtFromY
+            // dataGridView2
             // 
-            this.txtFromY.Location = new System.Drawing.Point(55, 345);
-            this.txtFromY.Name = "txtFromY";
-            this.txtFromY.Size = new System.Drawing.Size(100, 20);
-            this.txtFromY.TabIndex = 29;
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AllowUserToResizeRows = false;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5});
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle20;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 137);
+            this.dataGridView2.Name = "dataGridView2";
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(347, 338);
+            this.dataGridView2.TabIndex = 6;
             // 
-            // txtToY
+            // dataGridViewTextBoxColumn1
             // 
-            this.txtToY.Location = new System.Drawing.Point(209, 345);
-            this.txtToY.Name = "txtToY";
-            this.txtToY.Size = new System.Drawing.Size(100, 20);
-            this.txtToY.TabIndex = 30;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "ID";
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 50;
             // 
-            // txtToX
+            // dataGridViewTextBoxColumn2
             // 
-            this.txtToX.Location = new System.Drawing.Point(209, 317);
-            this.txtToX.Name = "txtToX";
-            this.txtToX.Size = new System.Drawing.Size(100, 20);
-            this.txtToX.TabIndex = 31;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "X";
+            this.dataGridViewTextBoxColumn2.HeaderText = "X";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 50;
             // 
-            // label18
+            // dataGridViewTextBoxColumn3
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(8, 320);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(43, 13);
-            this.label18.TabIndex = 32;
-            this.label18.Text = "From X:";
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Y";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Y";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 50;
             // 
-            // label19
+            // dataGridViewTextBoxColumn4
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(9, 349);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(43, 13);
-            this.label19.TabIndex = 33;
-            this.label19.Text = "From Y:";
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Probability";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Prop";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 50;
             // 
-            // label20
+            // dataGridViewTextBoxColumn5
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(162, 320);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(33, 13);
-            this.label20.TabIndex = 34;
-            this.label20.Text = "To X:";
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "Alfa";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Alfa";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.Width = 50;
             // 
-            // label21
+            // groupBox3
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(165, 348);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(33, 13);
-            this.label21.TabIndex = 35;
-            this.label21.Text = "To Y:";
+            this.groupBox3.Controls.Add(this.button5);
+            this.groupBox3.Controls.Add(this.txtPort2);
+            this.groupBox3.Controls.Add(this.txtIP2);
+            this.groupBox3.Controls.Add(this.label22);
+            this.groupBox3.Controls.Add(this.label23);
+            this.groupBox3.Location = new System.Drawing.Point(11, 29);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(339, 73);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "UDP";
             // 
-            // butRemoveCurrentWall
+            // button5
             // 
-            this.butRemoveCurrentWall.Location = new System.Drawing.Point(264, 376);
-            this.butRemoveCurrentWall.Name = "butRemoveCurrentWall";
-            this.butRemoveCurrentWall.Size = new System.Drawing.Size(87, 23);
-            this.butRemoveCurrentWall.TabIndex = 36;
-            this.butRemoveCurrentWall.Text = "Remove Wall";
-            this.butRemoveCurrentWall.UseVisualStyleBackColor = true;
-            this.butRemoveCurrentWall.Click += new System.EventHandler(this.butRemoveCurrentWall_Click);
+            this.button5.Location = new System.Drawing.Point(224, 19);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
             // 
-            // mazePanel
+            // txtPort2
             // 
-            this.mazePanel.BackColor = System.Drawing.Color.DimGray;
-            this.mazePanel.Location = new System.Drawing.Point(0, 0);
-            this.mazePanel.Name = "mazePanel";
-            this.mazePanel.Size = new System.Drawing.Size(0, 0);
-            this.mazePanel.TabIndex = 0;
-            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mazePanel_Paint);
-            this.mazePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseMove);
-            this.mazePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mazePanel_MouseUp);
+            this.txtPort2.Location = new System.Drawing.Point(63, 40);
+            this.txtPort2.Name = "txtPort2";
+            this.txtPort2.Size = new System.Drawing.Size(100, 20);
+            this.txtPort2.TabIndex = 3;
+            this.txtPort2.Text = "1234";
+            // 
+            // txtIP2
+            // 
+            this.txtIP2.Location = new System.Drawing.Point(63, 12);
+            this.txtIP2.Name = "txtIP2";
+            this.txtIP2.Size = new System.Drawing.Size(100, 20);
+            this.txtIP2.TabIndex = 2;
+            this.txtIP2.Text = "192.168.2.100";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(22, 45);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(29, 13);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "Port:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(24, 16);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(20, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "IP:";
+            // 
+            // butPause2
+            // 
+            this.butPause2.Enabled = false;
+            this.butPause2.Location = new System.Drawing.Point(89, 108);
+            this.butPause2.Name = "butPause2";
+            this.butPause2.Size = new System.Drawing.Size(75, 23);
+            this.butPause2.TabIndex = 4;
+            this.butPause2.Text = "Pause";
+            this.butPause2.UseVisualStyleBackColor = true;
+            this.butPause2.Visible = false;
+            // 
+            // butStop2
+            // 
+            this.butStop2.Enabled = false;
+            this.butStop2.Location = new System.Drawing.Point(170, 108);
+            this.butStop2.Name = "butStop2";
+            this.butStop2.Size = new System.Drawing.Size(75, 23);
+            this.butStop2.TabIndex = 3;
+            this.butStop2.Text = "Stop";
+            this.butStop2.UseVisualStyleBackColor = true;
+            // 
+            // dNumberRobots2
+            // 
+            this.dNumberRobots2.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.dNumberRobots2.Location = new System.Drawing.Point(105, 7);
+            this.dNumberRobots2.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.dNumberRobots2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dNumberRobots2.Name = "dNumberRobots2";
+            this.dNumberRobots2.Size = new System.Drawing.Size(93, 20);
+            this.dNumberRobots2.TabIndex = 2;
+            this.dNumberRobots2.Value = new decimal(new int[] {
+            104,
+            0,
+            0,
+            0});
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(8, 11);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(91, 13);
+            this.label24.TabIndex = 1;
+            this.label24.Text = "Number of robots:";
+            // 
+            // butStart2
+            // 
+            this.butStart2.Location = new System.Drawing.Point(8, 108);
+            this.butStart2.Name = "butStart2";
+            this.butStart2.Size = new System.Drawing.Size(75, 23);
+            this.butStart2.TabIndex = 0;
+            this.butStart2.Text = "Start";
+            this.butStart2.UseVisualStyleBackColor = true;
+            this.butStart2.Click += new System.EventHandler(this.butStart2_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.butSaveDB);
+            this.tabPage3.Controls.Add(this.dataGridView3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 67);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(363, 478);
+            this.tabPage3.TabIndex = 11;
+            this.tabPage3.Text = "PhD";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // butSaveDB
+            // 
+            this.butSaveDB.Location = new System.Drawing.Point(178, 6);
+            this.butSaveDB.Name = "butSaveDB";
+            this.butSaveDB.Size = new System.Drawing.Size(75, 23);
+            this.butSaveDB.TabIndex = 1;
+            this.butSaveDB.Text = "SaveDB";
+            this.butSaveDB.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.AllowDrop = true;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView3.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.RobotID,
+            this.StartX,
+            this.StartY,
+            this.StartAlfa,
+            this.EndX,
+            this.EndY});
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView3.DefaultCellStyle = dataGridViewCellStyle23;
+            this.dataGridView3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridView3.Location = new System.Drawing.Point(3, 175);
+            this.dataGridView3.Name = "dataGridView3";
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView3.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            this.dataGridView3.Size = new System.Drawing.Size(357, 300);
+            this.dataGridView3.TabIndex = 0;
+            // 
+            // RobotID
+            // 
+            this.RobotID.HeaderText = "RobotID";
+            this.RobotID.Name = "RobotID";
+            // 
+            // StartX
+            // 
+            this.StartX.HeaderText = "StartX";
+            this.StartX.Name = "StartX";
+            // 
+            // StartY
+            // 
+            this.StartY.HeaderText = "StartY";
+            this.StartY.Name = "StartY";
+            // 
+            // StartAlfa
+            // 
+            this.StartAlfa.HeaderText = "StartAlfa";
+            this.StartAlfa.Name = "StartAlfa";
+            // 
+            // EndX
+            // 
+            this.EndX.HeaderText = "EndX";
+            this.EndX.Name = "EndX";
+            // 
+            // EndY
+            // 
+            this.EndY.HeaderText = "EndY";
+            this.EndY.Name = "EndY";
             // 
             // MazeEditorForm
             // 
@@ -2300,6 +2749,14 @@ namespace MazeEditor
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dPassageFactor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dSearchFactor)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dNumberRobots2)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2712,6 +3169,32 @@ namespace MazeEditor
                     mazeBitmapGraphics.FillEllipse(robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
                     mazeBitmapGraphics.DrawString(robot.name, fontSelected, robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset);
                     mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);
+                }
+                else
+                {
+                    robotPenSelected.Color = getRobotColor(robot.Probability);
+                    mazeBitmapGraphics.FillEllipse(robotPenSelected.Brush, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                    mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);
+                }
+            }
+
+            float endRayX, endRayY;
+
+            foreach (MazeRobot robot in AllRobotColation)
+            {
+                if (robot.Selected)
+                {
+                    mazeBitmapGraphics.FillEllipse(robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset, size, size);
+                    mazeBitmapGraphics.DrawString(robot.name, fontSelected, robotBrushSelected, robot.position.X - sizeOffset, robot.position.Y - sizeOffset);
+                    mazeBitmapGraphics.DrawLine(robotPenArrow, robot.position.X, robot.position.Y, robot.arrow.X, robot.arrow.Y);
+
+                    for(int i = 0; i < robot.CountDistance.Length;i++)
+                    {
+                        endRayX = robot.getRayX(i);
+                        endRayY = robot.getRayY(i);
+
+                        mazeBitmapGraphics.DrawLine(robotPenRey, robot.position.X, robot.position.Y, endRayX, endRayY);
+                    }
                 }
                 else
                 {
@@ -5316,7 +5799,14 @@ Color.Yellow);
             wall.points[0].Y = float.Parse(txtFromY.Text);
             wall.points[1].X = float.Parse(txtToX.Text);
             wall.points[1].Y = float.Parse(txtToY.Text);
+
+            this.Invoke((MethodInvoker)delegate()
+                {
+                    mazePanel_Paint(this, null);
+
+                });
         }
+    
 
         private void butRemoveCurrentWall_Click(object sender, EventArgs e)
         {
@@ -5338,12 +5828,222 @@ Color.Yellow);
                 RefreshMazeWallsTreeView();
             }
             mazePanel_Paint(this, null);
+
+            this.Invoke((MethodInvoker)delegate()
+            {
+                mazePanel_Paint(this, null);
+
+            });
         }
 
-        //private double[][] calculatePathCosts()
-        //{
+        #endregion
 
-        //}
+
+        #region :: PF implementation new ::
+
+        Thread reciveThread2;
+
+        ConcurrentDictionary<string, MazeRobot> dictioneryRobotParticle = new ConcurrentDictionary<string, MazeRobot>();
+        private BindingList<MazeRobot> AllRobotColation = new BindingList<MazeRobot>();
+
+        private BindingSource bindingSource1 = new BindingSource();
+
+        private void processParticle(long robotID, List<Particle> robotParticles)
+        {
+            string sRobotID;
+
+            for (int i = 0; i < robotParticles.Count(); i++)
+            {
+                sRobotID = string.Format("{0}#{1}", robotID, i.ToString("{00000}"));
+
+                if (!dictioneryRobotParticle.ContainsKey(sRobotID)) //dodanie do listy Robotow
+                {
+                    MazeRobot temp = new MazeRobot("Robot", sRobotID, new Point2D(0, 0), (float)(1.0 * 100), new PointF(0, 0));
+                    dictioneryRobotParticle.TryAdd(sRobotID, temp);
+
+                    AllRobotColation.Add(temp);
+                    //mazeRobots.Add(temp);
+                }
+
+                dictioneryRobotParticle[sRobotID].position = new Point2D(robotParticles[i].X * 100, robotParticles[i].Y * 100);
+                dictioneryRobotParticle[sRobotID].Alfa = robotParticles[i].Alfa;
+                dictioneryRobotParticle[sRobotID].Probability = robotParticles[i].Probability;
+
+                dictioneryRobotParticle[sRobotID].CountAlfa = robotParticles[i].CountAlfa.ToArray();
+                dictioneryRobotParticle[sRobotID].CountDistance = robotParticles[i].CountDistance.ToArray();
+            }
+        }
+
+        private string tempSS;
+
+        private void initPF2()
+        {
+            bindingSource1.DataSource = AllRobotColation;
+            dataGridView2.DataSource = bindingSource1;
+            dataGridView2.AutoGenerateColumns = false;
+
+            tempSS = Properties.Resources.JsonTest;
+
+            reciveThread2 = new Thread(new ThreadStart(getParticlePossition2));
+            reciveThread2.Start();
+        }
+
+        private long getRobotID(JObject json)
+        {
+            //if (json.TryGetValue("timeout", out tempJObject))
+            //    iWorldTimeout = (int)o.GetValue("timeout");
+
+            return 0;
+        }
+
+        private List<Particle> getParticel(JObject json)
+        {
+            List<Particle> ll = new List<Particle>(10);
+            Particle temp = new Particle();
+            temp.X = 0.5;
+            temp.Y = 0.5;
+
+            ll.Add(temp);
+
+            double[] distnace = new double[] { 32.3, 323, 3232, 5, 4, 343, 553, 66 };
+            double[] angle = new double[] { 1.2, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 3.0 };
+
+            temp.CountAlfa = new List<double>(angle);
+            temp.CountDistance = new List<double>(distnace);
+
+            //ll.Add(new Particle());
+            //ll.Add(new Particle());
+            //ll.Add(new Particle());
+            //ll.Add(new Particle());
+
+            //ll.Add(new Particle()); 
+            //ll.Add(new Particle());
+
+
+            return ll;
+        }
+
+        private void getParticlePossition2()
+        {
+            byte[] tablica;
+
+            string temp;
+            string[] tmp;
+            JObject json;
+
+            long robotID;
+            List<Particle> particleList;
+
+            while (!endTransmision)
+            {
+                //tablica = udp.Receive(ref endPoint);
+                temp = tempSS; //System.Text.Encoding.Default.GetString(tablica);
+
+                tmp = temp.Split(new string[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var sJSON in tmp)
+                {
+                    json = (JObject)JToken.Parse(sJSON);
+
+                    getHokuyoID(json);
+                    robotID = getRobotID(json);
+                    particleList = getParticel(json);
+
+                    processParticle(robotID, particleList);
+                }
+
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    mazePanel_Paint(this, null);
+
+                });
+            }
+        }
+
+        private void butStart2_Click(object sender, EventArgs e)
+        {
+            initPF2();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < AllRobotColation.Count; i++)
+                AllRobotColation[i].Selected = false;
+            
+            if (dataGridView2.SelectedRows.Count > 0)
+                (dataGridView2.SelectedRows[0].DataBoundItem as MazeRobot).Selected = true;
+
+            this.Invoke((MethodInvoker)delegate()
+            {
+                mazePanel_Paint(this, null);
+            });
+        }
+
+        private long getHokuyoID(JObject json)
+        {
+            List<Particle> temp = new List<Particle>();
+            Particle tmpParticle;
+
+             foreach (JObject jObject in json.GetValue("Particles").Children())
+             {
+                 tmpParticle = new Particle();
+
+                 tmpParticle.X = (double) (jObject.GetValue("X"));
+                 tmpParticle.Y = (double) (jObject.GetValue("Y"));
+                 tmpParticle.Probability = (double) (jObject.GetValue("P"));
+                 tmpParticle.Alfa = (double) (jObject.GetValue("Angle"));
+
+                 foreach (JValue itemCalculatedProbability in (JArray)jObject["CalculatedProbability"])
+                     tmpParticle.CalculatedProbability.Add((double)itemCalculatedProbability);
+
+                 foreach (JValue itemCalculatedDistances in (JArray)jObject["CalculatedDistances"])
+                     tmpParticle.CountDistance.Add((double)itemCalculatedDistances);
+
+
+                // JArray arrayCalculatedProbability = ;
+
+                // for (int i = 0; i < arrayCalculatedProbability.Count; i++)
+                // {
+                //     tmpParticle.CalculatedProbability.Add((double)((JValue)arrayCalculatedProbability[i]));
+                // }
+
+
+                 int j = 44;
+
+                 //jObject
+                     
+                 //    .GetValue("CalculatedProbability")
+
+                 //foreach (var itemCalculatedProbability in jObject.GetValue("CalculatedProbability").Children())
+                 //{
+                 ////   tmpParticle.CalculatedProbability.Add(itemCalculatedProbability
+                 //}
+
+
+                 //CalculatedProbability
+
+                 //jObject
+
+                   //  (JObject)jObject.GetValue("from")).GetValue("x")
+             }
+            
+            //JObject jObject = ;
+            
+           // JToken jObject = json.GetValue("Hokuyo");
+            //JObject jObject1 = jObject.
+
+            // JObject jObject in o.GetValue("walls").Children();
+
+            //if (json.TryGetValue("timeout", out tempJObject))
+            //    iWorldTimeout = (int)o.GetValue("timeout");
+
+
+            //      foreach (JObject jObject in o.GetValue("walls").Children())
+            //        {
+
+            //}
+            return 0;
+        }
 
         #endregion
 

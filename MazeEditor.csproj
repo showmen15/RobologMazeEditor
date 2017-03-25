@@ -21,11 +21,12 @@
     <StartupObject />
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>0.0</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,7 +41,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -62,6 +62,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -83,10 +84,21 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EMK.Cartography">
-      <Name>EMK.Cartography</Name>
+    <Reference Include="EMK.Cartography, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\EMK.Cartography.dll</HintPath>
     </Reference>
     <Reference Include="EMK.Collections">
@@ -132,6 +144,7 @@
     </Compile>
     <Compile Include="Dijkstras.cs" />
     <Compile Include="GeometryHelper.cs" />
+    <Compile Include="Hokuyo.cs" />
     <Compile Include="MazeGraph.cs" />
     <Compile Include="MazeGraphNode.cs" />
     <Compile Include="MazeGraphArc.cs" />
@@ -155,6 +168,12 @@
     <Compile Include="MazeWall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Particle.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Target.cs" />
     <Compile Include="XmlHelper.cs">
       <SubType>Code</SubType>
@@ -162,6 +181,10 @@
     <Content Include="App.ico" />
     <EmbeddedResource Include="MazeEditorForm.resx">
       <DependentUpon>MazeEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -193,9 +216,11 @@
     <None Include="Maps\labNowe3b.roson">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Maps\MazeRoboLabEmptyMapWithGate.roson" />
     <None Include="Maps\MazeRoboLabFullMap.roson">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Maps\MazeRoboLabFullMapMichal.roson" />
     <None Include="Maps\MazeRoboLabFullMap_graph.roson">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

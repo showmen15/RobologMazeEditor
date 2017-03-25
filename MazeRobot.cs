@@ -20,6 +20,8 @@ using System;
 using System.Xml;
 using System.Drawing;
 using Geometry;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace MazeEditor
@@ -27,17 +29,100 @@ namespace MazeEditor
 	/// <summary>
 	/// 
 	/// </summary>
-    public class MazeRobot : MazeIdentifiable
+    public class MazeRobot : MazeIdentifiable, INotifyPropertyChanged
 	{
-         public readonly string Type;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+
+        public float X
+        {
+            get
+            {
+                return position.X;
+            }
+            set
+            {
+                if (value != position.X)
+                {
+                    position.X = value;
+                    UpdateArrowPosiotion(value);
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public float Y
+        {
+            get
+            {
+                return position.Y;
+            }
+            set
+            {
+                if (value != position.Y)
+                {
+                    position.Y = value;
+                    UpdateArrowPosiotion(value);
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private double probability;
+        public double Probability
+        {
+            get
+            {
+                return probability;
+            }
+            set
+            {
+                if (value != probability)
+                {
+                    probability = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public readonly string Type;
 		public string name;
 		public PointF position;
         public PointF arrow;
-        public double Probability;
+       // public double Probability;
         private const int arrowLength = 10;
 		public readonly float Height;
         public bool Selected;
         public PointF target;
+
+        private double alfa;
+        public double Alfa
+        {
+            get
+            {
+                return alfa;
+            }
+            set
+            {
+                UpdateArrowPosiotion(value);
+                alfa = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double[] CountDistance { get; set; }
+        public double[] CountAlfa { get; set; }
 
         public double PassageCost { get; set; }
         public string CurrentRoom { get; set; }
@@ -64,6 +149,16 @@ namespace MazeEditor
         {
             arrow.X = position.X + (float) (arrowLength * Math.Cos(angle));
             arrow.Y = position.Y + (float) (arrowLength * Math.Sin(angle));
+        }
+
+        public float getRayX(int index)
+        {
+            return position.X + (float)(CountDistance[index] * Math.Cos(CountAlfa[index]));
+        }
+
+        public float getRayY(int index)
+        {
+            return position.Y + (float)(CountDistance[index] * Math.Sin(CountAlfa[index]));
         }
 
         public void WriteXMLDefinitionNode(XmlTextWriter writer)
